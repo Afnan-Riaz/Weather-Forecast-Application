@@ -1,0 +1,8 @@
+.homescreen {
+    -fx-background-image: url('images/rain-bg.jpg');
+    -fx-background-size: cover;
+}
+.current-temp{
+    -fx-background-color: rgba(118, 118, 118, 0.64);
+    -fx-background-radius: 5px;
+}
