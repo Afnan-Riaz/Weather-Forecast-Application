@@ -3,16 +3,24 @@ package com.weatherapp.weatherapplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 767, 443);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 530);
+        Image icon=new Image("/favicon.png");
+        stage.getIcons().add(icon);
         stage.setTitle("Weather Application");
-        scene.getStylesheets().add(getClass().getResource("/styling/style.css").toExternalForm());
+        stage.setMaxHeight(570);
+        stage.setMaxWidth(1000);
+        stage.setMinHeight(480);
+        stage.setMinWidth(800);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styling/style.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
