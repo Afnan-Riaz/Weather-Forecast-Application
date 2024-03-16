@@ -36,5 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
-.idea/cssdialects.xml
-.idea/dictionaries/LENOVO_T480.xml
+/.idea
+.idea/inspectionProfiles/Project_Default.xml
