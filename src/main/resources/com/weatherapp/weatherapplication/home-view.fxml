@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox alignment="CENTER" centerShape="false" prefHeight="570.0" prefWidth="930.0" styleClass="homescreen" stylesheets="@../../../styling/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.weatherapp.weatherapplication.AppController">
+   <HBox centerShape="false" prefHeight="382.0" prefWidth="870.0">
+      <VBox.margin>
+         <Insets left="30.0" right="30.0" top="30.0" />
+      </VBox.margin>
+      <VBox centerShape="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="244.0" prefWidth="139.0">
+         <HBox prefHeight="149.0" prefWidth="139.0" style="-fx-border-radius: 20px;">
+            <effect>
+               <ColorAdjust brightness="-0.02" />
+            </effect>
+            <VBox prefHeight="150.0" prefWidth="139.0">
+               <ImageView fitHeight="53.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../styling/icons/fog.png" />
+               </ImageView>
+               <Text fx:id="description" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Fog" wrappingWidth="-1">
+                  <font>
+                     <Font name="Raleway SemiBold" size="29.0" />
+                  </font>
+               </Text>
+               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="city" text="Johar Town" wrappingWidth="93.58399963378906">
+                  <VBox.margin>
+                     <Insets top="3.0" />
+                  </VBox.margin>
+                  <font>
+                     <Font name="Poppins Medium" size="16.0" />
+                  </font>
+               </Text>
+               <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="17.0" prefWidth="139.0">
+                  <VBox.margin>
+                     <Insets top="5.0"/>
+                  </VBox.margin>
+                  <cursor>
+                     <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <ImageView fitHeight="21.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/pin.png"/>
+                     <HBox.margin>
+                        <Insets/>
+                     </HBox.margin>
+                  </ImageView>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Location"
+                        wrappingWidth="122.4320068359375">
+                     <font>
+                        <Font name="Poppins Regular" size="14.0"/>
+                     </font>
+                     <HBox.margin>
+                        <Insets/>
+                     </HBox.margin>
+                  </Text>
+               </HBox>
+            </VBox>
+         </HBox>
+         <HBox prefHeight="34.0" prefWidth="139.0">
+            <VBox prefHeight="131.0" prefWidth="139.0">
+               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="temp" text="28 °C" wrappingWidth="105.55703544616699">
+                  <font>
+                     <Font name="Poppins Bold" size="36.0" />
+                  </font>
+               </Text>
+            </VBox>
+         </HBox>
+         <HBox prefHeight="25.0" prefWidth="139.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Sunrise: "
+                  wrappingWidth="62.431968688964844">
+               <font>
+                  <Font name="Poppins SemiBold" size="14.0"/>
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" fx:id="sunrise" strokeWidth="0.0" text="6:54 AM"
+                  wrappingWidth="75.23199462890625">
+               <font>
+                  <Font name="Poppins Regular" size="14.0"/>
+               </font>
+            </Text>
+         </HBox>
+         <HBox layoutX="10.0" layoutY="211.0" prefHeight="22.0" prefWidth="138.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Sunset: " wrappingWidth="59.23198699951172">
+               <font>
+                  <Font name="Poppins SemiBold" size="14.0"/>
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="10.0" layoutY="25.0" fx:id="sunset" strokeType="OUTSIDE" strokeWidth="0.0" text="5:49 PM"
+                  wrappingWidth="75.23199462890625">
+               <font>
+                  <Font name="Poppins Regular" size="14.0"/>
+               </font>
+            </Text>
+         </HBox>
+         <HBox prefHeight="24.0" prefWidth="138.0">
+            <cursor>
+               <Cursor fx:constant="HAND"/>
+            </cursor>
+            <VBox.margin>
+               <Insets top="30.0"/>
+            </VBox.margin>
+            <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+               <Image url="@../../../styling/icons/cheveron.png"/>
+            </ImageView>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="day" text="Thursday">
+               <font>
+                  <Font name="Poppins Medium" size="14.0"/>
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="382.0" prefWidth="733.0">
+         <VBox prefHeight="382.0" prefWidth="212.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="56.0" prefWidth="154.0">
+               <VBox.margin>
+                  <Insets/>
+               </VBox.margin>
+               <VBox prefHeight="57.0" prefWidth="43.0">
+                  <ImageView fitHeight="31.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/humidity.png"/>
+                  </ImageView>
+               </VBox>
+               <VBox prefHeight="79.0" prefWidth="149.0">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Humidity"
+                        wrappingWidth="93.58399963378906">
+                     <font>
+                        <Font name="Poppins Regular" size="14.0"/>
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="humidity" text="70 %"
+                        wrappingWidth="105.55703544616699">
+                     <font>
+                        <Font name="Poppins SemiBold" size="26.0"/>
+                     </font>
+                  </Text>
+               </VBox>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="154.0">
+               <VBox.margin>
+                  <Insets top="7.0"/>
+               </VBox.margin>
+               <VBox prefHeight="57.0" prefWidth="43.0">
+                  <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/wind.png"/>
+                  </ImageView>
+               </VBox>
+               <VBox prefHeight="79.0" prefWidth="149.0">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Speed"
+                        wrappingWidth="93.58399963378906">
+                     <font>
+                        <Font name="Poppins Regular" size="14.0"/>
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="windspeed" text="1.97 m/s"
+                        wrappingWidth="117.55703544616699">
+                     <font>
+                        <Font name="Poppins SemiBold" size="24.0"/>
+                     </font>
+                  </Text>
+               </VBox>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="67.0" prefHeight="56.0" prefWidth="154.0">
+               <VBox.margin>
+                  <Insets top="7.0"/>
+               </VBox.margin>
+               <VBox prefHeight="57.0" prefWidth="43.0">
+                  <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/pressure.png"/>
+                  </ImageView>
+               </VBox>
+               <VBox prefHeight="79.0" prefWidth="149.0">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Pressure"
+                        wrappingWidth="93.58399963378906">
+                     <font>
+                        <Font name="Poppins Regular" size="14.0"/>
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="pressure" text="1015 hPa"
+                        wrappingWidth="115.95705986022949">
+                     <font>
+                        <Font name="Poppins SemiBold" size="26.0"/>
+                     </font>
+                  </Text>
+               </VBox>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="124.0" prefHeight="56.0" prefWidth="154.0">
+               <VBox.margin>
+                  <Insets top="7.0"/>
+               </VBox.margin>
+               <VBox prefHeight="57.0" prefWidth="43.0">
+                  <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/quality.png"/>
+                  </ImageView>
+               </VBox>
+               <VBox prefHeight="79.0" prefWidth="149.0">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Quality"
+                        wrappingWidth="93.58399963378906">
+                     <font>
+                        <Font name="Poppins Regular" size="14.0"/>
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="quality" text="79 AQI"
+                        wrappingWidth="116.75698661804199">
+                     <font>
+                        <Font name="Poppins SemiBold" size="26.0"/>
+                     </font>
+                  </Text>
+               </VBox>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="203.0" prefHeight="56.0" prefWidth="154.0">
+               <VBox.margin>
+                  <Insets top="7.0"/>
+               </VBox.margin>
+               <VBox prefHeight="57.0" prefWidth="43.0">
+                  <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@../../../styling/icons/pollutant.png"/>
+                  </ImageView>
+               </VBox>
+               <VBox prefHeight="79.0" prefWidth="149.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="146.0">
+                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Primary Pollutants"
+                           wrappingWidth="132.0">
+                        <font>
+                           <Font name="Poppins Regular" size="14.0"/>
+                        </font>
+                     </Text>
+                     <ImageView fx:id="moreIcon" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true"
+                                preserveRatio="true">
+                        <cursor>
+                           <Cursor fx:constant="HAND"/>
+                        </cursor>
+                        <Image url="@../../../styling/icons/more.png"/>
+                     </ImageView>
+
+                  </HBox>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CO, NO2, O3"
+                        wrappingWidth="144.756986618042">
+                     <font>
+                        <Font name="Poppins SemiBold" size="21.0"/>
+                     </font>
+                  </Text>
+               </VBox>
+            </HBox>
+         </VBox>
+      </HBox>
+   </HBox>
+   <HBox alignment="CENTER" fillHeight="false" prefHeight="147.0" prefWidth="930.0" spacing="22.0">
+      <VBox prefHeight="118.0" prefWidth="114.0" style="-fx-border-radius: 10%;" styleClass="current-temp">
+         <HBox.margin>
+            <Insets bottom="4.0" />
+         </HBox.margin>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 PM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="105.55703544616699">
+               <font>
+                  <Font name="Poppins Bold" size="36.0" />
+               </font>
+            </Text>
+         </HBox>
+         <HBox prefHeight="26.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Feels Like ">
+               <font>
+                  <Font name="Poppins Regular" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30 °C">
+               <font>
+                  <Font name="Poppins Regular" size="12.0" />
+               </font>
+            </Text>
+         </HBox>
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+      </VBox>
+      <VBox layoutX="62.0" layoutY="10.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 PM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="220.0" layoutY="10.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 PM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="327.0" layoutY="10.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 PM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="433.0" layoutY="10.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 AM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="540.0" layoutY="10.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 AM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="233.0" layoutY="32.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 AM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+      <VBox layoutX="796.0" layoutY="32.0" prefHeight="115.0" prefWidth="82.0">
+         <padding>
+            <Insets left="8.0" />
+         </padding>
+         <HBox prefHeight="38.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 AM" wrappingWidth="45.0">
+               <font>
+                  <Font name="Poppins Medium" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="9.0" />
+               </HBox.margin>
+            </Text>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+               <font>
+                  <Font name="Poppins Bold" size="26.0" />
+               </font>
+            </Text>
+         </HBox>
+      </VBox>
+   </HBox>
+</VBox>
