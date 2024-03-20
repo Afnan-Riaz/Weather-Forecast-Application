@@ -53,12 +53,7 @@ public class AppController {
     public Text b7_temp;
     public Text tBox8;
     public Text b8_temp;
-    @FXML
-
-    private Label welcomeText;
-
-    private Label label;
-
+    public VBox bgImage;
     @FXML
 
     public void initialize() {
