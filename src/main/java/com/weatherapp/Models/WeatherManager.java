@@ -36,6 +36,7 @@ public class WeatherManager {
             double lon = currentWeatherData.get("coord").get("lon").asDouble();
             long sunrise = currentWeatherData.get("sys").get("sunrise").asLong() * 1000;
             long sunset = currentWeatherData.get("sys").get("sunset").asLong() * 1000;
+            String icon = currentWeatherData.get("weather").get(0).get("icon").asText();
 
             JsonNode forecastData = readJsonFromUrl("http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey+"&units=metric");
             JsonNode forecastList = forecastData.get("list");
@@ -58,6 +59,7 @@ public class WeatherManager {
                 double windSpeed = forecast.get("wind").get("speed").asDouble();
                 String description = forecast.get("weather").get(0).get("description").asText();
 
+
                 JsonNode matchingAirPollutionData = null;
                 for (JsonNode pollution : airPollutionList) {
                     if (pollution.get("dt").asLong() == forecast.get("dt").asLong()) {
@@ -77,7 +79,8 @@ public class WeatherManager {
                     double particulateMatterPM10 = matchingAirPollutionData.get("components").get("pm10").asDouble();
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
                     forecasts.add(new WeatherForecast(day, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia, particulateMatterPM25, particulateMatterPM10,sunrise,sunset));
+                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10,sunrise,sunset,icon));
                 }
             }
         } catch (IOException e) {
@@ -122,5 +125,5 @@ public class WeatherManager {
                                   int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex,
                                   double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide,
                                   double ozone, double sulphurDioxide, double ammonia,
-                                  double particulateMatterPM25, double particulateMatterPM10,long sunrise, long sunset) {}
+                                  double particulateMatterPM25, double particulateMatterPM10,long sunrise, long sunset,String icon) {}
 }

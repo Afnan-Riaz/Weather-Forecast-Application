@@ -1,17 +1,19 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.Models.ImageHandler;
 import com.weatherapp.Models.WeatherManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class AppController {
     public Text description;
@@ -26,17 +28,7 @@ public class AppController {
     public Text quality;
     public WeatherManager.WeatherForecast forecast;
     public ImageView moreIcon;
-    @FXML
-<<<<<<< Updated upstream
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-}
-=======
-    private Label label;
+    public VBox bgImage;
 
     @FXML
     public void initialize() {
@@ -54,6 +46,12 @@ public class AppController {
         day.setText(forecast.day());
         pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
         quality.setText(getAQIDescription(forecast.airQualityIndex()));
+        String icon = forecast.icon();
+        String imageName = ImageHandler.getImage(icon);
+        String baseImagePath = "/styling/";
+        String imageUrl = Objects.requireNonNull(getClass().getResource(baseImagePath + imageName)).toExternalForm();
+        bgImage.setStyle("-fx-background-image: url('" + imageUrl + "');" +
+                "-fx-background-size: cover; ");
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
         }
         //}
@@ -107,4 +105,4 @@ public class AppController {
         }}
 
 }
->>>>>>> Stashed changes
+
