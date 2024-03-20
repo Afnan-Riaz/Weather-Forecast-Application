@@ -43,6 +43,13 @@ public class AppController {
     public Text b7_temp;
     public Text tBox8;
     public Text b8_temp;
+    @FXML
+
+    private Label welcomeText;
+
+    private Label label;
+
+    @FXML
 
     public void initialize() {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
