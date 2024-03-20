@@ -31,17 +31,17 @@ public class WeatherManager {
         Calendar c = Calendar.getInstance();
 
         try {
-            JsonNode currentWeatherData = readJsonFromUrl("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=metric");
+            JsonNode currentWeatherData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=metric");
             double lat = currentWeatherData.get("coord").get("lat").asDouble();
             double lon = currentWeatherData.get("coord").get("lon").asDouble();
             long sunrise = currentWeatherData.get("sys").get("sunrise").asLong() * 1000;
             long sunset = currentWeatherData.get("sys").get("sunset").asLong() * 1000;
             String icon = currentWeatherData.get("weather").get(0).get("icon").asText();
 
-            JsonNode forecastData = readJsonFromUrl("http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey+"&units=metric");
+            JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey+"&units=metric");
             JsonNode forecastList = forecastData.get("list");
 
-            JsonNode airPollutionData = readJsonFromUrl("http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey);
+            JsonNode airPollutionData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey);
             JsonNode airPollutionList = airPollutionData.get("list");
 
             for (int i = 0; i < forecastList.size(); i++) {

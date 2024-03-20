@@ -24,12 +24,12 @@
                <ImageView fitHeight="53.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                   <Image url="@../../../styling/icons/fog.png" />
                </ImageView>
-               <Text fx:id="description" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Fog" wrappingWidth="-1">
+               <Text fx:id="description" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Fog" wrappingWidth="-1">
                   <font>
                      <Font name="Raleway SemiBold" size="29.0" />
                   </font>
                </Text>
-               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="city" text="Johar Town" wrappingWidth="93.58399963378906">
+               <Text fx:id="city" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Johar Town" wrappingWidth="93.58399963378906">
                   <VBox.margin>
                      <Insets top="3.0" />
                   </VBox.margin>
@@ -37,26 +37,25 @@
                      <Font name="Poppins Medium" size="16.0" />
                   </font>
                </Text>
-               <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="17.0" prefWidth="139.0">
+               <HBox fx:id="locationBtn" alignment="CENTER_LEFT" fillHeight="false" onMouseClicked="#openLocationView" prefHeight="17.0" prefWidth="139.0">
                   <VBox.margin>
-                     <Insets top="5.0"/>
+                     <Insets top="5.0" />
                   </VBox.margin>
                   <cursor>
-                     <Cursor fx:constant="HAND"/>
+                     <Cursor fx:constant="HAND" />
                   </cursor>
                   <ImageView fitHeight="21.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/pin.png"/>
+                     <Image url="@../../../styling/icons/pin.png" />
                      <HBox.margin>
-                        <Insets/>
+                        <Insets />
                      </HBox.margin>
                   </ImageView>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Location"
-                        wrappingWidth="122.4320068359375">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Location" wrappingWidth="122.4320068359375">
                      <font>
-                        <Font name="Poppins Regular" size="14.0"/>
+                        <Font name="Poppins Regular" size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets/>
+                        <Insets />
                      </HBox.margin>
                   </Text>
                </HBox>
@@ -64,7 +63,7 @@
          </HBox>
          <HBox prefHeight="34.0" prefWidth="139.0">
             <VBox prefHeight="131.0" prefWidth="139.0">
-               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="temp" text="28 °C" wrappingWidth="105.55703544616699">
+               <Text fx:id="temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="105.55703544616699">
                   <font>
                      <Font name="Poppins Bold" size="36.0" />
                   </font>
@@ -72,45 +71,42 @@
             </VBox>
          </HBox>
          <HBox prefHeight="25.0" prefWidth="139.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Sunrise: "
-                  wrappingWidth="62.431968688964844">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Sunrise: " wrappingWidth="62.431968688964844">
                <font>
-                  <Font name="Poppins SemiBold" size="14.0"/>
+                  <Font name="Poppins SemiBold" size="14.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" fx:id="sunrise" strokeWidth="0.0" text="6:54 AM"
-                  wrappingWidth="75.23199462890625">
+            <Text fx:id="sunrise" fill="WHITE" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6:54 AM" wrappingWidth="75.23199462890625">
                <font>
-                  <Font name="Poppins Regular" size="14.0"/>
+                  <Font name="Poppins Regular" size="14.0" />
                </font>
             </Text>
          </HBox>
          <HBox layoutX="10.0" layoutY="211.0" prefHeight="22.0" prefWidth="138.0">
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Sunset: " wrappingWidth="59.23198699951172">
                <font>
-                  <Font name="Poppins SemiBold" size="14.0"/>
+                  <Font name="Poppins SemiBold" size="14.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="10.0" layoutY="25.0" fx:id="sunset" strokeType="OUTSIDE" strokeWidth="0.0" text="5:49 PM"
-                  wrappingWidth="75.23199462890625">
+            <Text fx:id="sunset" fill="WHITE" layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5:49 PM" wrappingWidth="75.23199462890625">
                <font>
-                  <Font name="Poppins Regular" size="14.0"/>
+                  <Font name="Poppins Regular" size="14.0" />
                </font>
             </Text>
          </HBox>
          <HBox prefHeight="24.0" prefWidth="138.0">
             <cursor>
-               <Cursor fx:constant="HAND"/>
+               <Cursor fx:constant="HAND" />
             </cursor>
             <VBox.margin>
-               <Insets top="30.0"/>
+               <Insets top="30.0" />
             </VBox.margin>
             <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-               <Image url="@../../../styling/icons/cheveron.png"/>
+               <Image url="@../../../styling/icons/cheveron.png" />
             </ImageView>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="day" text="Thursday">
+            <Text fx:id="day" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday">
                <font>
-                  <Font name="Poppins Medium" size="14.0"/>
+                  <Font name="Poppins Medium" size="14.0" />
                </font>
             </Text>
          </HBox>
@@ -119,129 +115,118 @@
          <VBox prefHeight="382.0" prefWidth="212.0">
             <HBox alignment="TOP_RIGHT" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
-                  <Insets/>
+                  <Insets />
                </VBox.margin>
                <VBox prefHeight="57.0" prefWidth="43.0">
                   <ImageView fitHeight="31.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/humidity.png"/>
+                     <Image url="@../../../styling/icons/humidity.png" />
                   </ImageView>
                </VBox>
                <VBox prefHeight="79.0" prefWidth="149.0">
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Humidity"
-                        wrappingWidth="93.58399963378906">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Humidity" wrappingWidth="93.58399963378906">
                      <font>
-                        <Font name="Poppins Regular" size="14.0"/>
+                        <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="humidity" text="70 %"
-                        wrappingWidth="105.55703544616699">
+                  <Text fx:id="humidity" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="70 %" wrappingWidth="105.55703544616699">
                      <font>
-                        <Font name="Poppins SemiBold" size="26.0"/>
+                        <Font name="Poppins SemiBold" size="26.0" />
                      </font>
                   </Text>
                </VBox>
             </HBox>
             <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
-                  <Insets top="7.0"/>
+                  <Insets top="7.0" />
                </VBox.margin>
                <VBox prefHeight="57.0" prefWidth="43.0">
                   <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/wind.png"/>
+                     <Image url="@../../../styling/icons/wind.png" />
                   </ImageView>
                </VBox>
                <VBox prefHeight="79.0" prefWidth="149.0">
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Speed"
-                        wrappingWidth="93.58399963378906">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Air Speed" wrappingWidth="93.58399963378906">
                      <font>
-                        <Font name="Poppins Regular" size="14.0"/>
+                        <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="windspeed" text="1.97 m/s"
-                        wrappingWidth="117.55703544616699">
+                  <Text fx:id="windspeed" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1.97 m/s" wrappingWidth="117.55703544616699">
                      <font>
-                        <Font name="Poppins SemiBold" size="24.0"/>
+                        <Font name="Poppins SemiBold" size="24.0" />
                      </font>
                   </Text>
                </VBox>
             </HBox>
             <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="67.0" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
-                  <Insets top="7.0"/>
+                  <Insets top="7.0" />
                </VBox.margin>
                <VBox prefHeight="57.0" prefWidth="43.0">
                   <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/pressure.png"/>
+                     <Image url="@../../../styling/icons/pressure.png" />
                   </ImageView>
                </VBox>
                <VBox prefHeight="79.0" prefWidth="149.0">
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Pressure"
-                        wrappingWidth="93.58399963378906">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Air Pressure" wrappingWidth="93.58399963378906">
                      <font>
-                        <Font name="Poppins Regular" size="14.0"/>
+                        <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="pressure" text="1015 hPa"
-                        wrappingWidth="115.95705986022949">
+                  <Text fx:id="pressure" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1015 hPa" wrappingWidth="115.95705986022949">
                      <font>
-                        <Font name="Poppins SemiBold" size="26.0"/>
+                        <Font name="Poppins SemiBold" size="26.0" />
                      </font>
                   </Text>
                </VBox>
             </HBox>
             <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="124.0" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
-                  <Insets top="7.0"/>
+                  <Insets top="7.0" />
                </VBox.margin>
                <VBox prefHeight="57.0" prefWidth="43.0">
                   <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/quality.png"/>
+                     <Image url="@../../../styling/icons/quality.png" />
                   </ImageView>
                </VBox>
                <VBox prefHeight="79.0" prefWidth="149.0">
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Air Quality"
-                        wrappingWidth="93.58399963378906">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Air Quality" wrappingWidth="93.58399963378906">
                      <font>
-                        <Font name="Poppins Regular" size="14.0"/>
+                        <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" fx:id="quality" text="79 AQI"
-                        wrappingWidth="116.75698661804199">
+                  <Text fx:id="quality" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="79 AQI" wrappingWidth="116.75698661804199">
                      <font>
-                        <Font name="Poppins SemiBold" size="26.0"/>
+                        <Font name="Poppins SemiBold" size="26.0" />
                      </font>
                   </Text>
                </VBox>
             </HBox>
             <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="203.0" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
-                  <Insets top="7.0"/>
+                  <Insets top="7.0" />
                </VBox.margin>
                <VBox prefHeight="57.0" prefWidth="43.0">
                   <ImageView fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@../../../styling/icons/pollutant.png"/>
+                     <Image url="@../../../styling/icons/pollutant.png" />
                   </ImageView>
                </VBox>
                <VBox prefHeight="79.0" prefWidth="149.0">
                   <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="146.0">
-                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Primary Pollutants"
-                           wrappingWidth="132.0">
+                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Primary Pollutants" wrappingWidth="132.0">
                         <font>
-                           <Font name="Poppins Regular" size="14.0"/>
+                           <Font name="Poppins Regular" size="14.0" />
                         </font>
                      </Text>
-                     <ImageView fx:id="moreIcon" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true"
-                                preserveRatio="true">
+                     <ImageView fx:id="moreIcon" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                         <cursor>
-                           <Cursor fx:constant="HAND"/>
+                           <Cursor fx:constant="HAND" />
                         </cursor>
-                        <Image url="@../../../styling/icons/more.png"/>
+                        <Image url="@../../../styling/icons/more.png" />
                      </ImageView>
                   </HBox>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CO, NO2, O3"
-                        wrappingWidth="144.756986618042">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CO, NO2, O3" wrappingWidth="144.756986618042">
                      <font>
-                        <Font name="Poppins SemiBold" size="21.0"/>
+                        <Font name="Poppins SemiBold" size="21.0" />
                      </font>
                   </Text>
                </VBox>

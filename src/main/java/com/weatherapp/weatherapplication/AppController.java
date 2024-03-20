@@ -3,13 +3,21 @@ package com.weatherapp.weatherapplication;
 import com.weatherapp.Models.ImageHandler;
 import com.weatherapp.Models.WeatherManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +37,7 @@ public class AppController {
     public WeatherManager.WeatherForecast forecast;
     public ImageView moreIcon;
     public VBox bgImage;
-
+    public HBox locationBtn;
     @FXML
     public void initialize() {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
@@ -55,7 +63,19 @@ public class AppController {
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
         }
         //}
+        public void openLocationView(MouseEvent event) throws IOException {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
+            LocationController controller = fxmlLoader.getController();
+            // Call any methods on controller if needed
 
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 300, 400);
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
+            scene.setFill(Color.TRANSPARENT);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.show();
+        }
     private void showPollutantInfo(MouseEvent event) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Pollutant Information");
@@ -63,7 +83,6 @@ public class AppController {
 
         TextArea textArea = new TextArea();
         textArea.setEditable(false);
-
 
         textArea.setText(
                 "CO: " + forecast.carbonMonoxide() + "%\n" +
@@ -89,20 +108,14 @@ public class AppController {
         return sdf.format(date);
     }
     private String getAQIDescription(int aqi) {
-        switch (aqi) {
-            case 1:
-                return "Good";
-            case 2:
-                return "Fair";
-            case 3:
-                return "Moderate";
-            case 4:
-                return "Poor";
-            case 5:
-                return "Very Poor";
-            default:
-                return "Unknown";
-        }}
+        return switch (aqi) {
+            case 1 -> "Good";
+            case 2 -> "Fair";
+            case 3 -> "Moderate";
+            case 4 -> "Poor";
+            case 5 -> "Very Poor";
+            default -> "Unknown";
+        };
+    }
 
 }
-

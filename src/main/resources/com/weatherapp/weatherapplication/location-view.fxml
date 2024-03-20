@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="300.0" stylesheets="@../../../styling/style.css" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.weatherapp.weatherapplication.LocationController">
+   <VBox prefHeight="400.0" prefWidth="300.0">
+      <HBox prefHeight="28.0" prefWidth="300.0">
+         <VBox.margin>
+            <Insets bottom="16.0" left="19.0" right="19.0" top="16.0"/>
+         </VBox.margin>
+         <TextField fx:id="locationField" prefHeight="26.0" prefWidth="234.0" promptText="Enter Location">
+            <cursor>
+               <Cursor fx:constant="TEXT"/>
+            </cursor>
+         </TextField>
+         <ImageView fitHeight="27.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+               <Cursor fx:constant="HAND"/>
+            </cursor>
+            <Image url="@../../../styling/icons/search.png"/>
+         </ImageView>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="33.0" prefWidth="300.0">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lahore" wrappingWidth="202.78306770324707">
+            <font>
+               <Font name="Raleway Medium" size="20.0"/>
+            </font>
+            <cursor>
+               <Cursor fx:constant="HAND"/>
+            </cursor>
+         </Text>
+         <ImageView fitHeight="26.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+               <Cursor fx:constant="HAND"/>
+            </cursor>
+            <Image url="@../../../styling/icons/delete.png"/>
+         </ImageView>
+      </HBox>
+   </VBox>
+</AnchorPane>

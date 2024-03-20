@@ -1,3 +1,6 @@
+.location-view {
+    -fx-border-radius: 10px;
+}
 .homescreen {
     -fx-background-image: url('images/rain-bg1.jpg');
     -fx-background-size: cover;
