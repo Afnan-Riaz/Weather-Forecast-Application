@@ -255,7 +255,7 @@
             <Insets bottom="4.0" />
          </HBox.margin>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 PM" wrappingWidth="45.0">
+            <Text fx:id="tBox1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 PM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -264,8 +264,8 @@
                </HBox.margin>
             </Text>
          </HBox>
-         <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="105.55703544616699">
+         <HBox  alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
+            <Text fx:id="b1_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="105.55703544616699">
                <font>
                   <Font name="Poppins Bold" size="36.0" />
                </font>
@@ -277,7 +277,7 @@
                   <Font name="Poppins Regular" size="12.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30 °C">
+            <Text fx:id="b1_feel" fill="WHITE" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30 °C">
                <font>
                   <Font name="Poppins Regular" size="12.0" />
                </font>
@@ -292,7 +292,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 PM" wrappingWidth="45.0">
+            <Text fx:id="tBox2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 PM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -302,7 +302,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b2_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -314,7 +314,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 PM" wrappingWidth="45.0">
+            <Text fx:id="tBox3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 PM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -324,7 +324,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b3_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -336,7 +336,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 PM" wrappingWidth="45.0">
+            <Text fx:id="tbox4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 PM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -346,7 +346,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b4_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -358,7 +358,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 AM" wrappingWidth="45.0">
+            <Text fx:id="tBox5" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1 AM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -368,7 +368,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b5_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -380,7 +380,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 AM" wrappingWidth="45.0">
+            <Text fx:id="tBox6" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4 AM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -390,7 +390,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b6_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -402,7 +402,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 AM" wrappingWidth="45.0">
+            <Text fx:id="tBox7" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7 AM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -412,7 +412,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b7_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
@@ -424,7 +424,7 @@
             <Insets left="8.0" />
          </padding>
          <HBox prefHeight="38.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 AM" wrappingWidth="45.0">
+            <Text fx:id="tBox8" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10 AM" wrappingWidth="45.0">
                <font>
                   <Font name="Poppins Medium" size="13.0" />
                </font>
@@ -434,7 +434,7 @@
             </Text>
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="106.0">
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
+            <Text fx:id="b8_temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="74.0">
                <font>
                   <Font name="Poppins Bold" size="26.0" />
                </font>
