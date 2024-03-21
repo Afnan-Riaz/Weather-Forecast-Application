@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class AppController {
     public Text description;
@@ -63,17 +64,10 @@ public class AppController {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
         List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
         forecast = forecasts.getFirst();
-//        for (WeatherManager.WeatherForecast forecast : forecasts) {
-        city.setText("Lahore");
-        description.setText(forecast.description());
-        humidity.setText(String.valueOf(forecast.humidity()+" %"));
-        windspeed.setText(String.valueOf(forecast.windSpeed()+" m/s"));
-        temp.setText(String.valueOf(forecast.temperature()) + " °C");
-        sunrise.setText(formatTime(forecast.sunrise()));
-        sunset.setText(formatTime(forecast.sunset()));
-        day.setText(forecast.day());
-        pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
-        quality.setText(getAQIDescription(forecast.airQualityIndex()));
+
+        setOtherAttributes(forecast, "Lahore");
+        setTempBoxes(forecasts, 0);
+
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
         String baseImagePath = "/styling/";
@@ -82,75 +76,56 @@ public class AppController {
                 "-fx-background-size: cover; ");
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
 
-        tBox1.setText(forecasts.get(0).time());
-        b1_temp.setText(String.valueOf(forecasts.get(0).temperature() + " °C"));
-        b1_feel.setText(forecasts.get(0).feelsLike() + " °C");
 
-        tBox2.setText(forecasts.get(1).time());
-        b2_temp.setText(String.valueOf(forecasts.get(1).temperature() + " °C"));
-        tBox3.setText(forecasts.get(2).time());
-        b3_temp.setText(String.valueOf(forecasts.get(2).temperature() + " °C"));
-        tbox4.setText(forecasts.get(3).time());
-        b4_temp.setText(String.valueOf(forecasts.get(3).temperature() + " °C"));
-        tBox5.setText(forecasts.get(4).time());
-        b5_temp.setText(String.valueOf(forecasts.get(4).temperature() + " °C"));
-        tBox6.setText(forecasts.get(5).time());
-        b6_temp.setText(String.valueOf(forecasts.get(5).temperature() + " °C"));
-        tBox7.setText(forecasts.get(6).time());
-        b7_temp.setText(String.valueOf(forecasts.get(6).temperature() + " °C"));
-        tBox8.setText(forecasts.get(7).time());
-        b8_temp.setText(String.valueOf(forecasts.get(7).temperature() + " °C"));
+    }
 
-
-        }
-        //}
+    private void setTempBoxes(List<WeatherManager.WeatherForecast> forecasts, int startingIndex){
+        tBox1.setText(convertTo12HourFormat(forecasts.get(startingIndex).time()));
+        b1_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        b1_feel.setText(forecasts.get(startingIndex).feelsLike() + " °C");
+        tBox2.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b2_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tBox3.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b3_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tbox4.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b4_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tBox5.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b5_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tBox6.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b6_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tBox7.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b7_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+        tBox8.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
+        b8_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+    }
+    private void setOtherAttributes(WeatherManager.WeatherForecast forecast, String current_city){
+        city.setText(current_city);
+        description.setText(forecast.description());
+        humidity.setText(String.valueOf(forecast.humidity() + " %"));
+        windspeed.setText(String.valueOf(forecast.windSpeed() + " m/s"));
+        temp.setText(String.valueOf(forecast.temperature()) + " °C");
+        sunrise.setText(formatTime(forecast.sunrise()));
+        sunset.setText(formatTime(forecast.sunset()));
+        day.setText(forecast.day());
+        pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
+        quality.setText(getAQIDescription(forecast.airQualityIndex()));
+    }
         private void changeBoxes(List<WeatherManager.WeatherForecast> forecasts, String day) {
             int index = 0;
-
             for (int i = 0; i < forecasts.size(); i++) {
                 if (Objects.equals(day, forecasts.get(i).day())) {
                     index = i;
                     break;
                 }
-                ;
             }
-
-            forecast = forecasts.get(index);
-            city.setText("Lahore");
-            description.setText(forecast.description());
-            humidity.setText(String.valueOf(forecast.humidity() + " %"));
-            windspeed.setText(String.valueOf(forecast.windSpeed() + " m/s"));
-            temp.setText(String.valueOf(forecast.temperature()) + " °C");
-            sunrise.setText(formatTime(forecast.sunrise()));
-            sunset.setText(formatTime(forecast.sunset()));
-            pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
-            quality.setText(getAQIDescription(forecast.airQualityIndex()));
-
-            tBox1.setText(forecasts.get(index).time());
-            b1_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            b1_feel.setText(forecasts.get(index).feelsLike() + " °C");
-
-            tBox2.setText(forecasts.get(++index).time());
-            b2_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-
-            tBox3.setText(forecasts.get(++index).time());
-            b3_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            tbox4.setText(forecasts.get(++index).time());
-            b4_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            tBox5.setText(forecasts.get(++index).time());
-            b5_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            tBox6.setText(forecasts.get(++index).time());
-            b6_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            tBox7.setText(forecasts.get(++index).time());
-            b7_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
-            tBox8.setText(forecasts.get(++index).time());
-            b8_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            WeatherManager.WeatherForecast forecast = forecasts.get(index);
+            setOtherAttributes(forecast, "Lahore");
+            setTempBoxes(forecasts, index);
         }
         public void changeDay(MouseEvent mouseEvent) {
             WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
             List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
             ArrayList<String> Days = new ArrayList<String>(7);
-//            Days.set(0, "Monday");
             Days.add("Monday");
             Days.add("Tuesday");
             Days.add("Wednesday");
@@ -192,7 +167,31 @@ public class AppController {
             }
 
         }
-        public void openLocationView(MouseEvent event) throws IOException {
+
+    public String convertTo12HourFormat(String time24Hour) {
+        // Split the input time string into hours and minutes
+        String[] parts = time24Hour.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+
+        // Determine whether it's am or pm
+        String period = (hours >= 12) ? "pm" : "am";
+
+        // Convert hours to 12-hour format
+        if (hours > 12) {
+            hours -= 12;
+        } else if (hours == 0) {
+            hours = 12; // 0 hour in 24-hour format is 12 am in 12-hour format
+        }
+
+        // Construct the string in 12-hour format
+        String time12Hour = String.format("%d:%02d %s", hours, minutes, period);
+
+        return time12Hour;
+    }
+
+
+    public void openLocationView(MouseEvent event) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
             LocationController controller = fxmlLoader.getController();
             // Call any methods on controller if needed
@@ -233,8 +232,9 @@ public class AppController {
 
 
     private String formatTime(long timeInSeconds) {
-        Date date = new Date(timeInSeconds * 1000);
+        Date date = new Date(timeInSeconds);
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karachi"));
         return sdf.format(date);
     }
     private String getAQIDescription(int aqi) {
