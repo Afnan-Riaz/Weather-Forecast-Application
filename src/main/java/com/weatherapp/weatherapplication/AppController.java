@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -22,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class AppController {
     public Text description;
@@ -54,17 +54,20 @@ public class AppController {
     public Text tBox8;
     public Text b8_temp;
     public VBox bgImage;
+    public ImageView prevDay;
+    public ImageView nextDay;
+    public static int lock = 0;
     @FXML
 
     public void initialize() {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
         List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
-         forecast = forecasts.getFirst();
+        forecast = forecasts.getFirst();
 //        for (WeatherManager.WeatherForecast forecast : forecasts) {
-            city.setText("Lahore");
-            description.setText(forecast.description());
-            humidity.setText(String.valueOf(forecast.humidity()+" %"));
-            windspeed.setText(String.valueOf(forecast.windSpeed()+" m/s"));
+        city.setText("Lahore");
+        description.setText(forecast.description());
+        humidity.setText(String.valueOf(forecast.humidity()+" %"));
+        windspeed.setText(String.valueOf(forecast.windSpeed()+" m/s"));
         temp.setText(String.valueOf(forecast.temperature()) + " °C");
         sunrise.setText(formatTime(forecast.sunrise()));
         sunset.setText(formatTime(forecast.sunset()));
@@ -101,6 +104,94 @@ public class AppController {
 
         }
         //}
+        private void changeBoxes(List<WeatherManager.WeatherForecast> forecasts, String day) {
+            int index = 0;
+
+            for (int i = 0; i < forecasts.size(); i++) {
+                if (Objects.equals(day, forecasts.get(i).day())) {
+                    index = i;
+                    break;
+                }
+                ;
+            }
+
+            forecast = forecasts.get(index);
+            city.setText("Lahore");
+            description.setText(forecast.description());
+            humidity.setText(String.valueOf(forecast.humidity() + " %"));
+            windspeed.setText(String.valueOf(forecast.windSpeed() + " m/s"));
+            temp.setText(String.valueOf(forecast.temperature()) + " °C");
+            sunrise.setText(formatTime(forecast.sunrise()));
+            sunset.setText(formatTime(forecast.sunset()));
+            pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
+            quality.setText(getAQIDescription(forecast.airQualityIndex()));
+
+            tBox1.setText(forecasts.get(index).time());
+            b1_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            b1_feel.setText(forecasts.get(index).feelsLike() + " °C");
+
+            tBox2.setText(forecasts.get(++index).time());
+            b2_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+
+            tBox3.setText(forecasts.get(++index).time());
+            b3_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            tbox4.setText(forecasts.get(++index).time());
+            b4_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            tBox5.setText(forecasts.get(++index).time());
+            b5_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            tBox6.setText(forecasts.get(++index).time());
+            b6_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            tBox7.setText(forecasts.get(++index).time());
+            b7_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+            tBox8.setText(forecasts.get(++index).time());
+            b8_temp.setText(String.valueOf(forecasts.get(index).temperature() + " °C"));
+        }
+        public void changeDay(MouseEvent mouseEvent) {
+            WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
+            List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+            ArrayList<String> Days = new ArrayList<String>(7);
+//            Days.set(0, "Monday");
+            Days.add("Monday");
+            Days.add("Tuesday");
+            Days.add("Wednesday");
+            Days.add("Thursday");
+            Days.add("Friday");
+            Days.add("Saturday");
+            Days.add("Sunday");
+            forecast = forecasts.getFirst();
+            String current_day = day.getText();
+            Node source = (Node) mouseEvent.getSource();
+            String id = source.getId();
+
+            if (Objects.equals(id, "nextDay")) {
+                int currentIndex = 1;
+                if (Days.contains(current_day)) {
+                    if (lock < 3) {
+                        currentIndex = Days.indexOf(current_day);
+                        currentIndex++;
+                        currentIndex %= 7;
+                        lock++;
+                        day.setText(Days.get(currentIndex));
+                        changeBoxes(forecasts, Days.get(currentIndex));
+                    }
+                }
+            }
+            else if (Objects.equals(id, "prevDay")){
+                int currentIndex = 1;
+                if (Days.contains(current_day)) {
+                    if (lock > 0) {
+                        currentIndex = Days.indexOf(current_day);
+                        currentIndex--;
+                        if (currentIndex == -1)
+                            currentIndex = 6;
+                        lock--;
+                        day.setText(Days.get(currentIndex));
+                        changeBoxes(forecasts, Days.get(currentIndex));
+                    }
+                }
+            }
+
+        }
         public void openLocationView(MouseEvent event) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
             LocationController controller = fxmlLoader.getController();
@@ -156,6 +247,5 @@ public class AppController {
             default -> "Unknown";
         };
     }
-
 }
 

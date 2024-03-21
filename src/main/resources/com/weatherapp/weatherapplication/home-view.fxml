@@ -101,7 +101,7 @@
             <VBox.margin>
                <Insets top="30.0" />
             </VBox.margin>
-            <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+            <ImageView fx:id="prevDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                <Image url="@../../../styling/icons/cheveron.png" />
             </ImageView>
             <Text fx:id="day" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday">
@@ -109,6 +109,9 @@
                   <Font name="Poppins Medium" size="14.0" />
                </font>
             </Text>
+            <ImageView fx:id="nextDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../styling/icons/cheveron.png" />
+            </ImageView>
          </HBox>
       </VBox>
       <HBox alignment="TOP_RIGHT" prefHeight="382.0" prefWidth="733.0">
