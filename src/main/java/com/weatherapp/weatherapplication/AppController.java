@@ -1,6 +1,8 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.Models.CurrentWeather;
 import com.weatherapp.Models.ImageHandler;
+import com.weatherapp.Models.WeatherForecast;
 import com.weatherapp.Models.WeatherManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +38,8 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
-    public WeatherManager.WeatherForecast forecast;
+    public WeatherForecast forecast;
+    public CurrentWeather current_weather;
     public ImageView moreIcon;
     public VBox bgImage;
     public ImageView prevDay;
@@ -48,10 +51,14 @@ public class AppController {
 
     public void initialize() {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        current_weather = weatherManager.current_weather;
+
         forecast = forecasts.getFirst();
         setTempBoxes(forecasts, 0, temperatureBoxes);
         setOtherAttributes(forecast, "Lahore");
+        sunrise.setText(formatTime(current_weather.sunrise()));
+        sunset.setText(formatTime(current_weather.sunset()));
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
         String baseImagePath = "/styling/";
@@ -61,7 +68,7 @@ public class AppController {
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
     }
 
-    private void setTempBoxes(List<WeatherManager.WeatherForecast> forecasts, int startingIndex, HBox parent){
+    private void setTempBoxes(List<WeatherForecast> forecasts, int startingIndex, HBox parent){
         parent.getChildren().clear();
         int boxCount = 0;
         for (int i = startingIndex; i < forecasts.size(); i++) {
@@ -85,19 +92,17 @@ public class AppController {
         }
 
     }
-    private void setOtherAttributes(WeatherManager.WeatherForecast forecast, String current_city){
+    private void setOtherAttributes(WeatherForecast forecast, String current_city){
         city.setText(current_city);
         description.setText(forecast.description());
         humidity.setText(String.valueOf(forecast.humidity() + " %"));
         windspeed.setText(String.valueOf(forecast.windSpeed() + " m/s"));
         temp.setText(String.valueOf(forecast.temperature()) + " °C");
-        sunrise.setText(formatTime(forecast.sunrise()));
-        sunset.setText(formatTime(forecast.sunset()));
         day.setText(forecast.day());
         pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
         quality.setText(getAQIDescription(forecast.airQualityIndex()));
     }
-        private void changeBoxes(List<WeatherManager.WeatherForecast> forecasts, String day) {
+        private void changeBoxes(List<WeatherForecast> forecasts, String day) {
             int index = 0;
             for (int i = 0; i < forecasts.size(); i++) {
                 if (Objects.equals(day, forecasts.get(i).day())) {
@@ -105,13 +110,13 @@ public class AppController {
                     break;
                 }
             }
-            WeatherManager.WeatherForecast forecast = forecasts.get(index);
+            WeatherForecast forecast = forecasts.get(index);
             setOtherAttributes(forecast, "Lahore");
             setTempBoxes(forecasts, index, temperatureBoxes);
         }
         public void changeDay(MouseEvent mouseEvent) {
             WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
-            List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+            List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
             ArrayList<String> Days = new ArrayList<String>(7);
             Days.add("Monday");
             Days.add("Tuesday");
@@ -155,7 +160,7 @@ public class AppController {
 
         }
 
-    private VBox createWeatherBox(WeatherManager.WeatherForecast forecast) {
+    private VBox createWeatherBox(WeatherForecast forecast) {
         VBox box = new VBox();
         box.getStyleClass().add("temp-box");
         Text timeText = new Text(convertTo12HourFormat(forecast.time()));
