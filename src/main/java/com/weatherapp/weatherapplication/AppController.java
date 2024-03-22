@@ -38,6 +38,8 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
+    public WeatherManager weatherManager;
+    public List<WeatherForecast> forecasts;
     public WeatherForecast forecast;
     public CurrentWeather current_weather;
     public ImageView moreIcon;
@@ -50,8 +52,8 @@ public class AppController {
     @FXML
 
     public void initialize() {
-        WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
+        forecasts = weatherManager.getWeatherForecast();
         current_weather = weatherManager.current_weather;
 
         forecast = forecasts.getFirst();
@@ -115,8 +117,6 @@ public class AppController {
             setTempBoxes(forecasts, index, temperatureBoxes);
         }
         public void changeDay(MouseEvent mouseEvent) {
-            WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
-            List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
             ArrayList<String> Days = new ArrayList<String>(7);
             Days.add("Monday");
             Days.add("Tuesday");
@@ -133,7 +133,7 @@ public class AppController {
             if (Objects.equals(id, "nextDay")) {
                 int currentIndex = 1;
                 if (Days.contains(current_day)) {
-                    if (lock < 3) {
+                    if (lock < 4) {
                         currentIndex = Days.indexOf(current_day);
                         currentIndex++;
                         currentIndex %= 7;
