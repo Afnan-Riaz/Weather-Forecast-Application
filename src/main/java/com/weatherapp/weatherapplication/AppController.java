@@ -10,6 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -37,37 +38,20 @@ public class AppController {
     public Text quality;
     public WeatherManager.WeatherForecast forecast;
     public ImageView moreIcon;
-    public Text tBox1;
-    public Text b1_temp;
-    public Text b1_feel;
-    public Text tBox2;
-    public Text b2_temp;
-    public Text tBox3;
-    public Text b3_temp;
-    public Text tbox4;
-    public Text b4_temp;
-    public Text tBox5;
-    public Text b5_temp;
-    public Text tBox6;
-    public Text b6_temp;
-    public Text tBox7;
-    public Text b7_temp;
-    public Text tBox8;
-    public Text b8_temp;
     public VBox bgImage;
     public ImageView prevDay;
     public ImageView nextDay;
     public static int lock = 0;
+    public HBox temperatureBoxes;
+
     @FXML
 
     public void initialize() {
         WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
         List<WeatherManager.WeatherForecast> forecasts = weatherManager.getWeatherForecast();
         forecast = forecasts.getFirst();
-
+        setTempBoxes(forecasts, 0, temperatureBoxes);
         setOtherAttributes(forecast, "Lahore");
-        setTempBoxes(forecasts, 0);
-
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
         String baseImagePath = "/styling/";
@@ -75,28 +59,31 @@ public class AppController {
         bgImage.setStyle("-fx-background-image: url('" + imageUrl + "');" +
                 "-fx-background-size: cover; ");
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
-
-
     }
 
-    private void setTempBoxes(List<WeatherManager.WeatherForecast> forecasts, int startingIndex){
-        tBox1.setText(convertTo12HourFormat(forecasts.get(startingIndex).time()));
-        b1_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        b1_feel.setText(forecasts.get(startingIndex).feelsLike() + " °C");
-        tBox2.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b2_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tBox3.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b3_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tbox4.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b4_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tBox5.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b5_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tBox6.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b6_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tBox7.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b7_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
-        tBox8.setText(convertTo12HourFormat(forecasts.get(++startingIndex).time()));
-        b8_temp.setText(String.valueOf(forecasts.get(startingIndex).temperature() + " °C"));
+    private void setTempBoxes(List<WeatherManager.WeatherForecast> forecasts, int startingIndex, HBox parent){
+        parent.getChildren().clear();
+        int boxCount = 0;
+        for (int i = startingIndex; i < forecasts.size(); i++) {
+            if (boxCount >= 8) {
+                break;
+            }
+            VBox box = createWeatherBox(forecasts.get(i));
+            if(i == 0){
+                box.getStyleClass().clear();
+                box.getStyleClass().add("current-temp");
+                HBox feelsLikeBox = new HBox();
+                Text feelsLikeLabel = new Text("Feels Like ");
+                feelsLikeLabel.getStyleClass().add("feels-like-label");
+                Text feelsLikeText = new Text(forecasts.get(i).feelsLike() + " °C");
+                feelsLikeText.getStyleClass().add("feels-like-text");
+                feelsLikeBox.getChildren().addAll(feelsLikeLabel, feelsLikeText);
+                box.getChildren().add(feelsLikeBox);
+            }
+            parent.getChildren().add(box);
+            boxCount++;
+        }
+
     }
     private void setOtherAttributes(WeatherManager.WeatherForecast forecast, String current_city){
         city.setText(current_city);
@@ -120,7 +107,7 @@ public class AppController {
             }
             WeatherManager.WeatherForecast forecast = forecasts.get(index);
             setOtherAttributes(forecast, "Lahore");
-            setTempBoxes(forecasts, index);
+            setTempBoxes(forecasts, index, temperatureBoxes);
         }
         public void changeDay(MouseEvent mouseEvent) {
             WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
@@ -168,6 +155,18 @@ public class AppController {
 
         }
 
+    private VBox createWeatherBox(WeatherManager.WeatherForecast forecast) {
+        VBox box = new VBox();
+        box.getStyleClass().add("temp-box");
+        Text timeText = new Text(convertTo12HourFormat(forecast.time()));
+        timeText.getStyleClass().add("time-text");
+
+        Text tempText = new Text(forecast.temperature() + " °C");
+        tempText.getStyleClass().add("temp-text");
+        box.getChildren().addAll(timeText, tempText);
+
+        return box;
+    }
     public String convertTo12HourFormat(String time24Hour) {
         // Split the input time string into hours and minutes
         String[] parts = time24Hour.split(":");

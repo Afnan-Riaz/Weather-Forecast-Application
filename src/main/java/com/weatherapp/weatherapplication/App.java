@@ -12,7 +12,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 530);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 550);
         Image icon=new Image("/favicon.png");
         stage.getIcons().add(icon);
         stage.setTitle("Weather Application");

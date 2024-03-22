@@ -5,10 +5,6 @@
     -fx-background-image: url('images/rain-bg1.jpg');
     -fx-background-size: cover;
 }
-.current-temp{
-    -fx-background-color: rgba(118, 118, 118, 0.5);
-    -fx-background-radius: 5px;
-}
 .scrollpane>.viewport{
     -fx-background-color: transparent;
 }
@@ -45,4 +41,49 @@
     -fx-background-color :derive(#373535,90.0%);
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
+}
+.current-temp {
+    -fx-pref-height: 118.0;
+    -fx-pref-width: 114.0;
+    -fx-padding: 8.0 8.0 8.0 8.0;
+    -fx-background-color: rgba(118, 118, 118, 0.5);
+    -fx-background-radius: 5px;
+
+}
+
+.current-temp .time-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Medium";
+    -fx-font-size: 14.0;
+    -fx-margin-top: 9.0;
+}
+
+.current-temp .temp-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Bold";
+    -fx-font-size: 36.0;
+}
+
+.feels-like-label,
+.feels-like-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Regular";
+    -fx-font-size: 13.0;
+}
+.temp-box{
+    -fx-pref-height: 90.0;
+    -fx-pref-width: 82.0;
+    -fx-padding: 8.0 0.0 0.0 8.0;
+}
+
+.temp-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Bold";
+    -fx-font-size: 26.0;
+}
+.time-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Medium";
+    -fx-font-size: 13.0;
+    -fx-margin-top: 9.0;
 }
