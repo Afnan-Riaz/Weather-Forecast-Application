@@ -42,10 +42,8 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
-    private WeatherManager weatherManager;
     private List<WeatherForecast> forecasts;
     private WeatherForecast forecast;
-    private CurrentWeather current_weather;
     public ImageView moreIcon;
     public VBox bgImage;
     public ImageView prevDay;
@@ -66,9 +64,9 @@ public class AppController {
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
     }
     public void getWeatherData(String city) {
-        WeatherManager weatherManager= new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
         forecasts = weatherManager.getWeatherForecast();
-        current_weather = weatherManager.current_weather;
+        CurrentWeather current_weather = weatherManager.current_weather;
 
         forecast = forecasts.getFirst();
         setTempBoxes(forecasts, 0, temperatureBoxes);

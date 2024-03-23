@@ -12,13 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ForecastsLoader {
-    public final String City;
     public final String ApiKey;
     public List<WeatherForecast> forecasts;
     public double lat;
     public double lon;
-    public ForecastsLoader(String city, String apiKey, double lat, double lon) {
-        this.City = city;
+    public ForecastsLoader(String apiKey, double lat, double lon) {
         this.ApiKey = apiKey;
         this.lat = lat;
         this.lon = lon;

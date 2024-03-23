@@ -1,11 +1,16 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.Models.GeoCoder;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,19 +26,40 @@ import java.util.stream.Collectors;
 
 public class LocationController {
 
-    AppController appController;
+    public TextField longitudeField;
+    public TextField latitudeField;
     public VBox locationList;
     @FXML
     public TextField locationField;
 
     private List<String> cityNames = new ArrayList<>();
+
     @FXML
     public void initialize() {
         try {
             parseCityDataInBackground();
+            addEventFilters();
+            formatText(latitudeField);
+            formatText(longitudeField);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void addEventFilters() {
+        locationField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                searchCity(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                        true, true, true, true, true, true, null));
+            }
+        });
+        longitudeField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                searchCoordinates(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0,
+                        0, 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                        true, true, true, true, true, true, null));
+            }
+        });
     }
     private void parseCityDataInBackground() {
         Task<List<String>> task = new Task<>() {
@@ -60,23 +86,53 @@ public class LocationController {
         CityDataParser parser = new CityDataParser();
         return parser.parseCityData();
     }
-    public void search(MouseEvent event) {
+
+    public void searchCity(MouseEvent event) {
         String location = locationField.getText();
-        if (isLocationValid(location)){
+        if (isLocationValid(location)) {
             createListItem(location);
         } else {
-            Notifications.create()
-                    .hideAfter(Duration.seconds(3))
-                    .position(Pos.CENTER)
-                    .owner(locationField.getScene().getWindow())
-                    .graphic(createNotificationContent("Location already exists or is invalid."))
-                    .show();
+            showNotification("Location already exists or is invalid.");
         }
     }
+    private void formatText(TextField textField) {
+        TextFormatter<String> formatter = new TextFormatter<>(change -> {
+            if (!change.getControlNewText().matches("\\d*(\\.\\d*)?")) {
+                return null;
+            } else {
+                return change;
+            }
+        });
+        textField.setTextFormatter(formatter);
+    }
+    public void searchCoordinates(MouseEvent event) {
+        String latitude = latitudeField.getText();
+        String longitude = longitudeField.getText();
+        if(latitude.isEmpty() || longitude.isEmpty()) {
+            showNotification("Please enter both latitude and longitude.");
+            return;
+        }
+        GeoCoder geoCoder = new GeoCoder("9804f15edc7893ea4947a7526edfc496", Double.parseDouble(latitude), Double.parseDouble(longitude));
+        String location = geoCoder.getCity();
+        if (!Objects.equals(location, "") && isLocationValid(location)) {
+            createListItem(location);
+        } else {
+            showNotification("Location already exists or is invalid.");
+        }
+    }
+
     private VBox createNotificationContent(String content) {
         VBox notificationContent = new VBox();
-        notificationContent.getChildren().add(  new Label(content));
+        notificationContent.getChildren().add(new Label(content));
         return notificationContent;
+    }
+    public void showNotification(String content) {
+        Notifications.create()
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.CENTER)
+                .owner(locationField.getScene().getWindow())
+                .graphic(createNotificationContent(content))
+                .show();
     }
     private void createListItem(String location) {
         HBox hbox = new HBox();
@@ -97,17 +153,16 @@ public class LocationController {
         imageView.setPickOnBounds(true);
         imageView.setOnMouseClicked(event -> {
             locationList.getChildren().remove(hbox);
+            event.consume();
         });
-        hbox.getChildren().addAll(text,imageView);
+        hbox.getChildren().addAll(text, imageView);
         locationList.getChildren().add(hbox);
     }
+
     private boolean isLocationValid(String location) {
-        return cityNames.contains(location)&&locationList.getChildren().stream().noneMatch(node -> ((Text)((HBox)node).getChildren().getFirst()).getText().equals(location));
+        return cityNames.contains(location) && locationList.getChildren().stream().noneMatch(node -> ((Text) ((HBox) node).getChildren().getFirst()).getText().equals(location));
     }
-//    private void passDataToMainController(String location) {
-//        appController.getWeatherData(location);
-//
-//    }
+
     private Collection<String> getSortedCityNames(String userInput) {
         String lowerCaseUserInput = userInput.toLowerCase();
         return cityNames.stream()
