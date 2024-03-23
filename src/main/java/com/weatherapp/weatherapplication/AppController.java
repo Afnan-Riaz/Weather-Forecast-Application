@@ -36,7 +36,7 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
-    public WeatherManager.WeatherForecast forecast;
+    private WeatherManager.WeatherForecast forecast;
     public ImageView moreIcon;
     public VBox bgImage;
     public ImageView prevDay;
@@ -193,20 +193,25 @@ public class AppController {
     public void openLocationView(MouseEvent event) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
             LocationController controller = fxmlLoader.getController();
-            // Call any methods on controller if needed
 
             Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 300, 400);
             stage.setScene(scene);
+
             stage.initStyle(StageStyle.UNDECORATED);
             scene.setFill(Color.TRANSPARENT);
             stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) {
+                    stage.hide();
+                }
+            });
             stage.show();
+
         }
     private void showPollutantInfo(MouseEvent event) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Pollutant Information");
-//
 //      dialog.setResultConverter(dialogButton -> null);
 
         TextArea textArea = new TextArea();
