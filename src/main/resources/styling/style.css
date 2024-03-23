@@ -2,25 +2,11 @@
     -fx-background-image: url('images/rain-bg1.jpg');
     -fx-background-size: cover;
 }
-.current-temp{
-    -fx-background-color: rgba(118, 118, 118, 0.5);
-    -fx-background-radius: 5px;
-}
 .scrollpane>.viewport{
     -fx-background-color: transparent;
 }
 .scrollpane{
     -fx-background-color: transparent;
-}
-.scroll-bar:horizontal .track-background{
-    -fx-background-color : rgba(0, 0, 0, 0.64);
-    -fx-border-color :transparent;
-}
-.scroll-bar:horizontal .track{
-    -fx-background-color :transparent;
-    -fx-border-color :transparent;
-    -fx-background-radius : 0.0em;
-    -fx-border-radius :2.0em;
 }
 .scroll-bar:horizontal .increment-button ,
 .scroll-bar:horizontal .decrement-button {
@@ -33,13 +19,75 @@
     -fx-shape : " ";
     -fx-padding :0.15em 0.0;
 }
-.scroll-bar:horizontal .thumb {
-    -fx-background-color :derive(#3f3d3d,90.0%);
-    -fx-background-insets : 2.0, 0.0, 0.0;
-    -fx-background-radius : 2.0em;
+.current-temp {
+    -fx-pref-height: 118.0;
+    -fx-pref-width: 114.0;
+    -fx-padding: 8.0 8.0 8.0 8.0;
+    -fx-background-color: rgba(118, 118, 118, 0.5);
+    -fx-background-radius: 5px;
+
 }
-.scroll-bar:horizontal .thumb:hover {
-    -fx-background-color :derive(#373535,90.0%);
-    -fx-background-insets : 2.0, 0.0, 0.0;
-    -fx-background-radius : 2.0em;
+
+.current-temp .time-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Medium";
+    -fx-font-size: 14.0;
+    -fx-margin-top: 9.0;
+}
+
+.current-temp .temp-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Bold";
+    -fx-font-size: 36.0;
+}
+
+.feels-like-label,
+.feels-like-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Regular";
+    -fx-font-size: 13.0;
+}
+.temp-box{
+    -fx-pref-height: 90.0;
+    -fx-pref-width: 82.0;
+    -fx-padding: 8.0 0.0 0.0 8.0;
+}
+
+.temp-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Bold";
+    -fx-font-size: 26.0;
+}
+.time-text {
+    -fx-fill: white;
+    -fx-font-family: "Poppins Medium";
+    -fx-font-size: 13.0;
+    -fx-margin-top: 9.0;
+}
+
+.location-item{
+    -fx-pref-height: 33;
+    -fx-pref-width: 300;
+    -fx-alignment: center;
+    /*-fx-background-color: #fff;*/
+    -fx-background-radius: 5px;
+    -fx-padding: 6 10 8 0;
+    -fx-border-insets: 0 10 0 0;
+    -fx-background-insets: 0 10 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 0);
+    -fx-background-color: linear-gradient(to bottom, #abcfff, #d1e5ff);
+}
+
+.location-text{
+    -fx-font: 16px "Raleway Medium";
+    -fx-cursor: hand;
+    -fx-wrap-text: true;
+}
+
+.delete-icon {
+    -fx-cursor: hand;
+    -fx-image: url('icons/delete.png');
+}
+.notification{
+    -fx-pref-width: 150;
 }
