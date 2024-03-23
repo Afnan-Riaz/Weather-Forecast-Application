@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.control.Notifications;
@@ -19,9 +21,10 @@ import java.util.stream.Collectors;
 
 public class LocationController {
 
+    AppController appController;
     public VBox locationList;
     @FXML
-    private TextField locationField;
+    public TextField locationField;
 
     private List<String> cityNames = new ArrayList<>();
     @FXML
@@ -78,7 +81,11 @@ public class LocationController {
     private void createListItem(String location) {
         HBox hbox = new HBox();
         hbox.getStyleClass().add("location-item");
-
+        hbox.setOnMouseClicked(event -> {
+            Stage stage = (Stage) hbox.getScene().getWindow();
+            locationField.setText(((Text) hbox.getChildren().getFirst()).getText());
+            stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        });
         Text text = new Text(location);
         text.getStyleClass().add("location-text");
         text.setWrappingWidth(210);
@@ -97,6 +104,10 @@ public class LocationController {
     private boolean isLocationValid(String location) {
         return cityNames.contains(location)&&locationList.getChildren().stream().noneMatch(node -> ((Text)((HBox)node).getChildren().getFirst()).getText().equals(location));
     }
+//    private void passDataToMainController(String location) {
+//        appController.getWeatherData(location);
+//
+//    }
     private Collection<String> getSortedCityNames(String userInput) {
         String lowerCaseUserInput = userInput.toLowerCase();
         return cityNames.stream()

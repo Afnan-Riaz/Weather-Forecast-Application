@@ -95,13 +95,13 @@
             </Text>
          </HBox>
          <HBox prefHeight="24.0" prefWidth="138.0">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
             <VBox.margin>
                <Insets top="30.0" />
             </VBox.margin>
             <ImageView fx:id="prevDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                <Image url="@../../../styling/icons/cheveron.png" />
             </ImageView>
             <Text fx:id="day" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday">
@@ -110,6 +110,9 @@
                </font>
             </Text>
             <ImageView fx:id="nextDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                <Image url="@../../../styling/icons/cheveron.png" />
             </ImageView>
          </HBox>
