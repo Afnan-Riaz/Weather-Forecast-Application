@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,8 @@ public class CurrentWeatherLoader {
     public CurrentWeather weather;
     public double lat;
     public double lon;
+
+
     public CurrentWeatherLoader(String city, String apiKey) {
         this.City = city;
         this.ApiKey = apiKey;
@@ -29,6 +32,12 @@ public class CurrentWeatherLoader {
         }
     }
     public CurrentWeather LoadCurrentWeather(){
+        int temp=-1;
+        double windSpeed=-1;
+        int visibility = -1;
+        int rain = -1;
+        int snow = -1;
+
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try {
@@ -38,14 +47,18 @@ public class CurrentWeatherLoader {
 
             long sunrise = currentWeatherData.get("sys").get("sunrise").asLong() * 1000;
             long sunset = currentWeatherData.get("sys").get("sunset").asLong() * 1000;
-            int temp = currentWeatherData.get("main").get("temp").asInt();
+            temp = currentWeatherData.get("main").get("temp").asInt();
             String desc = currentWeatherData.get("weather").get(0).get("description").asText();
             int humidity = currentWeatherData.get("main").get("humidity").asInt();
             int pressure = currentWeatherData.get("main").get("pressure").asInt();
             int tempMax = currentWeatherData.get("main").get("temp_max").asInt();
             int tempMin = currentWeatherData.get("main").get("temp_min").asInt();
             int feelsLike = currentWeatherData.get("main").get("feels_like").asInt();
-            double windSpeed = currentWeatherData.get("wind").get("speed").asDouble();
+            windSpeed = currentWeatherData.get("wind").get("speed").asDouble();
+            visibility = currentWeatherData.has("visibility") ? currentWeatherData.get("visibility").asInt() : -1;
+            rain = currentWeatherData.has("rain") ? currentWeatherData.get("rain").asInt() : -1;
+            snow = currentWeatherData.has("snow") ? currentWeatherData.get("snow").asInt() : -1;
+
 
             String icon = currentWeatherData.get("weather").get(0).get("icon").asText();
 
@@ -59,9 +72,37 @@ public class CurrentWeatherLoader {
         catch (IOException e) {
             e.printStackTrace();
         }
-
+        if (visibility < 1200) {
+          String message="There is low visibility in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (windSpeed > 10) {
+            String message="There is high wind speed in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (rain > 5) {
+            String message="It is too much rainy in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (snow > 5) {
+            String message="It is too much snowy in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (temp > 37 || temp < 0) {
+          if (temp > 37){
+              String message="It is too much hot in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+              AutomaticEmailSender emailSender = new AutomaticEmailSender();
+              emailSender.sendNotificationEmail(message);
+          }
+        }
 //        System.out.print("\nPrinting Current Weather: \n");
-//        System.out.print(weather);
+//        System.out.print(temp);
+//        System.out.print(snow);
+//       System.out.print(rain);
         return weather;
     }
 }

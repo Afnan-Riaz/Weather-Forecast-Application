@@ -2,20 +2,23 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Locale;
 
 public class ForecastsLoader {
     public final String ApiKey;
     public List<WeatherForecast> forecasts;
     public double lat;
     public double lon;
+
     public ForecastsLoader(String apiKey, double lat, double lon) {
         this.ApiKey = apiKey;
         this.lat = lat;
@@ -28,10 +31,19 @@ public class ForecastsLoader {
             return mapper.readTree(is);
         }
     }
+    public void checkAQIAndSendEmail(int aqi) {
+        if (aqi >= 4) {
+            String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(body);
+        }
+    }
+
     public List<WeatherForecast> LoadForecasts(){
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
+        int airQualityIndex =-1;
 
         try {
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
@@ -75,17 +87,24 @@ public class ForecastsLoader {
                     double ammonia = matchingAirPollutionData.get("components").get("nh3").asDouble();
                     double particulateMatterPM25 = matchingAirPollutionData.get("components").get("pm2_5").asDouble();
                     double particulateMatterPM10 = matchingAirPollutionData.get("components").get("pm10").asDouble();
-                    int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
+                    airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
 
                     forecasts.add(new WeatherForecast(day, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon));
+
+
+
                 }
+
             }
+
+
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        checkAQIAndSendEmail(airQualityIndex);
         return forecasts;
     }
 }
