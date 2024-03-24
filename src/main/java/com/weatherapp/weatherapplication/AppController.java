@@ -4,9 +4,11 @@ import com.weatherapp.Models.CurrentWeather;
 import com.weatherapp.Models.ImageHandler;
 import com.weatherapp.Models.WeatherForecast;
 import com.weatherapp.Models.WeatherManager;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
@@ -18,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.TimeZone;
 
 public class AppController {
+    public String current_city="Lahore";
     public Text description;
     public Text city;
     public Text humidity;
@@ -38,10 +42,8 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
-    public WeatherManager weatherManager;
-    public List<WeatherForecast> forecasts;
-    public WeatherForecast forecast;
-    public CurrentWeather current_weather;
+    private List<WeatherForecast> forecasts;
+    private WeatherForecast forecast;
     public ImageView moreIcon;
     public VBox bgImage;
     public ImageView prevDay;
@@ -52,15 +54,7 @@ public class AppController {
     @FXML
 
     public void initialize() {
-        weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
-        forecasts = weatherManager.getWeatherForecast();
-        current_weather = weatherManager.current_weather;
-
-        forecast = forecasts.getFirst();
-        setTempBoxes(forecasts, 0, temperatureBoxes);
-        setOtherAttributes(forecast, "Lahore");
-        sunrise.setText(formatTime(current_weather.sunrise()));
-        sunset.setText(formatTime(current_weather.sunset()));
+        getWeatherData(current_city);
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
         String baseImagePath = "/styling/";
@@ -69,7 +63,17 @@ public class AppController {
                 "-fx-background-size: cover; ");
         moreIcon.setOnMouseClicked(this::showPollutantInfo);
     }
+    public void getWeatherData(String city) {
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        forecasts = weatherManager.getWeatherForecast();
+        CurrentWeather current_weather = weatherManager.current_weather;
 
+        forecast = forecasts.getFirst();
+        setTempBoxes(forecasts, 0, temperatureBoxes);
+        setOtherAttributes(forecast, city);
+        sunrise.setText(formatTime(current_weather.sunrise()));
+        sunset.setText(formatTime(current_weather.sunset()));
+    }
     private void setTempBoxes(List<WeatherForecast> forecasts, int startingIndex, HBox parent){
         parent.getChildren().clear();
         int boxCount = 0;
@@ -97,11 +101,11 @@ public class AppController {
     private void setOtherAttributes(WeatherForecast forecast, String current_city){
         city.setText(current_city);
         description.setText(forecast.description());
-        humidity.setText(String.valueOf(forecast.humidity() + " %"));
-        windspeed.setText(String.valueOf(forecast.windSpeed() + " m/s"));
-        temp.setText(String.valueOf(forecast.temperature()) + " °C");
+        humidity.setText(forecast.humidity() + " %");
+        windspeed.setText(forecast.windSpeed() + " m/s");
+        temp.setText(forecast.temperature() + " °C");
         day.setText(forecast.day());
-        pressure.setText(String.valueOf(forecast.pressure()) + " hPa");
+        pressure.setText(forecast.pressure() + " hPa");
         quality.setText(getAQIDescription(forecast.airQualityIndex()));
     }
         private void changeBoxes(List<WeatherForecast> forecasts, String day) {
@@ -113,18 +117,12 @@ public class AppController {
                 }
             }
             WeatherForecast forecast = forecasts.get(index);
-            setOtherAttributes(forecast, "Lahore");
+            setOtherAttributes(forecast, current_city);
             setTempBoxes(forecasts, index, temperatureBoxes);
         }
         public void changeDay(MouseEvent mouseEvent) {
-            ArrayList<String> Days = new ArrayList<String>(7);
-            Days.add("Monday");
-            Days.add("Tuesday");
-            Days.add("Wednesday");
-            Days.add("Thursday");
-            Days.add("Friday");
-            Days.add("Saturday");
-            Days.add("Sunday");
+            ArrayList<String> Days = new ArrayList<>(7);
+            Days.addAll(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
             forecast = forecasts.getFirst();
             String current_day = day.getText();
             Node source = (Node) mouseEvent.getSource();
@@ -197,10 +195,11 @@ public class AppController {
 
     public void openLocationView(MouseEvent event) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
+            Parent root = fxmlLoader.load();
             LocationController controller = fxmlLoader.getController();
 
             Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 300, 400);
+            Scene scene = new Scene(root, 300, 400);
             stage.setScene(scene);
 
             stage.initStyle(StageStyle.UNDECORATED);
@@ -212,7 +211,12 @@ public class AppController {
                 }
             });
             stage.show();
-
+            stage.setOnCloseRequest(new EventHandler< WindowEvent >(){
+                public void handle(WindowEvent event) {
+                    current_city=controller.locationField.getText();
+                    getWeatherData(current_city);
+                }
+            });
         }
     private void showPollutantInfo(MouseEvent event) {
         Dialog<Void> dialog = new Dialog<>();
@@ -231,9 +235,7 @@ public class AppController {
                         "NH3: " + forecast.ammonia() + "%\n" +
                         "PM10: " + forecast.particulateMatterPM10() + "%"
         );
-        dialog.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> {
-            dialog.close();
-        });
+        dialog.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> dialog.close());
 
         dialog.getDialogPane().setContent(textArea);
         dialog.show();

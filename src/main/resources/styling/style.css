@@ -1,6 +1,3 @@
-.location-view {
-    -fx-border-radius: 10px;
-}
 .homescreen {
     -fx-background-image: url('images/rain-bg1.jpg');
     -fx-background-size: cover;
@@ -72,15 +69,17 @@
     -fx-pref-height: 33;
     -fx-pref-width: 300;
     -fx-alignment: center;
-    -fx-background-color: #fff;
+    /*-fx-background-color: #fff;*/
     -fx-background-radius: 5px;
-    -fx-padding: 6 0 8 0;
-    -fx-end-margin: 10;
+    -fx-padding: 6 10 8 0;
+    -fx-border-insets: 0 10 0 0;
+    -fx-background-insets: 0 10 0 0;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 0);
+    -fx-background-color: linear-gradient(to bottom, #abcfff, #d1e5ff);
 }
 
 .location-text{
-    -fx-font: 20px "Raleway Medium";
+    -fx-font: 16px "Raleway Medium";
     -fx-cursor: hand;
     -fx-wrap-text: true;
 }
