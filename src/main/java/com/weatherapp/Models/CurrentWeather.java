@@ -1,5 +1,5 @@
 package com.weatherapp.Models;
 
-public record CurrentWeather(String day,String date, String time, int temperature, String description, int humidity, int pressure,
+public record CurrentWeather(String day, String time, int temperature, String description, int humidity, int pressure,
                              int tempMax, int tempMin, int feelsLike, double windSpeed, long sunrise, long sunset, String icon) {
 }
