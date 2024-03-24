@@ -99,10 +99,6 @@ public class CurrentWeatherLoader {
               emailSender.sendNotificationEmail(message);
           }
         }
-//        System.out.print("\nPrinting Current Weather: \n");
-//        System.out.print(temp);
-//        System.out.print(snow);
-//       System.out.print(rain);
         return weather;
     }
 }

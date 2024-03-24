@@ -18,8 +18,8 @@ public class SendEmail {
         // Mail server properties
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com"); // Change this to your SMTP server
-        props.put("mail.smtp.port", "587"); // Change this to your SMTP port
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
     }
 
     public void sendEmail(String to, String subject, String body) throws MessagingException {
