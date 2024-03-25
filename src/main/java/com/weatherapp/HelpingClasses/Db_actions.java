@@ -1,6 +1,7 @@
-package com.weatherapp.Models;
+package com.weatherapp.HelpingClasses;
 
 import com.weatherapp.HelpingClasses.SqlConnection;
+import com.weatherapp.Models.WeatherForecast;
 
 import java.sql.*;
 import java.time.LocalDate;
