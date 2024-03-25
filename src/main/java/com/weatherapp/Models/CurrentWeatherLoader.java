@@ -46,6 +46,11 @@ public class CurrentWeatherLoader {
             int tempMin = currentWeatherData.get("main").get("temp_min").asInt();
             int feelsLike = currentWeatherData.get("main").get("feels_like").asInt();
             double windSpeed = currentWeatherData.get("wind").get("speed").asDouble();
+            long dt = currentWeatherData.get("dt").asLong() * 1000;
+            Date date = new Date(dt);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = dateFormat.format(date);
 
             String icon = currentWeatherData.get("weather").get(0).get("icon").asText();
 
@@ -54,7 +59,7 @@ public class CurrentWeatherLoader {
             String time = (hour < 10 ? "0" : "") + hour + ":00";
             String day = df2.format(c.getTime());
 
-            weather = new CurrentWeather(day, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
+            weather = new CurrentWeather(day,formattedDate, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
         }
         catch (IOException e) {
             e.printStackTrace();
