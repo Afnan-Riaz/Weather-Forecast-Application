@@ -32,8 +32,9 @@ public class ForecastsLoader {
         }
     }
     public void checkAQIAndSendEmail(int aqi) {
-        if (aqi >= 4) {
+        if (aqi >= 3) {
             String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
+           // System.out.print(aqi);
             AutomaticEmailSender emailSender = new AutomaticEmailSender();
             emailSender.sendNotificationEmail(body);
         }
@@ -104,6 +105,7 @@ public class ForecastsLoader {
         catch (IOException e) {
             e.printStackTrace();
         }
+
         checkAQIAndSendEmail(airQualityIndex);
         return forecasts;
     }

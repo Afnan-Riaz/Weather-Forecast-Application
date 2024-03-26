@@ -14,7 +14,7 @@ import java.util.Timer;
 
 public class AutomaticEmailSender extends Application {
 
-//    private Timer timer;
+   static private String emailAddress ;
 
     @Override
     public void start(Stage primaryStage) {
@@ -50,21 +50,31 @@ public class AutomaticEmailSender extends Application {
 //        }
 //    }
 
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+      //  System.out.print(emailAddress);
+    }
+
     public void sendNotificationEmail(String body) {
-        String username = "hussnainasim69@gmail.com";
-        String password = "dyws xevv cngh kxst";
-        String to = "hussnainasim9@gmail.com";
-        String subject = "Weather Alert!";
+       if (emailAddress != null) {
+            String username = "hussnainasim69@gmail.com";
+            String password = "dyws xevv cngh kxst";
+            String to = emailAddress;
+          //  System.out.print(emailAddress);
+          //  System.out.print(to);
+
+            String subject = "Weather Alert!";
 //        String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
 
-        SendEmail emailSender = new SendEmail(username, password);
+            SendEmail emailSender = new SendEmail(username, password);
 
-        try {
-            emailSender.sendEmail(to, subject, body);
-            System.out.println("Notification email sent successfully.");
-        } catch (MessagingException e) {
-            System.err.println("Error sending email: " + e.getMessage());
-        }
+            try {
+                emailSender.sendEmail(to, subject, body);
+                System.out.println("Notification email sent successfully.");
+            } catch (MessagingException e) {
+                System.err.println("Error sending email: " + e.getMessage());
+            }
+       }
     }
 //    private void sendNotificationEmail(WeatherForecast forecast) {
 //        String username = "hussnainasim69@gmail.com";
