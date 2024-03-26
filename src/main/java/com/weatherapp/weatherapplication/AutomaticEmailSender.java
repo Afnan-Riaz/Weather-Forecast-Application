@@ -1,6 +1,5 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.WeatherForecast;
 import com.weatherapp.Models.WeatherManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
