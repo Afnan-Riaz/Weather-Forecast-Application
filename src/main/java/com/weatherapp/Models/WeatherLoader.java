@@ -13,16 +13,17 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ForecastsLoader {
+public class WeatherLoader {
     public final String ApiKey;
-    public List<WeatherForecast> forecasts;
+    public List<Weather> forecasts;
     public double lat;
     public double lon;
-
-    public ForecastsLoader(String apiKey, double lat, double lon) {
+    public Weather current_weather;
+    public WeatherLoader(String apiKey, double lat, double lon, Weather current_weather) {
         this.ApiKey = apiKey;
         this.lat = lat;
         this.lon = lon;
+        this.current_weather = current_weather;
     }
 
     public JsonNode readJsonFromUrl(String url) throws IOException {
@@ -39,8 +40,7 @@ public class ForecastsLoader {
             emailSender.sendNotificationEmail(body);
         }
     }
-
-    public List<WeatherForecast> LoadForecasts(){
+    public List<Weather> LoadWeatherData(){
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -49,9 +49,6 @@ public class ForecastsLoader {
         try {
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
             JsonNode forecastList = forecastData.get("list");
-
-            JsonNode airPollutionData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey);
-            JsonNode airPollutionList = airPollutionData.get("list");
 
             for (int i = 0; i < forecastList.size(); i++) {
                 JsonNode forecast = forecastList.get(i);
@@ -71,33 +68,7 @@ public class ForecastsLoader {
                 String description = forecast.get("weather").get(0).get("description").asText();
                 String icon = forecast.get("weather").get(0).get("icon").asText();
 
-                JsonNode matchingAirPollutionData = null;
-                for (JsonNode pollution : airPollutionList) {
-                    if (pollution.get("dt").asLong() == forecast.get("dt").asLong()) {
-                        matchingAirPollutionData = pollution;
-                        break;
-                    }
-                }
-
-                if (matchingAirPollutionData != null) {
-                    double carbonMonoxide = matchingAirPollutionData.get("components").get("co").asDouble();
-                    double nitrogenMonoxide = matchingAirPollutionData.get("components").get("no").asDouble();
-                    double nitrogenDioxide = matchingAirPollutionData.get("components").get("no2").asDouble();
-                    double ozone = matchingAirPollutionData.get("components").get("o3").asDouble();
-                    double sulphurDioxide = matchingAirPollutionData.get("components").get("so2").asDouble();
-                    double ammonia = matchingAirPollutionData.get("components").get("nh3").asDouble();
-                    double particulateMatterPM25 = matchingAirPollutionData.get("components").get("pm2_5").asDouble();
-                    double particulateMatterPM10 = matchingAirPollutionData.get("components").get("pm10").asDouble();
-                    airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
-
-                    forecasts.add(new WeatherForecast(day, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                            particulateMatterPM25, particulateMatterPM10, icon));
-
-
-
-                }
-
+                forecasts.add(new Weather(day, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, current_weather.sunrise(), current_weather.sunset(), icon));
             }
 
 

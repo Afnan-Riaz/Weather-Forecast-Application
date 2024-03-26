@@ -1,9 +1,6 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.CurrentWeather;
-import com.weatherapp.Models.ImageHandler;
-import com.weatherapp.Models.WeatherForecast;
-import com.weatherapp.Models.WeatherManager;
+import com.weatherapp.Models.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,8 +39,8 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
-    private List<WeatherForecast> forecasts;
-    private WeatherForecast forecast;
+    private List<ForecastWithPollution> forecasts;
+    private ForecastWithPollution forecast;
     public ImageView moreIcon;
     public VBox bgImage;
     public ImageView prevDay;
@@ -54,6 +51,7 @@ public class AppController {
     @FXML
 
     public void initialize() {
+        current_city = LiveLocationTracker.getLiveLocation();
         getWeatherData(current_city);
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
@@ -66,7 +64,7 @@ public class AppController {
     public void getWeatherData(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
         forecasts = weatherManager.getWeatherForecast();
-        CurrentWeather current_weather = weatherManager.current_weather;
+        Weather current_weather = weatherManager.current_weather;
 
         forecast = forecasts.getFirst();
         setTempBoxes(forecasts, 0, temperatureBoxes);
@@ -74,7 +72,7 @@ public class AppController {
         sunrise.setText(formatTime(current_weather.sunrise()));
         sunset.setText(formatTime(current_weather.sunset()));
     }
-    private void setTempBoxes(List<WeatherForecast> forecasts, int startingIndex, HBox parent){
+    private void setTempBoxes(List<ForecastWithPollution> forecasts, int startingIndex, HBox parent){
         parent.getChildren().clear();
         int boxCount = 0;
         for (int i = startingIndex; i < forecasts.size(); i++) {
@@ -98,7 +96,7 @@ public class AppController {
         }
 
     }
-    private void setOtherAttributes(WeatherForecast forecast, String current_city){
+    private void setOtherAttributes(ForecastWithPollution forecast, String current_city){
         city.setText(current_city);
         description.setText(forecast.description());
         humidity.setText(forecast.humidity() + " %");
@@ -108,7 +106,7 @@ public class AppController {
         pressure.setText(forecast.pressure() + " hPa");
         quality.setText(getAQIDescription(forecast.airQualityIndex()));
     }
-        private void changeBoxes(List<WeatherForecast> forecasts, String day) {
+        private void changeBoxes(List<ForecastWithPollution> forecasts, String day) {
             int index = 0;
             for (int i = 0; i < forecasts.size(); i++) {
                 if (Objects.equals(day, forecasts.get(i).day())) {
@@ -116,7 +114,7 @@ public class AppController {
                     break;
                 }
             }
-            WeatherForecast forecast = forecasts.get(index);
+            ForecastWithPollution forecast = forecasts.get(index);
             setOtherAttributes(forecast, current_city);
             setTempBoxes(forecasts, index, temperatureBoxes);
         }
@@ -158,7 +156,7 @@ public class AppController {
 
         }
 
-    private VBox createWeatherBox(WeatherForecast forecast) {
+    private VBox createWeatherBox(ForecastWithPollution forecast) {
         VBox box = new VBox();
         box.getStyleClass().add("temp-box");
         Text timeText = new Text(convertTo12HourFormat(forecast.time()));

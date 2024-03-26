@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CurrentWeatherLoader {
     public final String City;
     public final String ApiKey;
-    public CurrentWeather weather;
+    public Weather weather;
     public double lat;
     public double lon;
 
@@ -31,7 +30,7 @@ public class CurrentWeatherLoader {
             return mapper.readTree(is);
         }
     }
-    public CurrentWeather LoadCurrentWeather(){
+    public Weather LoadCurrentWeather(){
         int temp=-1;
         double windSpeed=-1;
         int visibility = -1;
@@ -67,7 +66,7 @@ public class CurrentWeatherLoader {
             String time = (hour < 10 ? "0" : "") + hour + ":00";
             String day = df2.format(c.getTime());
 
-            weather = new CurrentWeather(day, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
+            weather = new Weather(day, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
         }
         catch (IOException e) {
             e.printStackTrace();
