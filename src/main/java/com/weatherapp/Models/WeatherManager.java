@@ -28,7 +28,7 @@ public class WeatherManager {
         double lat = currentWeatherLoader.lat;
         double lon = currentWeatherLoader.lon;
 
-        ForecastsLoader forecastsLoader = new ForecastsLoader(apiKey, lat, lon);
+        ForecastsLoader forecastsLoader = new ForecastsLoader(apiKey, lat, lon,city);
         forecasts = forecastsLoader.LoadForecasts();
 
         return forecasts;
