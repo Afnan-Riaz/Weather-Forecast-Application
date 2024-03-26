@@ -97,6 +97,11 @@ public class CurrentWeatherLoader {
               AutomaticEmailSender emailSender = new AutomaticEmailSender();
               emailSender.sendNotificationEmail(message);
           }
+          if (temp < 0){
+              String message="It is too much cold in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+              AutomaticEmailSender emailSender = new AutomaticEmailSender();
+              emailSender.sendNotificationEmail(message);
+          }
         }
         return weather;
     }
