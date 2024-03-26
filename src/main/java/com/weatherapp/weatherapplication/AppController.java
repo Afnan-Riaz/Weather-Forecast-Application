@@ -67,6 +67,7 @@ public class AppController {
         Weather current_weather = weatherManager.current_weather;
 
         forecast = forecasts.getFirst();
+
         setTempBoxes(forecasts, 0, temperatureBoxes);
         setOtherAttributes(forecast, city);
         sunrise.setText(formatTime(current_weather.sunrise()));

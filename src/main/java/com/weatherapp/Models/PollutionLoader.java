@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,15 @@ public class PollutionLoader {
         try (InputStream is = new URL(url).openStream()) {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(is);
+        }
+    }
+
+    public void checkAQIAndSendEmail(int aqi) {
+        if (aqi >= 4) {
+            String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
+            // System.out.print(aqi);
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(body);
         }
     }
 
@@ -64,6 +74,10 @@ public class PollutionLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        int AQI = pollution_data.getFirst().airQualityIndex();
+        checkAQIAndSendEmail(AQI);
+        
         return pollution_data;
     }
 }

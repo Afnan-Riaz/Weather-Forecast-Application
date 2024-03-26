@@ -32,19 +32,10 @@ public class WeatherLoader {
             return mapper.readTree(is);
         }
     }
-    public void checkAQIAndSendEmail(int aqi) {
-        if (aqi >= 3) {
-            String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
-           // System.out.print(aqi);
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(body);
-        }
-    }
     public List<Weather> LoadWeatherData(){
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
-        int airQualityIndex =-1;
 
         try {
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
@@ -77,7 +68,6 @@ public class WeatherLoader {
             e.printStackTrace();
         }
 
-        checkAQIAndSendEmail(airQualityIndex);
         return forecasts;
     }
 }
