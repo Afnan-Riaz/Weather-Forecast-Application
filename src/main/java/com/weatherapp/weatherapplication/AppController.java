@@ -1,9 +1,6 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.Weather;
-import com.weatherapp.Models.ImageHandler;
-import com.weatherapp.Models.ForecastWithPollution;
-import com.weatherapp.Models.WeatherManager;
+import com.weatherapp.Models.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,6 +51,7 @@ public class AppController {
     @FXML
 
     public void initialize() {
+        current_city = LiveLocationTracker.getLiveLocation();
         getWeatherData(current_city);
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
