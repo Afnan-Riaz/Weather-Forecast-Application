@@ -83,6 +83,45 @@ public class FileHandling implements CacheManagement {
 
     @Override
     public void deleteWeatherData(String cityName) {
-        // Implementation goes here
+        try {
+            File inputFile = new File(CACHE_FILE_PATH);
+            File tempFile = new File("src/main/cache/temp_weather_data.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String lineToRemove = cityName + ",";
+            String currentLine;
+
+            while ((currentLine = reader.readLine()) != null) {
+                // Remove the line if it contains the cityName
+                if (currentLine.contains(lineToRemove)) {
+                    continue;
+                }
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+
+            // Delete the original file
+            if (!inputFile.delete()) {
+                System.out.println("Could not delete file");
+                return;
+            }
+
+            // Rename the temp file to the original file name
+            if (!tempFile.renameTo(inputFile)) {
+                System.out.println("Could not rename file");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    public static void main(String[] args) {
+        FileHandling fileHandling = new FileHandling();
+        //fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "12:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        //fileHandling.deleteWeatherData("New York");
+    }
+
+
 }
