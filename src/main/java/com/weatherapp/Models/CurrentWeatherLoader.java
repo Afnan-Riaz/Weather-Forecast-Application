@@ -2,14 +2,15 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.List;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class CurrentWeatherLoader {
     public final String City;
@@ -17,6 +18,7 @@ public class CurrentWeatherLoader {
     public CurrentWeather weather;
     public double lat;
     public double lon;
+
     public CurrentWeatherLoader(String city, String apiKey) {
         this.City = city;
         this.ApiKey = apiKey;
@@ -29,6 +31,12 @@ public class CurrentWeatherLoader {
         }
     }
     public CurrentWeather LoadCurrentWeather(){
+        int temp=-1;
+        double windSpeed=-1;
+        int visibility = -1;
+        int rain = -1;
+        int snow = -1;
+
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try {
@@ -38,15 +46,24 @@ public class CurrentWeatherLoader {
 
             long sunrise = currentWeatherData.get("sys").get("sunrise").asLong() * 1000;
             long sunset = currentWeatherData.get("sys").get("sunset").asLong() * 1000;
-            int temp = currentWeatherData.get("main").get("temp").asInt();
+            temp = currentWeatherData.get("main").get("temp").asInt();
             String desc = currentWeatherData.get("weather").get(0).get("description").asText();
             int humidity = currentWeatherData.get("main").get("humidity").asInt();
             int pressure = currentWeatherData.get("main").get("pressure").asInt();
             int tempMax = currentWeatherData.get("main").get("temp_max").asInt();
             int tempMin = currentWeatherData.get("main").get("temp_min").asInt();
             int feelsLike = currentWeatherData.get("main").get("feels_like").asInt();
-            double windSpeed = currentWeatherData.get("wind").get("speed").asDouble();
+            windSpeed = currentWeatherData.get("wind").get("speed").asDouble();
             long dt = currentWeatherData.get("dt").asLong() * 1000;
+            visibility = currentWeatherData.get("current").get("visibility").asInt();
+
+            // Check for rain and snow
+            if (currentWeatherData.get("current").has("rain")) {
+                rain = currentWeatherData.get("current").get("rain").asInt();
+            }
+            if (currentWeatherData.get("current").has("snow")) {
+                snow = currentWeatherData.get("current").get("snow").asInt();
+            }
             Date date = new Date(dt);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -67,6 +84,40 @@ public class CurrentWeatherLoader {
 
 //        System.out.print("\nPrinting Current Weather: \n");
 //        System.out.print(weather);
+        if (visibility < 1200) {
+            String message="There is low visibility in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (windSpeed > 10) {
+            String message="There is high wind speed in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (rain > 5) {
+            String message="It is too much rainy in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (snow > 5) {
+            String message="It is too much snowy in "+ City +". please take necessary precautions.";
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(message);
+        }
+        if (temp > 37 || temp < 0) {
+            if (temp > 37){
+                String message="It is too much hot in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+                AutomaticEmailSender emailSender = new AutomaticEmailSender();
+                emailSender.sendNotificationEmail(message);
+            }
+            if (temp < 0){
+                String message="It is too much cold in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+                AutomaticEmailSender emailSender = new AutomaticEmailSender();
+                emailSender.sendNotificationEmail(message);
+            }
+        }
+
+
         return weather;
     }
 }

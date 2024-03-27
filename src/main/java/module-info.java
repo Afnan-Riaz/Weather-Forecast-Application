@@ -5,6 +5,7 @@ module com.weatherapp.weatherapplication {
     requires org.controlsfx.controls;
     requires json.simple;
 requires java.sql;
+    requires java.mail;
     opens com.weatherapp.weatherapplication to javafx.fxml;
     exports com.weatherapp.weatherapplication;
 }

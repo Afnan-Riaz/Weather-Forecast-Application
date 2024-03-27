@@ -16,6 +16,17 @@ public class ConsoleApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to WeatherApp Console!");
+        System.out.println("Do you want to receive notifications via email? (yes/no)");
+        String receiveNotifications = scanner.nextLine().toLowerCase();
+
+        String email = null;
+        if (receiveNotifications.equals("yes")) {
+            System.out.println("Enter your email address:");
+            email = scanner.nextLine();
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.setEmailAddress(email);
+        }
+        System.out.println("Welcome to WeatherApp Console!");
         System.out.println("Select an option:");
         System.out.println("1. Add Location to check weather with Longitude and Latitude.");
         System.out.println("2. Add Location to check weather with City/Country Name.");
@@ -27,6 +38,7 @@ public class ConsoleApp {
         System.out.println("0. Exit");
         int choice;
         do {
+
             System.out.print("\nEnter your choice: ");
             choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline character

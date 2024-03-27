@@ -2,12 +2,11 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.List;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +37,17 @@ public class ForecastsLoader {
             return mapper.readTree(is);
         }
     }
+    public void checkAQIAndSendEmail(int aqi) {
+        if (aqi >= 3) {
+            String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
+            // System.out.print(aqi);
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.sendNotificationEmail(body);
+        }
+    }
+
     public List<WeatherForecast> LoadForecasts() {
+
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -104,9 +113,9 @@ public class ForecastsLoader {
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
 
                     // Call insertWeatherData to store the forecast data in a file
-                    fileHandling.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                            particulateMatterPM25, particulateMatterPM10, icon);
+//                    fileHandling.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+//                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+//                            particulateMatterPM25, particulateMatterPM10, icon);
 
                     forecasts.add(new WeatherForecast(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
@@ -116,6 +125,9 @@ public class ForecastsLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        int AQI =forecasts.getFirst().airQualityIndex();
+        checkAQIAndSendEmail(AQI);
+
         return forecasts;
     }
     public static String getCurrentTime() {
