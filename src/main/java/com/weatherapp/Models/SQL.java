@@ -1,14 +1,17 @@
-package com.weatherapp.HelpingClasses;
+package com.weatherapp.Models;
 
 import com.weatherapp.HelpingClasses.SqlConnection;
 import com.weatherapp.Models.WeatherForecast;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-public class Db_actions {
-    public static void insertWeatherData(String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
+import com.weatherapp.HelpingClasses.CacheManagement;
+public  class SQL implements CacheManagement  {
+@Override
+    public  void insertWeatherData(String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
         String connectionUrl = SqlConnection.getConnectionUrl();
 
         String query = "INSERT INTO Weather (city_name, date, curr_day, time, starting_time, temperature, description, humidity, pressure, temp_max, temp_min, feels_like, wind_speed, air_quality_index, carbon_monoxide, nitrogen_monoxide, nitrogen_dioxide, ozone, sulphur_dioxide, ammonia, particulate_matter_pm25, particulate_matter_pm10, icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -40,16 +43,14 @@ public class Db_actions {
             preparedStatement.setString(23, icon);
 
             int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Weather data inserted successfully.");
-            }
+
         } catch (SQLException e) {
             System.out.println("Failed to insert weather data.");
             e.printStackTrace();
         }
     }
-
-    public static List<WeatherForecast> getWeatherFromDb(String cityName, String startDate) {
+@Override
+    public  List<WeatherForecast> getWeatherFromDb(String cityName, String startDate) {
         List<WeatherForecast> forecasts = new ArrayList<>();
         String connectionUrl = SqlConnection.getConnectionUrl();
 
@@ -91,6 +92,7 @@ public class Db_actions {
                     }
                 }
             }
+                System.out.println("Got data from database.");
         } catch (SQLException e) {
             System.out.println("Failed to fetch forecasts from the database.");
             e.printStackTrace();
@@ -104,11 +106,86 @@ public class Db_actions {
         date = date.plusDays(days);
         return date.toString();
     }
+    @Override
+    public boolean CheckExistance(String cityName, String date, String time) {
+        String connectionUrl = SqlConnection.getConnectionUrl();
 
+        String query = "SELECT * FROM Weather WHERE city_name = ?";
+        boolean dataExists = false;
+
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, cityName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String existingDate = resultSet.getString("date");
+                String startingTimeStr = resultSet.getString("starting_time");
+                LocalTime startingTime = LocalTime.parse(startingTimeStr);
+
+                if (!date.equals(existingDate)) {
+
+                    deleteWeatherData(cityName);
+                    dataExists = false;
+
+                } else if (!timeMatches(startingTime, time)) {
+
+                    deleteWeatherData(cityName);
+                    dataExists = false;
+
+                } else {
+                    dataExists = true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to check data existence in the database.");
+            e.printStackTrace();
+        }
+
+        return dataExists;
+    }
+
+    @Override
+    public  void deleteWeatherData(String cityName) {
+        String connectionUrl = SqlConnection.getConnectionUrl();
+
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+
+
+                String query = "DELETE FROM Weather WHERE city_name = ? ";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setString(1, cityName);
+
+
+                    int rowsDeleted = preparedStatement.executeUpdate();
+                    if (rowsDeleted > 0) {
+                        System.out.println(rowsDeleted+" rows deleted " );
+                    }
+                }
+
+        } catch (SQLException e) {
+            System.out.println("Failed to delete weather data.");
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean timeMatches(LocalTime startingTime, String time) {
+        LocalTime currentTime = LocalTime.parse(time);
+        LocalTime endTimeMargin = startingTime.plusHours(3);
+        return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
+    }
 
 
     public static void main(String[] args) {
         // Example usage
-        insertWeatherData("New York", "Monday", "2024-03-24", "12:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        SQL sql = new SQL();
+        boolean exists = sql.CheckExistance("Lahore", "2024-03-27", "01:00");
+        System.out.println("Data exists within 3-hour margin: " + exists);
     }
+
+
+//    public static void main(String[] args) {
+//        // Example usage
+//        insertWeatherData("New York", "Monday", "2024-03-24", "12:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+//    }
 }

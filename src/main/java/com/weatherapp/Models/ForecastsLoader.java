@@ -9,8 +9,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
-import com.weatherapp.HelpingClasses.Db_actions;
-import com.weatherapp.HelpingClasses.CacheManagement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,26 +38,25 @@ public class ForecastsLoader {
             return mapper.readTree(is);
         }
     }
-    public List<WeatherForecast> LoadForecasts(){
+    public List<WeatherForecast> LoadForecasts() {
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
 
         try {
-            System.out.println(cityName);
-            System.out.println(getCurrentDate());
-            System.out.println(getCurrentTime());
-            if (cityName!=null&&(CacheManagement.CheckExistance(cityName, getCurrentDate(),getCurrentTime()))) {
-                // Starting time exists in the database, fetch forecasts from the database
-              forecasts=Db_actions.getWeatherFromDb(cityName,getCurrentDate());
-
+            if (cityName == null) {
+                // Retrieve city name if not provided
+                JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat=" + lat + "&lon=" + lon + "&limit=1&appid=" + ApiKey);
+                cityName = response.get("name").asText();
             }
-            else{
+
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
             JsonNode forecastList = forecastData.get("list");
 
             JsonNode airPollutionData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey);
             JsonNode airPollutionList = airPollutionData.get("list");
+
+            FileHandling fileHandling = new FileHandling();
 
             for (int i = 0; i < forecastList.size(); i++) {
                 JsonNode forecast = forecastList.get(i);
@@ -68,8 +65,8 @@ public class ForecastsLoader {
 
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 String time = (hour < 10 ? "0" : "") + hour + ":00";
-                if(i==0){
-                    StartingTime=time;
+                if (i == 0) {
+                    StartingTime = time;
                 }
                 String day = df2.format(c.getTime());
                 int temperature = forecast.get("main").get("temp").asInt();
@@ -105,17 +102,18 @@ public class ForecastsLoader {
                     double particulateMatterPM25 = matchingAirPollutionData.get("components").get("pm2_5").asDouble();
                     double particulateMatterPM10 = matchingAirPollutionData.get("components").get("pm10").asDouble();
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
-                    //Insert data to db for first time in 3 hours
-          Db_actions.insertWeatherData("Lahore",day,formattedDate, time,StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-        airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-        particulateMatterPM25, particulateMatterPM10, icon);
-                    forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+
+                    // Call insertWeatherData to store the forecast data in a file
+                    fileHandling.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10, icon);
+
+                    forecasts.add(new WeatherForecast(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon));
                 }
-            }}
-        }
-        catch (IOException e) {
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return forecasts;
@@ -132,5 +130,3 @@ public class ForecastsLoader {
     }
 
 }
-
-
