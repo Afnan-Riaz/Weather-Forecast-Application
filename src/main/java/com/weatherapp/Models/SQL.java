@@ -1,4 +1,4 @@
-package com.weatherapp.HelpingClasses;
+package com.weatherapp.Models;
 
 import com.weatherapp.HelpingClasses.SqlConnection;
 import com.weatherapp.Models.WeatherForecast;

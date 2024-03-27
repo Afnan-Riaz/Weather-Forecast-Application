@@ -39,7 +39,7 @@ public class ForecastsLoader {
         }
     }
     public List<WeatherForecast> LoadForecasts(){
-        SQL sql = new SQL();
+//        SQL sql = new SQL();
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -49,13 +49,13 @@ if(cityName==null){
     JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
     cityName = response.get("name").asText();
 }
-            if (sql.CheckExistance(cityName, getCurrentDate(),getCurrentTime())) {
-                // Starting time exists in the database, fetch forecasts from the database
-
-                forecasts = sql.getWeatherFromDb(cityName, getCurrentDate());
-
-            }
-            else{
+//            if (sql.CheckExistance(cityName, getCurrentDate(),getCurrentTime())) {
+//                // Starting time exists in the database, fetch forecasts from the database
+//
+//                forecasts = sql.getWeatherFromDb(cityName, getCurrentDate());
+//
+//            }
+//            else{
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
             JsonNode forecastList = forecastData.get("list");
 
@@ -108,14 +108,17 @@ if(cityName==null){
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
                     //Insert data to db for first time in 3 hours
 
-                    sql.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                            particulateMatterPM25, particulateMatterPM10, icon);
+//                    sql.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+//                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+//                            particulateMatterPM25, particulateMatterPM10, icon);
                     forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon));
                 }
-            }}
+            }
+//            }
+
+
         }
         catch (IOException e) {
             e.printStackTrace();
