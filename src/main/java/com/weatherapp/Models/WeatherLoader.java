@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class WeatherLoader {
     public final String ApiKey;
@@ -19,12 +24,16 @@ public class WeatherLoader {
     public double lat;
     public double lon;
     public Weather current_weather;
-    public WeatherLoader(String apiKey, double lat, double lon, Weather current_weather) {
-        this.ApiKey = apiKey;
-        this.lat = lat;
-        this.lon = lon;
-        this.current_weather = current_weather;
-    }
+    public String StartingTime;
+    public String cityName;
+
+    public WeatherLoader(String apiKey, double lat, double lon, Weather current_weather, String cityName) {
+            this.ApiKey = apiKey;
+            this.lat = lat;
+            this.lon = lon;
+            this.current_weather = current_weather;
+            this.cityName = cityName != null ? cityName : null;
+        }
 
     public JsonNode readJsonFromUrl(String url) throws IOException {
         try (InputStream is = new URL(url).openStream()) {
@@ -33,11 +42,22 @@ public class WeatherLoader {
         }
     }
     public List<Weather> LoadWeatherData(){
+        SQL sql = new SQL();
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
 
         try {
+            if(cityName==null){
+                JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
+                cityName = response.get("name").asText();
+            }
+            if (checkExistance_inDb(cityName,"1234","sql")) {
+                // Starting time exists in the database, fetch forecasts from the database
+                forecasts = sql.getWeatherFromDb("1234",cityName, getCurrentDate());
+
+            }
+            else{
             JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
             JsonNode forecastList = forecastData.get("list");
 
@@ -48,6 +68,9 @@ public class WeatherLoader {
 
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 String time = (hour < 10 ? "0" : "") + hour + ":00";
+                if(i==0){
+                    StartingTime=time;
+                }
                 String day = df2.format(c.getTime());
                 int temperature = forecast.get("main").get("temp").asInt();
                 int humidity = forecast.get("main").get("humidity").asInt();
@@ -58,11 +81,24 @@ public class WeatherLoader {
                 double windSpeed = forecast.get("wind").get("speed").asDouble();
                 String description = forecast.get("weather").get(0).get("description").asText();
                 String icon = forecast.get("weather").get(0).get("icon").asText();
+                long dt = forecast.get("dt").asLong() * 1000;
+                Date date = new Date(dt);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = dateFormat.format(date);
 
                 forecasts.add(new Weather(day, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, current_weather.sunrise(), current_weather.sunset(), icon));
             }
 
 
+                    Insert_intoDb("sql","1234",cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10, icon);
+                    forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10, icon));
+                }
+            }}
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -70,4 +106,33 @@ public class WeatherLoader {
 
         return forecasts;
     }
-}
+    public static String getCurrentTime() {
+        LocalDateTime now = LocalDateTime.now();
+        int hour = now.getHour();
+        return String.format("%02d:00", hour);
+    }
+    public static String getCurrentDate() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return now.format(formatter);
+    }
+    public static boolean checkExistance_inDb(String cityName,String ipAddress,String dbType) {
+        if (dbType == "sql"){
+            SQL sql = new SQL();
+        return sql.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+    }
+        return false;
+        }
+    public static void Insert_intoDb(String dbType ,String ipAddress,String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
+        if (dbType == "sql") {
+            SQL sql = new SQL();
+            sql.insertWeatherData(ipAddress, cityName, day, formattedDate, time, startingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                    airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                    particulateMatterPM25, particulateMatterPM10, icon);
+        }
+        }
+
+
+
+
+

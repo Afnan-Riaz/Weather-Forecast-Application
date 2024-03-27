@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.HelpingClasses.SqlConnection;
 import com.weatherapp.Models.GeoCoder;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -20,9 +21,11 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.control.Notifications;
-
+import com.weatherapp.Models.SQL;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.sql.*;
+import java.util.HashSet;
 
 public class LocationController {
 
@@ -37,6 +40,10 @@ public class LocationController {
     @FXML
     public void initialize() {
         try {
+            Set<String> cityNames = retrieveDatafromDB("sql");
+            for (String cityName : cityNames) {
+                createListItem(cityName);
+            }
             parseCityDataInBackground();
             addEventFilters();
             formatText(latitudeField);
@@ -170,5 +177,17 @@ public class LocationController {
                 .sorted(Comparator.comparing(city -> city.toLowerCase().startsWith(lowerCaseUserInput) ? 0 : 1))
                 .collect(Collectors.toList());
     }
+
+
+        public static Set<String> retrieveDatafromDB(String dbType){
+            if (dbType == "sql") {
+                SQL sql = new SQL();
+                Set<String> cityNmaes= sql.getAllCityNames();
+                return cityNmaes;
+            }
+return null;
+        }
+
+
 
 }

@@ -58,6 +58,11 @@ public class CurrentWeatherLoader {
             rain = currentWeatherData.has("rain") ? currentWeatherData.get("rain").asInt() : -1;
             snow = currentWeatherData.has("snow") ? currentWeatherData.get("snow").asInt() : -1;
 
+            long dt = currentWeatherData.get("dt").asLong() * 1000;
+            Date date = new Date(dt);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = dateFormat.format(date);
 
             String icon = currentWeatherData.get("weather").get(0).get("icon").asText();
 
@@ -66,11 +71,12 @@ public class CurrentWeatherLoader {
             String time = (hour < 10 ? "0" : "") + hour + ":00";
             String day = df2.format(c.getTime());
 
-            weather = new Weather(day, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
+            weather = new Weather(day,formattedDate, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
         if (visibility < 1200) {
           String message="There is low visibility in "+ City +". please take necessary precautions.";
             AutomaticEmailSender emailSender = new AutomaticEmailSender();

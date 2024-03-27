@@ -19,7 +19,7 @@ public class SqlConnection {
                 + "encrypt=true;"
                 + "trustServerCertificate=true;"
                 + "loginTimeout=30;";
-        System.out.println("connection made");
+
         return connectionUrl ;
     }
 }
