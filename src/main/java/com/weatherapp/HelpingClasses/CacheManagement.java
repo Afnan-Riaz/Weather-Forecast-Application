@@ -9,6 +9,6 @@ public interface CacheManagement {
         List<WeatherForecast> getWeatherFromDb(String ipAddress,String cityName, String startDate);
         boolean CheckExistance(String ipAddress,String cityName, String date, String time);
         void deleteWeatherData(String cityName,String ipAddress);
-    public Set<String> getAllCityNames();
+     Set<String> getAllCityNames(String ipAddress);
     }
 

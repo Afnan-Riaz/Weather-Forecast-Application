@@ -135,7 +135,9 @@ if(cityName==null){
     public static boolean checkExistance_inDb(String cityName,String ipAddress,String dbType) {
         if (dbType == "sql"){
             SQL sql = new SQL();
-        return sql.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+        boolean exists= sql.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+        return exists;
+
     }
         return false;
         }

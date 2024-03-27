@@ -182,7 +182,7 @@ public class LocationController {
         public static Set<String> retrieveDatafromDB(String dbType){
             if (dbType == "sql") {
                 SQL sql = new SQL();
-                Set<String> cityNmaes= sql.getAllCityNames();
+                Set<String> cityNmaes= sql.getAllCityNames("1234");
                 return cityNmaes;
             }
 return null;

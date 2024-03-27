@@ -114,7 +114,7 @@ public  class SQL implements CacheManagement  {
         String connectionUrl = SqlConnection.getConnectionUrl();
         String query = "SELECT * FROM Weather WHERE city_name = ? AND IP_Address=?";
         boolean dataExists = false;
-
+        System.out.println(ipAddress +cityName+date+time);
         try (Connection connection = DriverManager.getConnection(connectionUrl);
 
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -122,6 +122,7 @@ public  class SQL implements CacheManagement  {
             preparedStatement.setString(2, ipAddress);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
+
                 String existingDate = resultSet.getString("date");
                 String startingTimeStr = resultSet.getString("starting_time");
                 LocalTime startingTime = LocalTime.parse(startingTimeStr);
@@ -165,18 +166,20 @@ public  class SQL implements CacheManagement  {
             e.printStackTrace();
         }
     }
-    public Set<String> getAllCityNames() {
+    public Set<String> getAllCityNames(String ipAddress) {
         Set<String> cityNames = new HashSet<>();
         String connectionUrl = SqlConnection.getConnectionUrl();
-        String query = "SELECT DISTINCT city_name FROM Weather";
+        String query = "SELECT DISTINCT city_name FROM Weather where IP_Address=?";
 
         try (Connection connection = DriverManager.getConnection(connectionUrl);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            while (resultSet.next()) {
-                String cityName = resultSet.getString("city_name");
-                cityNames.add(cityName);
+            preparedStatement.setString(1, ipAddress);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String cityName = resultSet.getString("city_name");
+                    cityNames.add(cityName);
+                }
             }
         } catch (SQLException e) {
             System.out.println("Failed to fetch city names from the database.");
@@ -185,6 +188,7 @@ public  class SQL implements CacheManagement  {
 
         return cityNames;
     }
+
 
     private static boolean timeMatches(LocalTime startingTime, String time) {
         LocalTime currentTime = LocalTime.parse(time);
@@ -196,7 +200,7 @@ public  class SQL implements CacheManagement  {
     public static void main(String[] args) {
         // Example usage
         SQL sql = new SQL();
-        boolean exists = sql.CheckExistance("1234","Lahore", "2024-03-28", "02:01");
+        boolean exists = sql.CheckExistance("1234","Lahore", "2024-03-27", "22:00");
         System.out.println("Data exists within 3-hour margin: " + exists);
     }
 
