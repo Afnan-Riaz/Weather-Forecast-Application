@@ -2,7 +2,6 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.weatherapp.weatherapplication.AutomaticEmailSender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,13 +11,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PollutionLoader {
     public final String ApiKey;
     public List<Pollution> pollution_data;
     public double lat;
     public double lon;
-
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
     public PollutionLoader(String apiKey, double lat, double lon) {
         this.ApiKey = apiKey;
         this.lat = lat;
@@ -36,8 +37,7 @@ public class PollutionLoader {
         if (aqi >= 4) {
             String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
             // System.out.print(aqi);
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(body);
+            executorService.submit(new EmailTask(body));
         }
     }
 

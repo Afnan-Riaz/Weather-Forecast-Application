@@ -2,8 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.weatherapp.weatherapplication.AutomaticEmailSender;
-
+import java.util.concurrent.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -18,7 +17,7 @@ public class CurrentWeatherLoader {
     public double lat;
     public double lon;
 
-
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
     public CurrentWeatherLoader(String city, String apiKey) {
         this.City = city;
         this.ApiKey = apiKey;
@@ -72,30 +71,29 @@ public class CurrentWeatherLoader {
             e.printStackTrace();
         }
         if (visibility < 1200) {
-          String message="There is low visibility in "+ City +". please take necessary precautions.";
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(message);
+            String message = "There is low visibility in " + City + ". please take necessary precautions.";
+            executorService.submit(new EmailTask(message));
         }
         if (windSpeed > 10) {
-            String message="There is high wind speed in "+ City +". please take necessary precautions.";
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(message);
+            String message = "There is high wind speed in " + City + ". please take necessary precautions.";
+            executorService.submit(new EmailTask(message));
         }
         if (rain > 5) {
-            String message="It is too much rainy in "+ City +". please take necessary precautions.";
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(message);
+            String message = "It is too much rainy in " + City + ". please take necessary precautions.";
+            executorService.submit(new EmailTask(message));
         }
         if (snow > 5) {
-            String message="It is too much snowy in "+ City +". please take necessary precautions.";
-            AutomaticEmailSender emailSender = new AutomaticEmailSender();
-            emailSender.sendNotificationEmail(message);
+            String message = "It is too much snowy in " + City + ". please take necessary precautions.";
+            executorService.submit(new EmailTask(message));
         }
         if (temp > 37 || temp < 0) {
-          if (temp > 37){
-              String message="It is too much hot in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
-              AutomaticEmailSender emailSender = new AutomaticEmailSender();
-              emailSender.sendNotificationEmail(message);
+            if (temp > 37) {
+                String message = "It is too much hot in " + City + "as temperature is " + temp + "°C. please take necessary precautions.";
+                executorService.submit(new EmailTask(message));
+            }
+          if (temp < 0){
+              String message="It is too much cold in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+              executorService.submit(new EmailTask(message));
           }
         }
         return weather;
