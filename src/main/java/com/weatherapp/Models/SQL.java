@@ -6,14 +6,17 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.weatherapp.HelpingClasses.CacheManagement;
 public  class SQL implements CacheManagement  {
 @Override
-    public  void insertWeatherData(String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
+    public  void insertWeatherData(String ipAddress,String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
         String connectionUrl = SqlConnection.getConnectionUrl();
 
-        String query = "INSERT INTO Weather (city_name, date, curr_day, time, starting_time, temperature, description, humidity, pressure, temp_max, temp_min, feels_like, wind_speed, air_quality_index, carbon_monoxide, nitrogen_monoxide, nitrogen_dioxide, ozone, sulphur_dioxide, ammonia, particulate_matter_pm25, particulate_matter_pm10, icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Weather (city_name, date, curr_day, time, starting_time, temperature, description, humidity, pressure, temp_max, temp_min, feels_like, wind_speed, air_quality_index, carbon_monoxide, nitrogen_monoxide, nitrogen_dioxide, ozone, sulphur_dioxide, ammonia, particulate_matter_pm25, particulate_matter_pm10, icon,IP_Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (Connection connection = DriverManager.getConnection(connectionUrl);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -40,7 +43,7 @@ public  class SQL implements CacheManagement  {
             preparedStatement.setDouble(21, particulateMatterPM25);
             preparedStatement.setDouble(22, particulateMatterPM10);
             preparedStatement.setString(23, icon);
-
+            preparedStatement.setString(24, ipAddress);
             int rowsInserted = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -49,17 +52,18 @@ public  class SQL implements CacheManagement  {
         }
     }
 @Override
-    public  List<WeatherForecast> getWeatherFromDb(String cityName, String startDate) {
+    public  List<WeatherForecast> getWeatherFromDb(String ipAddress,String cityName, String startDate) {
         List<WeatherForecast> forecasts = new ArrayList<>();
         String connectionUrl = SqlConnection.getConnectionUrl();
 
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             for (int i = 0; i < 5; i++) {
-                String query = "SELECT * FROM Weather WHERE city_name = ? AND date = ?";
+                String query = "SELECT * FROM Weather WHERE city_name = ? AND IP_Address=? AND date = ?";
                 String currentDate = addDays(startDate, i);
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setString(1, cityName);
-                    preparedStatement.setString(2, currentDate);
+                    preparedStatement.setString(2, ipAddress);
+                    preparedStatement.setString(3, currentDate);
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
@@ -106,30 +110,27 @@ public  class SQL implements CacheManagement  {
         return date.toString();
     }
     @Override
-    public boolean CheckExistance(String cityName, String date, String time) {
+    public boolean CheckExistance(String ipAddress,String cityName, String date, String time) {
         String connectionUrl = SqlConnection.getConnectionUrl();
-
-        String query = "SELECT * FROM Weather WHERE city_name = ?";
+        String query = "SELECT * FROM Weather WHERE city_name = ? AND IP_Address=?";
         boolean dataExists = false;
 
         try (Connection connection = DriverManager.getConnection(connectionUrl);
+
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, cityName);
-
+            preparedStatement.setString(2, ipAddress);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String existingDate = resultSet.getString("date");
                 String startingTimeStr = resultSet.getString("starting_time");
                 LocalTime startingTime = LocalTime.parse(startingTimeStr);
-
                 if (!date.equals(existingDate)) {
-
-                    deleteWeatherData(cityName);
+                    deleteWeatherData(cityName,ipAddress);
                     dataExists = false;
 
                 } else if (!timeMatches(startingTime, time)) {
-
-                    deleteWeatherData(cityName);
+                    deleteWeatherData(cityName,ipAddress);
                     dataExists = false;
 
                 } else {
@@ -145,17 +146,14 @@ public  class SQL implements CacheManagement  {
     }
 
     @Override
-    public  void deleteWeatherData(String cityName) {
+    public  void deleteWeatherData(String cityName,String ipAddress) {
         String connectionUrl = SqlConnection.getConnectionUrl();
 
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
-
-
-                String query = "DELETE FROM Weather WHERE city_name = ? ";
+                String query = "DELETE FROM Weather WHERE city_name = ? AND IP_Address=?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setString(1, cityName);
-
-
+                    preparedStatement.setString(2, ipAddress);
                     int rowsDeleted = preparedStatement.executeUpdate();
                     if (rowsDeleted > 0) {
                         System.out.println(rowsDeleted+" rows deleted " );
@@ -166,6 +164,26 @@ public  class SQL implements CacheManagement  {
             System.out.println("Failed to delete weather data.");
             e.printStackTrace();
         }
+    }
+    public Set<String> getAllCityNames() {
+        Set<String> cityNames = new HashSet<>();
+        String connectionUrl = SqlConnection.getConnectionUrl();
+        String query = "SELECT DISTINCT city_name FROM Weather";
+
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                String cityName = resultSet.getString("city_name");
+                cityNames.add(cityName);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to fetch city names from the database.");
+            e.printStackTrace();
+        }
+
+        return cityNames;
     }
 
     private static boolean timeMatches(LocalTime startingTime, String time) {
@@ -178,7 +196,7 @@ public  class SQL implements CacheManagement  {
     public static void main(String[] args) {
         // Example usage
         SQL sql = new SQL();
-        boolean exists = sql.CheckExistance("Lahore", "2024-03-27", "01:00");
+        boolean exists = sql.CheckExistance("1234","Lahore", "2024-03-28", "02:01");
         System.out.println("Data exists within 3-hour margin: " + exists);
     }
 

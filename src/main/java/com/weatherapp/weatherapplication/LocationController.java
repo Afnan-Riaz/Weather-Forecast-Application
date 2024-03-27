@@ -21,7 +21,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.control.Notifications;
-
+import com.weatherapp.Models.SQL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.sql.*;
@@ -40,7 +40,7 @@ public class LocationController {
     @FXML
     public void initialize() {
         try {
-            Set<String> cityNames = getAllCityNames();
+            Set<String> cityNames = retrieveDatafromDB("sql");
             for (String cityName : cityNames) {
                 createListItem(cityName);
             }
@@ -179,36 +179,15 @@ public class LocationController {
     }
 
 
-
-
-        public static void main(String[] args) {
-            Set<String> cityNames = getAllCityNames();
-            System.out.println("Distinct City Names:");
-            for (String cityName : cityNames) {
-                System.out.println(cityName);
+        public static Set<String> retrieveDatafromDB(String dbType){
+            if (dbType == "sql") {
+                SQL sql = new SQL();
+                Set<String> cityNmaes= sql.getAllCityNames();
+                return cityNmaes;
             }
+return null;
         }
 
-        public static Set<String> getAllCityNames() {
-            Set<String> cityNames = new HashSet<>();
-            String connectionUrl = SqlConnection.getConnectionUrl();
-            String query = "SELECT DISTINCT city_name FROM Weather";
-
-            try (Connection connection = DriverManager.getConnection(connectionUrl);
-                 Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(query)) {
-
-                while (resultSet.next()) {
-                    String cityName = resultSet.getString("city_name");
-                    cityNames.add(cityName);
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to fetch city names from the database.");
-                e.printStackTrace();
-            }
-
-            return cityNames;
-        }
 
 
 }

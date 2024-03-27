@@ -6,8 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.List;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +19,7 @@ public class ForecastsLoader {
     public double lon;
     public String StartingTime;
     public String cityName;
+
     public ForecastsLoader(String apiKey, double lat, double lon) {
         this.ApiKey = apiKey;
         this.lat = lat;
@@ -49,10 +49,10 @@ if(cityName==null){
     JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
     cityName = response.get("name").asText();
 }
-            if (sql.CheckExistance(cityName, getCurrentDate(),getCurrentTime())) {
+            if (checkExistance_inDb(cityName,"1234","sql")) {
                 // Starting time exists in the database, fetch forecasts from the database
 
-                forecasts = sql.getWeatherFromDb(cityName, getCurrentDate());
+                forecasts = sql.getWeatherFromDb("1234",cityName, getCurrentDate());
 
             }
             else{
@@ -108,7 +108,7 @@ if(cityName==null){
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
                     //Insert data to db for first time in 3 hours
 
-                    sql.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                    Insert_intoDb("sql","1234",cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon);
                     forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
@@ -132,6 +132,23 @@ if(cityName==null){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return now.format(formatter);
     }
+    public static boolean checkExistance_inDb(String cityName,String ipAddress,String dbType) {
+        if (dbType == "sql"){
+            SQL sql = new SQL();
+        return sql.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+    }
+        return false;
+        }
+    public static void Insert_intoDb(String dbType ,String ipAddress,String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
+        if (dbType == "sql") {
+            SQL sql = new SQL();
+            sql.insertWeatherData(ipAddress, cityName, day, formattedDate, time, startingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                    airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                    particulateMatterPM25, particulateMatterPM10, icon);
+        }
+
+    }
+
 
 }
 

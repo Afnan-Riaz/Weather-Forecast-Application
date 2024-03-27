@@ -24,7 +24,7 @@ public class WeatherManager {
         CurrentWeatherLoader currentWeatherLoader = new CurrentWeatherLoader(city, apiKey);
         current_weather = currentWeatherLoader.LoadCurrentWeather();
 
-        String icon = current_weather.icon();
+
         double lat = currentWeatherLoader.lat;
         double lon = currentWeatherLoader.lon;
 
