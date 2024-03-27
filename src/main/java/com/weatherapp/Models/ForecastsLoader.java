@@ -9,8 +9,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 import java.text.SimpleDateFormat;
-import com.weatherapp.HelpingClasses.Db_actions;
-import com.weatherapp.HelpingClasses.CacheManagement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -41,17 +39,20 @@ public class ForecastsLoader {
         }
     }
     public List<WeatherForecast> LoadForecasts(){
+        SQL sql = new SQL();
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
 
         try {
-            System.out.println(cityName);
-            System.out.println(getCurrentDate());
-            System.out.println(getCurrentTime());
-            if (cityName!=null&&(CacheManagement.CheckExistance(cityName, getCurrentDate(),getCurrentTime()))) {
+if(cityName==null){
+    JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
+    cityName = response.get("name").asText();
+}
+            if (sql.CheckExistance(cityName, getCurrentDate(),getCurrentTime())) {
                 // Starting time exists in the database, fetch forecasts from the database
-              forecasts=Db_actions.getWeatherFromDb(cityName,getCurrentDate());
+
+                forecasts = sql.getWeatherFromDb(cityName, getCurrentDate());
 
             }
             else{
@@ -106,9 +107,10 @@ public class ForecastsLoader {
                     double particulateMatterPM10 = matchingAirPollutionData.get("components").get("pm10").asDouble();
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
                     //Insert data to db for first time in 3 hours
-          Db_actions.insertWeatherData("Lahore",day,formattedDate, time,StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-        airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-        particulateMatterPM25, particulateMatterPM10, icon);
+
+                    sql.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10, icon);
                     forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon));

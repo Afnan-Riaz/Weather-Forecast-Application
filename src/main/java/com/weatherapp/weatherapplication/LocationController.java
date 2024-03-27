@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.HelpingClasses.SqlConnection;
 import com.weatherapp.Models.GeoCoder;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -23,6 +24,8 @@ import org.controlsfx.control.Notifications;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.sql.*;
+import java.util.HashSet;
 
 public class LocationController {
 
@@ -37,6 +40,10 @@ public class LocationController {
     @FXML
     public void initialize() {
         try {
+            Set<String> cityNames = getAllCityNames();
+            for (String cityName : cityNames) {
+                createListItem(cityName);
+            }
             parseCityDataInBackground();
             addEventFilters();
             formatText(latitudeField);
@@ -170,5 +177,38 @@ public class LocationController {
                 .sorted(Comparator.comparing(city -> city.toLowerCase().startsWith(lowerCaseUserInput) ? 0 : 1))
                 .collect(Collectors.toList());
     }
+
+
+
+
+        public static void main(String[] args) {
+            Set<String> cityNames = getAllCityNames();
+            System.out.println("Distinct City Names:");
+            for (String cityName : cityNames) {
+                System.out.println(cityName);
+            }
+        }
+
+        public static Set<String> getAllCityNames() {
+            Set<String> cityNames = new HashSet<>();
+            String connectionUrl = SqlConnection.getConnectionUrl();
+            String query = "SELECT DISTINCT city_name FROM Weather";
+
+            try (Connection connection = DriverManager.getConnection(connectionUrl);
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+
+                while (resultSet.next()) {
+                    String cityName = resultSet.getString("city_name");
+                    cityNames.add(cityName);
+                }
+            } catch (SQLException e) {
+                System.out.println("Failed to fetch city names from the database.");
+                e.printStackTrace();
+            }
+
+            return cityNames;
+        }
+
 
 }
