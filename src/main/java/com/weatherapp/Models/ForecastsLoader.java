@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.List;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,6 @@ public class ForecastsLoader {
     public double lon;
     public String StartingTime;
     public String cityName;
-
     public ForecastsLoader(String apiKey, double lat, double lon) {
         this.ApiKey = apiKey;
         this.lat = lat;
@@ -38,8 +38,7 @@ public class ForecastsLoader {
             return mapper.readTree(is);
         }
     }
-    public List<WeatherForecast> LoadForecasts(){
-        SQL sql = new SQL();
+    public List<WeatherForecast> LoadForecasts() {
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -49,7 +48,7 @@ if(cityName==null){
     JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
     cityName = response.get("name").asText();
 }
-            if (checkExistance_inDb(cityName,"1234","sql")) {
+            if (sql.CheckExistance(cityName, getCurrentDate(),getCurrentTime())) {
                 // Starting time exists in the database, fetch forecasts from the database
 
                 forecasts = sql.getWeatherFromDb("1234",cityName, getCurrentDate());
@@ -108,7 +107,7 @@ if(cityName==null){
                     int airQualityIndex = matchingAirPollutionData.get("main").get("aqi").asInt();
                     //Insert data to db for first time in 3 hours
 
-                    Insert_intoDb("sql","1234",cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                    sql.insertWeatherData(cityName, day, formattedDate, time, StartingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                             airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                             particulateMatterPM25, particulateMatterPM10, icon);
                     forecasts.add(new WeatherForecast(day,formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
