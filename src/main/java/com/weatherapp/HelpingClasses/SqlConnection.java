@@ -2,6 +2,9 @@ package com.weatherapp.HelpingClasses;
 
 
 public class SqlConnection {
+
+    private final static String HostName = "Maaz-Laptop";
+
     public static String getConnectionUrl() {
         // Register the JDBC driver
         try {
@@ -13,12 +16,12 @@ public class SqlConnection {
         }
 
         // Connection string
-        String connectionUrl = "jdbc:sqlserver://DESKTOP-MCD4BLG;"
+        String connectionUrl = "jdbc:sqlserver://" + HostName + ";"
                 + "database=WeatherData;"
                 + "integratedSecurity=true;"
                 + "encrypt=true;"
                 + "trustServerCertificate=true;"
-                + "loginTimeout=30;";
+                + "loginTimeout=10;";
 
         return connectionUrl ;
     }

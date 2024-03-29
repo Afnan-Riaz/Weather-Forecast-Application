@@ -52,8 +52,8 @@ public  class SQL implements CacheManagement  {
         }
     }
 @Override
-    public  List<WeatherForecast> getWeatherFromDb(String ipAddress,String cityName, String startDate) {
-        List<WeatherForecast> forecasts = new ArrayList<>();
+    public  List<ForecastWithPollution> getWeatherFromDb(String ipAddress,String cityName, String startDate) {
+        List<ForecastWithPollution> forecasts = new ArrayList<>();
         String connectionUrl = SqlConnection.getConnectionUrl();
 
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
@@ -89,9 +89,11 @@ public  class SQL implements CacheManagement  {
                         double particulateMatterPM10 = resultSet.getDouble("particulate_matter_pm10");
                         String icon = resultSet.getString("icon");
 
-                        forecasts.add(new WeatherForecast(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                                airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                                particulateMatterPM25, particulateMatterPM10, icon));
+                        Weather weather = new Weather(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, 0, 0, icon, 10, 0, 0);
+                        Pollution pollution = new Pollution(day, time, airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                                particulateMatterPM25, particulateMatterPM10);
+
+                        forecasts.add(new ForecastWithPollution(weather, pollution));
                     }
                 }
             }
@@ -117,7 +119,7 @@ public  class SQL implements CacheManagement  {
 
         try (Connection connection = DriverManager.getConnection(connectionUrl);
 
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, cityName);
             preparedStatement.setString(2, ipAddress);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,15 +127,21 @@ public  class SQL implements CacheManagement  {
                 String existingDate = resultSet.getString("date");
                 String startingTimeStr = resultSet.getString("starting_time");
                 LocalTime startingTime = LocalTime.parse(startingTimeStr);
+//                System.out.print(existingDate);
+//                System.out.print(startingTime);
+//                System.out.print(time);
+//                System.out.print(date);
                 if (!date.equals(existingDate)) {
                     deleteWeatherData(cityName,ipAddress);
                     dataExists = false;
 
-                } else if (!timeMatches(startingTime, time)) {
+                }
+                else if (!timeMatches(startingTime, time)) {
                     deleteWeatherData(cityName,ipAddress);
+                    System.out.print("Time doesnot match.");
                     dataExists = false;
-
-                } else {
+                }
+                else {
                     dataExists = true;
                 }
             }
@@ -189,6 +197,7 @@ public  class SQL implements CacheManagement  {
     private static boolean timeMatches(LocalTime startingTime, String time) {
         LocalTime currentTime = LocalTime.parse(time);
         LocalTime endTimeMargin = startingTime.plusHours(3);
+        System.out.println("\nUmers Line: " + startingTime+time+endTimeMargin);
         return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
     }
 

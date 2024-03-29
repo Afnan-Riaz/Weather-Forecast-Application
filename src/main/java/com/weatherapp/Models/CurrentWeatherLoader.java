@@ -71,7 +71,7 @@ public class CurrentWeatherLoader {
             String time = (hour < 10 ? "0" : "") + hour + ":00";
             String day = df2.format(c.getTime());
 
-            weather = new Weather(day,formattedDate, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon);
+            weather = new Weather(day, formattedDate, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon, visibility, rain, snow);
         }
         catch (IOException e) {
             e.printStackTrace();

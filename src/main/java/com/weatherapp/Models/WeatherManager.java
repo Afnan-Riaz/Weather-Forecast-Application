@@ -5,6 +5,7 @@ import java.util.*;
 public class WeatherManager {
     private final String city;
     private final String apiKey;
+    public String IPAddress;
     public Weather current_weather;
     public List<ForecastWithPollution> forecasts;
     public WeatherManager(String city, String apiKey) {
@@ -13,7 +14,8 @@ public class WeatherManager {
     }
 
     public List<ForecastWithPollution> getWeatherForecast() {
-        ForecastWithPollutionManager forecastsManager = new ForecastWithPollutionManager(city, apiKey);
+        IPAddress = LiveLocationTracker.getIPAddress();
+        ForecastWithPollutionManager forecastsManager = new ForecastWithPollutionManager(city, apiKey, IPAddress);
         forecasts = forecastsManager.ReturnWeatherForecasts();
         current_weather = forecastsManager.current_weather;
 
