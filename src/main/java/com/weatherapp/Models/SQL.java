@@ -1,7 +1,6 @@
 package com.weatherapp.Models;
 
 import com.weatherapp.HelpingClasses.SqlConnection;
-import com.weatherapp.Models.WeatherForecast;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -128,10 +127,10 @@ public  class SQL implements CacheManagement  {
                 String existingDate = resultSet.getString("date");
                 String startingTimeStr = resultSet.getString("starting_time");
                 LocalTime startingTime = LocalTime.parse(startingTimeStr);
-//                System.out.print(existingDate);
-//                System.out.print(startingTime);
-//                System.out.print(time);
-//                System.out.print(date);
+                System.out.print(existingDate);
+                System.out.print(startingTime);
+                System.out.print(time);
+                System.out.print(date);
                 if (!date.equals(existingDate)) {
                     deleteWeatherData(cityName,ipAddress);
                     dataExists = false;
@@ -195,14 +194,21 @@ public  class SQL implements CacheManagement  {
         return cityNames;
     }
 
+//    private static boolean timeMatches(LocalTime startingTime, String time) {
+//
+//        LocalTime currentTime = LocalTime.parse(time);
+//        LocalTime endTimeMargin = startingTime;
+//        startingTime=startingTime.minusHours(3);
+//        System.out.println("\n" + startingTime+time+endTimeMargin);
+//        return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
+//    }
     private static boolean timeMatches(LocalTime startingTime, String time) {
-
         LocalTime currentTime = LocalTime.parse(time);
-        LocalTime endTimeMargin = startingTime;
-        startingTime=startingTime.minusHours(3);
-        System.out.println(startingTime+time+endTimeMargin);
-        return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
+        LocalTime twoHoursAhead = currentTime.plusHours(2); // Calculate time 2 hours ahead
+
+        return !startingTime.isAfter(twoHoursAhead);
     }
+
 
 
     public static void main(String[] args) {

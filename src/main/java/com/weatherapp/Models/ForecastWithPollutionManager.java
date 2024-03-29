@@ -87,9 +87,19 @@ public class ForecastWithPollutionManager {
                             }
                         }
                     }
+
+//                     Currently the Data will go into both, SQL DB and File. Fix it accordingly:
+                    FileHandling fileHandling = new FileHandling();
+
                     if (matchingAirPollutionData != null) {
                         forecasts.add(new ForecastWithPollution(weather, matchingAirPollutionData));
 
+                        // Storing in File:
+                        fileHandling.insertWeatherData(IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
+                                matchingAirPollutionData.airQualityIndex(), matchingAirPollutionData.carbonMonoxide(), matchingAirPollutionData.nitrogenMonoxide(), matchingAirPollutionData.nitrogenDioxide(), matchingAirPollutionData.ozone(), matchingAirPollutionData.sulphurDioxide(), matchingAirPollutionData.ammonia(),
+                                matchingAirPollutionData.particulateMatterPM25(), matchingAirPollutionData.particulateMatterPM10(), icon);
+
+                        // Storing in Database:
                         Insert_intoDb("sql", IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
                                 matchingAirPollutionData.airQualityIndex(), matchingAirPollutionData.carbonMonoxide(), matchingAirPollutionData.nitrogenMonoxide(), matchingAirPollutionData.nitrogenDioxide(), matchingAirPollutionData.ozone(), matchingAirPollutionData.sulphurDioxide(), matchingAirPollutionData.ammonia(),
                                 matchingAirPollutionData.particulateMatterPM25(), matchingAirPollutionData.particulateMatterPM10(), icon);

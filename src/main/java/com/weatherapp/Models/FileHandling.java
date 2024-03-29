@@ -1,43 +1,29 @@
 package com.weatherapp.Models;
 
 import com.weatherapp.HelpingClasses.CacheManagement;
-import com.weatherapp.Models.ForecastsLoader;
+
 import java.util.List;
-import com.weatherapp.weatherapplication.ConsoleApp;
-import com.weatherapp.Models.CurrentWeather;
-import com.weatherapp.Models.WeatherForecast;
-import com.weatherapp.Models.WeatherManager;
-import com.weatherapp.Models.GeoCoder;
-
 import java.io.*;
-import java.text.SimpleDateFormat;
-
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.Date;
-import java.util.Scanner;
-import java.time.LocalDate;
-
-import static com.weatherapp.Models.ForecastsLoader.getCurrentDate;
-import static com.weatherapp.Models.ForecastsLoader.getCurrentTime;
 
 public class FileHandling implements CacheManagement {
 
     private static final String CACHE_FILE_PATH = "src/main/cache/weather_data.txt";
     @Override
-    public void insertWeatherData(String cityName, String day, String formattedDate, String time, String startingTime,
+    public void insertWeatherData(String ipAddress ,String cityName, String day, String formattedDate, String time, String startingTime,
                                   int temperature, String description, int humidity, int pressure, int tempMax, int tempMin,
                                   int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide,
                                   double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide,
                                   double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CACHE_FILE_PATH, true))) {
-            WeatherManager weatherManager = new WeatherManager(cityName, "9804f15edc7893ea4947a7526edfc496");
-            List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
-            CurrentWeather currentWeather = weatherManager.current_weather;
 
-            if (!forecasts.isEmpty()) {
-                WeatherForecast currentForecast = forecasts.get(0);
+//            WeatherManager weatherManager = new WeatherManager(cityName, "9804f15edc7893ea4947a7526edfc496");
+//            List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
+//            Weather currentWeather = weatherManager.current_weather;
+
+//            if (!forecasts.isEmpty()) {
+//                ForecastWithPollution currentForecast = forecasts.get(0);
 
                 StringBuilder weatherDataBuilder = new StringBuilder();
                 weatherDataBuilder.append(cityName).append(",")
@@ -66,15 +52,15 @@ public class FileHandling implements CacheManagement {
 
                 writer.write(weatherDataBuilder.toString());
                 writer.newLine();
-            }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public List<WeatherForecast> getWeatherFromDb(String cityName, String startDate) {
-        List<WeatherForecast> forecasts = new ArrayList<>();
+    public List<ForecastWithPollution> getWeatherFromDb(String ipAddress, String cityName, String startDate) {
+        List<ForecastWithPollution> forecasts = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
@@ -103,9 +89,11 @@ public class FileHandling implements CacheManagement {
                     double particulateMatterPM10 = Double.parseDouble(parts[21]);
                     String icon = parts[22];
 
-                    forecasts.add(new WeatherForecast(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
-                            airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                            particulateMatterPM25, particulateMatterPM10, icon));
+                    Weather weather = new Weather(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, 0, 0, icon, 10, 0, 0);
+                    Pollution pollution = new Pollution(day, time, airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                            particulateMatterPM25, particulateMatterPM10);
+
+                    forecasts.add(new ForecastWithPollution(weather, pollution));
                 }
             }
             System.out.println("Got data from file.");
@@ -118,7 +106,7 @@ public class FileHandling implements CacheManagement {
     }
 
     @Override
-    public boolean CheckExistance(String cityName, String date, String time) {
+    public boolean CheckExistance(String ipAddress, String cityName, String date, String time) {
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
             System.out.println(date);
@@ -135,8 +123,7 @@ public class FileHandling implements CacheManagement {
         return false;
     }
 
-
-    public static Set<String> getAllDistinctCityNames() {
+    public Set<String> getAllCityNames() {
         Set<String> cityNames = new HashSet<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
@@ -154,12 +141,8 @@ public class FileHandling implements CacheManagement {
         return cityNames;
     }
 
-    // Main method to test the getAllDistinctCityNames method
-
-
-
     @Override
-    public void deleteWeatherData(String cityName) {
+    public void deleteWeatherData(String cityName, String ipAddress) {
         try {
             File inputFile = new File(CACHE_FILE_PATH);
             File tempFile = new File("src/main/cache/temp_weather_data.txt");
@@ -194,24 +177,24 @@ public class FileHandling implements CacheManagement {
             e.printStackTrace();
         }
     }
+
+    /*
     public static void main(String[] args) {
         FileHandling fileHandling = new FileHandling();
-        //fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "15:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        //fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "18:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        //fileHandling.insertWeatherData("Miami", "Monday", "2024-03-24", "21:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        //fileHandling.insertWeatherData("Lahore", "Monday", "2024-03-24", "24:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        //fileHandling.deleteWeatherData("New York");
-        //List<WeatherForecast> forecasts = fileHandling.getWeatherFromDb("New York", getCurrentDate());
+        fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "15:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "18:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        fileHandling.insertWeatherData("Miami", "Monday", "2024-03-24", "21:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        fileHandling.insertWeatherData("Lahore", "Monday", "2024-03-24", "24:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
+        fileHandling.deleteWeatherData("New York");
+        List<WeatherForecast> forecasts = fileHandling.getWeatherFromDb("New York", getCurrentDate());
 
-        Set<String> distinctCityNames = getAllDistinctCityNames();
+        Set<String> distinctCityNames = getAllCityNames();
         System.out.println("Distinct City Names:");
         for (String cityName : distinctCityNames) {
             System.out.println(cityName);
         }
-
-
-        //System.out.println(fileHandling.CheckExistance("New York",getCurrentDate(),getCurrentTime()));
+        System.out.println(fileHandling.CheckExistance("New York",getCurrentDate(),getCurrentTime()));
     }
-
+    */
 
 }

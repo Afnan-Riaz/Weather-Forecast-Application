@@ -1,7 +1,7 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.CurrentWeather;
-import com.weatherapp.Models.WeatherForecast;
+import com.weatherapp.Models.Weather;
+import com.weatherapp.Models.ForecastWithPollution;
 import com.weatherapp.Models.WeatherManager;
 import com.weatherapp.Models.GeoCoder;
 
@@ -50,7 +50,7 @@ public class ConsoleApp {
                 case 4:
                     System.out.print("Enter the city name: ");
                     String city4 = scanner.nextLine();
-                    displayWeatherForecast(city4);
+                    displayForecastWithPollution(city4);
                     break;
                 case 5:
                     displaySunriseSunsetTime();
@@ -83,12 +83,12 @@ public class ConsoleApp {
         if (!city.isEmpty()) {
             // Fetch weather data using the obtained city name
             WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-            List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+            List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
             // Check if the list of forecasts is not empty
             if (!forecasts.isEmpty()) {
                 // Get the first forecast, assumed to be the current forecast
-                WeatherForecast currentForecast = forecasts.get(0);
+                ForecastWithPollution currentForecast = forecasts.get(0);
 
                 System.out.println("\nCurrent Weather for " + city + ":\n");
                 System.out.println("Day: " + currentForecast.day());
@@ -111,13 +111,13 @@ public class ConsoleApp {
 
     private static void displayWeatherByCity(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
         // Check if the list of forecasts is not empty
         if (!forecasts.isEmpty()) {
             // Get the first forecast,
             // which is assumed to be the current forecast
-            WeatherForecast currentForecast = forecasts.get(0);
+            ForecastWithPollution currentForecast = forecasts.get(0);
 
             System.out.println("\nCurrent Weather for " + city + ":\n");
             System.out.println("Day: " + currentForecast.day());
@@ -141,9 +141,9 @@ public class ConsoleApp {
 
         // Fetch weather data for a default location
         WeatherManager weatherManager = new WeatherManager("Lahore,PK", "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         if (weatherManager.current_weather != null) {
-            CurrentWeather currentWeather = weatherManager.current_weather;
+            Weather currentWeather = weatherManager.current_weather;
 
             // Display Current Weather
             System.out.println("\nCurrent Weather:\n");
@@ -163,11 +163,11 @@ public class ConsoleApp {
     }
 
 
-    private static void displayWeatherForecast(String city) {
+    private static void displayForecastWithPollution(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         System.out.println("\nWeather Forecast for " + city + ":\n");
-        for (WeatherForecast forecast : forecasts) {
+        for (ForecastWithPollution forecast : forecasts) {
             System.out.println("Day: " + forecast.day());
             System.out.println("Time: " + forecast.time());
             System.out.println("Temperature: " + forecast.temperature() + "°C");
@@ -185,8 +185,8 @@ public class ConsoleApp {
 
     private static void displaySunriseSunsetTime() {
         WeatherManager weatherManager = new WeatherManager("Lahore,PK", "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
-        CurrentWeather currentWeather = weatherManager.current_weather;
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
+        Weather currentWeather = weatherManager.current_weather;
 
         // Display Current Weather
         System.out.println("\nSunrise and Sunset Time for Lahore, PK:\n");
@@ -196,13 +196,13 @@ public class ConsoleApp {
 
     private static void displayAirPollutionData(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
         // Check if the list of forecasts is not empty
         if (!forecasts.isEmpty()) {
             // Get the first forecast,
             // which is assumed to be the current forecast
-            WeatherForecast currentForecast = forecasts.get(0);
+            ForecastWithPollution currentForecast = forecasts.get(0);
 
             // Display data about air pollution for the current time
             System.out.println("\nAir Pollution Data for " + city + ":\n");
@@ -218,12 +218,12 @@ public class ConsoleApp {
 
     private static void displayPollutingGasesData(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-        List<WeatherForecast> forecasts = weatherManager.getWeatherForecast();
+        List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
         // Check if the list of forecasts is not empty
         if (!forecasts.isEmpty()) {
             // Get the first forecast, which is assumed to be the current forecast
-            WeatherForecast currentForecast = forecasts.get(0);
+            ForecastWithPollution currentForecast = forecasts.get(0);
             // Display data about polluting gases for the current time
             System.out.println("\nPolluting Gases Data for " + city + ":\n");
             // Extract data about polluting gases from the current forecast
