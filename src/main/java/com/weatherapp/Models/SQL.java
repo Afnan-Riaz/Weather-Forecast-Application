@@ -195,9 +195,11 @@ public  class SQL implements CacheManagement  {
     }
 
     private static boolean timeMatches(LocalTime startingTime, String time) {
+
         LocalTime currentTime = LocalTime.parse(time);
-        LocalTime endTimeMargin = startingTime.plusHours(3);
-        System.out.println("\nUmers Line: " + startingTime+time+endTimeMargin);
+        LocalTime endTimeMargin = startingTime;
+        startingTime=startingTime.minusHours(3);
+        System.out.println(startingTime+time+endTimeMargin);
         return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
     }
 

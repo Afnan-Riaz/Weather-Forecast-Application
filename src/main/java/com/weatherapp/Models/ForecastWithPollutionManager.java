@@ -44,8 +44,12 @@ public class ForecastWithPollutionManager {
                 List<ForecastWithPollution> forecasts2 = sql.getWeatherFromDb(IPAddress, city, getCurrentDate());
                 ForecastWithPollution firstForecast = forecasts2.getFirst();
 
-                forecasts.add(new ForecastWithPollution(current_weather, new Pollution(current_weather.day(), current_weather.time(), firstForecast.airQualityIndex(), firstForecast.carbonMonoxide(), firstForecast.nitrogenMonoxide(), firstForecast.nitrogenDioxide(), firstForecast.ozone(), firstForecast.sulphurDioxide(), firstForecast.ammonia(), firstForecast.particulateMatterPM25(), firstForecast.particulateMatterPM10())));
-                forecasts.addAll(forecasts2);
+                if (Objects.equals(firstForecast.time(), current_weather.time()))
+                    forecasts = forecasts2;
+                else {
+                    forecasts.add(new ForecastWithPollution(current_weather, new Pollution(current_weather.day(), current_weather.time(), firstForecast.airQualityIndex(), firstForecast.carbonMonoxide(), firstForecast.nitrogenMonoxide(), firstForecast.nitrogenDioxide(), firstForecast.ozone(), firstForecast.sulphurDioxide(), firstForecast.ammonia(), firstForecast.particulateMatterPM25(), firstForecast.particulateMatterPM10())));
+                    forecasts.addAll(forecasts2);
+                }
 
                 System.out.println("\nData Loaded: ");
                 System.out.print(forecasts);
