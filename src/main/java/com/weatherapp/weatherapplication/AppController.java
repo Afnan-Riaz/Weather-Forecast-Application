@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -39,6 +40,7 @@ public class AppController {
     public Text day;
     public Text pressure;
     public Text quality;
+    public ImageView weatherIcon;
     private List<ForecastWithPollution> forecasts;
     private ForecastWithPollution forecast;
     public ImageView moreIcon;
@@ -53,13 +55,21 @@ public class AppController {
     public void initialize() {
         current_city = LiveLocationTracker.getLiveLocation();
         getWeatherData(current_city);
+        setImages();
+
+        moreIcon.setOnMouseClicked(this::showPollutantInfo);
+    }
+    void setImages(){
         String icon = forecast.icon();
         String imageName = ImageHandler.getImage(icon);
+        String iconName=ImageHandler.getIcon(icon);
         String baseImagePath = "/styling/";
         String imageUrl = Objects.requireNonNull(getClass().getResource(baseImagePath + imageName)).toExternalForm();
+        String iconUrl = Objects.requireNonNull(getClass().getResource(baseImagePath + iconName)).toExternalForm();
         bgImage.setStyle("-fx-background-image: url('" + imageUrl + "');" +
                 "-fx-background-size: cover; ");
-        moreIcon.setOnMouseClicked(this::showPollutantInfo);
+        weatherIcon.setStyle("-fx-image:  url('" + iconUrl + "');" +
+                "-fx-background-size: cover; ");
     }
     public void getWeatherData(String city) {
         WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
@@ -97,9 +107,15 @@ public class AppController {
         }
 
     }
+    private String capitalizeFirstLetter(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+        return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
+    }
     private void setOtherAttributes(ForecastWithPollution forecast, String current_city){
         city.setText(current_city);
-        description.setText(forecast.description());
+        description.setText(capitalizeFirstLetter(forecast.description()));
         humidity.setText(forecast.humidity() + " %");
         windspeed.setText(forecast.windSpeed() + " m/s");
         temp.setText(forecast.temperature() + " °C");
@@ -214,6 +230,7 @@ public class AppController {
                 public void handle(WindowEvent event) {
                     current_city=controller.locationField.getText();
                     getWeatherData(current_city);
+                    setImages();
                 }
             });
         }

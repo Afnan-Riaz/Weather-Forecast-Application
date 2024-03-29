@@ -52,12 +52,13 @@ public class ForecastWithPollutionManager {
             }
         }
 
-        System.out.print("\nCurrent Weather:");
-        System.out.print(current_weather);
-        System.out.print("\nForecasts:");
-        System.out.print(forecasts);
-        System.out.print("\nPolution Data:");
-        System.out.print(pollution_data);
+//        System.out.print("\nCurrent Weather:");
+//        System.out.print(current_weather);
+//        System.out.print("\nForecasts:");
+//        System.out.print(forecasts);
+//        System.out.print("\nPolution Data:");
+//        System.out.print(pollution_data);
+//        System.out.println(forecasts.getFirst().icon());
 
         return forecasts;
     }

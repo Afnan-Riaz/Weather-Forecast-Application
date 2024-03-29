@@ -34,7 +34,7 @@ new Thread(() -> {
     }
 }).start();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 550);
+        Scene scene = new Scene(fxmlLoader.load(), 980, 600);
         Image icon = new Image("/favicon.png");
         stage.getIcons().add(icon);
         stage.setTitle("Weather Application");

@@ -1,5 +1,5 @@
 .homescreen {
-    -fx-background-image: url('images/rain-bg1.jpg');
+    -fx-background-image: url('images/rain.jpg');
     -fx-background-size: cover;
 }
 .scrollpane>.viewport{

@@ -50,8 +50,8 @@ public class PollutionLoader {
             JsonNode airPollutionData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey);
             JsonNode airPollutionList = airPollutionData.get("list");
 
-            System.out.print("\nPolution List:");
-            System.out.print(airPollutionList);
+//            System.out.print("\nPolution List:");
+//            System.out.print(airPollutionList);
 
             for (JsonNode pollution : airPollutionList) {
                 c.setTimeInMillis(pollution.get("dt").asLong() * 1000);
