@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.weatherapp.HelpingClasses.CacheManagement;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.io.*;
 import java.util.*;
@@ -26,7 +27,8 @@ public class FileHandling implements CacheManagement {
 //                ForecastWithPollution currentForecast = forecasts.get(0);
 
                 StringBuilder weatherDataBuilder = new StringBuilder();
-                weatherDataBuilder.append(cityName).append(",")
+                weatherDataBuilder.append(ipAddress).append(",")
+                        .append(cityName).append(",")
                         .append(day).append(",")
                         .append(formattedDate).append(",")
                         .append(time).append(",")
@@ -62,43 +64,50 @@ public class FileHandling implements CacheManagement {
     public List<ForecastWithPollution> getWeatherFromDb(String ipAddress, String cityName, String startDate) {
         List<ForecastWithPollution> forecasts = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
+                // Split the line into parts
                 String[] parts = line.split(",");
-                if (parts.length >= 4 && parts[0].equals(cityName)) {
-                    String day = parts[1];
-                    String formattedDate = parts[2];
-                    String time = parts[3];
-                    int temperature = Integer.parseInt(parts[5]);
-                    String description = parts[6];
-                    int humidity = Integer.parseInt(parts[7]);
-                    int pressure = Integer.parseInt(parts[8]);
-                    int tempMax = Integer.parseInt(parts[9]);
-                    int tempMin = Integer.parseInt(parts[10]);
-                    int feelsLike = Integer.parseInt(parts[11]);
-                    double windSpeed = Double.parseDouble(parts[12]);
-                    int airQualityIndex = Integer.parseInt(parts[13]);
-                    double carbonMonoxide = Double.parseDouble(parts[14]);
-                    double nitrogenMonoxide = Double.parseDouble(parts[15]);
-                    double nitrogenDioxide = Double.parseDouble(parts[16]);
-                    double ozone = Double.parseDouble(parts[17]);
-                    double sulphurDioxide = Double.parseDouble(parts[18]);
-                    double ammonia = Double.parseDouble(parts[19]);
-                    double particulateMatterPM25 = Double.parseDouble(parts[20]);
-                    double particulateMatterPM10 = Double.parseDouble(parts[21]);
-                    String icon = parts[22];
+                if (parts.length >= 25) {
+                    String fileIpAddress = parts[24].trim();
+                    String fileCityName = parts[0].trim();
+                    if (fileIpAddress.equals(ipAddress) && fileCityName.equals(cityName)) {
+                        // Extract weather data
+                        String day = parts[1].trim();
+                        String formattedDate = parts[2].trim();
+                        String time = parts[3].trim();
+                        int temperature = Integer.parseInt(parts[5].trim());
+                        String description = parts[6].trim();
+                        int humidity = Integer.parseInt(parts[7].trim());
+                        int pressure = Integer.parseInt(parts[8].trim());
+                        int tempMax = Integer.parseInt(parts[9].trim());
+                        int tempMin = Integer.parseInt(parts[10].trim());
+                        int feelsLike = Integer.parseInt(parts[11].trim());
+                        double windSpeed = Double.parseDouble(parts[12].trim());
+                        String icon = parts[23].trim();
 
-                    Weather weather = new Weather(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, 0, 0, icon, 10, 0, 0);
-                    Pollution pollution = new Pollution(day, time, airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
-                            particulateMatterPM25, particulateMatterPM10);
+                        // Extract pollution data
+                        int airQualityIndex = Integer.parseInt(parts[13].trim());
+                        double carbonMonoxide = Double.parseDouble(parts[14].trim());
+                        double nitrogenMonoxide = Double.parseDouble(parts[15].trim());
+                        double nitrogenDioxide = Double.parseDouble(parts[16].trim());
+                        double ozone = Double.parseDouble(parts[17].trim());
+                        double sulphurDioxide = Double.parseDouble(parts[18].trim());
+                        double ammonia = Double.parseDouble(parts[19].trim());
+                        double particulateMatterPM25 = Double.parseDouble(parts[20].trim());
+                        double particulateMatterPM10 = Double.parseDouble(parts[21].trim());
 
-                    forecasts.add(new ForecastWithPollution(weather, pollution));
+                        // Create Weather and Pollution objects
+                        Weather weather = new Weather(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, 0, 0, icon, 10, 0, 0);
+                        Pollution pollution = new Pollution(day, time, airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia, particulateMatterPM25, particulateMatterPM10);
+
+                        // Add ForecastWithPollution object to the list
+                        forecasts.add(new ForecastWithPollution(weather, pollution));
+                    }
                 }
             }
-            System.out.println("Got data from file.");
         } catch (IOException e) {
-            System.out.println("Failed to read forecasts from the file.");
             e.printStackTrace();
         }
 
@@ -109,11 +118,17 @@ public class FileHandling implements CacheManagement {
     public boolean CheckExistance(String ipAddress, String cityName, String date, String time) {
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
-            System.out.println(date);
-            System.out.println(time);
-            while ((line = reader.readLine()) != null) {
+            if ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length >= 5 && parts[0].equals(cityName) && parts[2].equals(date) && parts[3].equals(time)) {
+                if (parts.length >= 5 && parts[0].equals(cityName) && parts[1].equals(ipAddress)) {
+                    String existingDate = parts[2];
+                    String existingTime = parts[3];
+                    if (!date.equals(existingDate) || !timeMatches(LocalTime.parse(existingTime), time)) {
+                        deleteWeatherData(cityName,ipAddress);
+                        System.out.println("inside conditon");
+                        return false;
+
+                    }
                     return true;
                 }
             }
@@ -130,8 +145,8 @@ public class FileHandling implements CacheManagement {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length > 0) {
-                    cityNames.add(parts[0]); // Assuming city name is the first element in each line
+                if (parts.length > 1) {
+                    cityNames.add(parts[1]); // Assuming city name is the first element in each line
                 }
             }
         } catch (IOException e) {
@@ -151,11 +166,12 @@ public class FileHandling implements CacheManagement {
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
             String lineToRemove = cityName + ",";
+            String sec_lineToRemove = ipAddress + ",";
             String currentLine;
-
+            System.out.println("deleted");
             while ((currentLine = reader.readLine()) != null) {
                 // Remove the line if it contains the cityName
-                if (currentLine.contains(lineToRemove)) {
+                if (currentLine.contains(lineToRemove)&&currentLine.contains(sec_lineToRemove)) {
                     continue;
                 }
                 writer.write(currentLine + System.getProperty("line.separator"));
@@ -176,6 +192,12 @@ public class FileHandling implements CacheManagement {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private static boolean timeMatches(LocalTime startingTime, String time) {
+        LocalTime currentTime = LocalTime.parse(time);
+        LocalTime twoHoursAhead = currentTime.plusHours(2); // Calculate time 2 hours ahead
+
+        return !startingTime.isAfter(twoHoursAhead);
     }
 
     /*

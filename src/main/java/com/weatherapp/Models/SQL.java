@@ -1,5 +1,6 @@
 package com.weatherapp.Models;
 
+import com.weatherapp.HelpingClasses.CacheManagement;
 import com.weatherapp.HelpingClasses.SqlConnection;
 
 import java.sql.*;
@@ -9,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.weatherapp.HelpingClasses.CacheManagement;
 public  class SQL implements CacheManagement  {
 @Override
     public  void insertWeatherData(String ipAddress,String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
@@ -127,14 +126,9 @@ public  class SQL implements CacheManagement  {
                 String existingDate = resultSet.getString("date");
                 String startingTimeStr = resultSet.getString("starting_time");
                 LocalTime startingTime = LocalTime.parse(startingTimeStr);
-                System.out.print(existingDate);
-                System.out.print(startingTime);
-                System.out.print(time);
-                System.out.print(date);
                 if (!date.equals(existingDate)) {
                     deleteWeatherData(cityName,ipAddress);
                     dataExists = false;
-
                 }
                 else if (!timeMatches(startingTime, time)) {
                     deleteWeatherData(cityName,ipAddress);
@@ -194,22 +188,12 @@ public  class SQL implements CacheManagement  {
         return cityNames;
     }
 
-//    private static boolean timeMatches(LocalTime startingTime, String time) {
-//
-//        LocalTime currentTime = LocalTime.parse(time);
-//        LocalTime endTimeMargin = startingTime;
-//        startingTime=startingTime.minusHours(3);
-//        System.out.println("\n" + startingTime+time+endTimeMargin);
-//        return !currentTime.isAfter(endTimeMargin) && !currentTime.isBefore(startingTime);
-//    }
     private static boolean timeMatches(LocalTime startingTime, String time) {
-        LocalTime currentTime = LocalTime.parse(time);
+ LocalTime currentTime = LocalTime.parse(time);
         LocalTime twoHoursAhead = currentTime.plusHours(2); // Calculate time 2 hours ahead
 
         return !startingTime.isAfter(twoHoursAhead);
     }
-
-
 
     public static void main(String[] args) {
         // Example usage

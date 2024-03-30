@@ -1,12 +1,8 @@
 package com.weatherapp.Models;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +32,7 @@ public class ForecastWithPollutionManager {
 //                JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat=" + lat + "&lon=" + lon + "&limit=1&appid=" + ApiKey);
 //                cityName = response.get("name").asText();
 //            }
-            if (checkExistance_inDb(city, IPAddress, "sql")) {
+            if (checkExistance_inDb(city, IPAddress, "file")) {
                 System.out.println("\nData found in database.");
                 SQL sql = new SQL();
                 // Starting time exists in the database, fetch forecasts from the database
@@ -89,18 +85,16 @@ public class ForecastWithPollutionManager {
                     }
 
 //                     Currently the Data will go into both, SQL DB and File. Fix it accordingly:
-                    FileHandling fileHandling = new FileHandling();
+
 
                     if (matchingAirPollutionData != null) {
                         forecasts.add(new ForecastWithPollution(weather, matchingAirPollutionData));
 
                         // Storing in File:
-                        fileHandling.insertWeatherData(IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
-                                matchingAirPollutionData.airQualityIndex(), matchingAirPollutionData.carbonMonoxide(), matchingAirPollutionData.nitrogenMonoxide(), matchingAirPollutionData.nitrogenDioxide(), matchingAirPollutionData.ozone(), matchingAirPollutionData.sulphurDioxide(), matchingAirPollutionData.ammonia(),
-                                matchingAirPollutionData.particulateMatterPM25(), matchingAirPollutionData.particulateMatterPM10(), icon);
+
 
                         // Storing in Database:
-                        Insert_intoDb("sql", IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
+                        Insert_intoDb("file", IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
                                 matchingAirPollutionData.airQualityIndex(), matchingAirPollutionData.carbonMonoxide(), matchingAirPollutionData.nitrogenMonoxide(), matchingAirPollutionData.nitrogenDioxide(), matchingAirPollutionData.ozone(), matchingAirPollutionData.sulphurDioxide(), matchingAirPollutionData.ammonia(),
                                 matchingAirPollutionData.particulateMatterPM25(), matchingAirPollutionData.particulateMatterPM10(), icon);
                     }
@@ -148,5 +142,12 @@ public class ForecastWithPollutionManager {
                     airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                     particulateMatterPM25, particulateMatterPM10, icon);
         }
+        else if (Objects.equals(dbType, "file")){
+            FileHandling fileHandling = new FileHandling();
+            fileHandling.insertWeatherData(ipAddress, cityName, day, formattedDate, time, startingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+                    airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
+                    particulateMatterPM25, particulateMatterPM10, icon);
+        }
+
     }
 }

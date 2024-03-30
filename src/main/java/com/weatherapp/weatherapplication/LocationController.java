@@ -1,7 +1,8 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.HelpingClasses.SqlConnection;
+import com.weatherapp.Models.FileHandling;
 import com.weatherapp.Models.GeoCoder;
+import com.weatherapp.Models.SQL;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -19,13 +20,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.control.Notifications;
-import com.weatherapp.Models.SQL;
+import org.controlsfx.control.textfield.TextFields;
+
 import java.util.*;
 import java.util.stream.Collectors;
-import java.sql.*;
-import java.util.HashSet;
 
 public class LocationController {
 
@@ -34,13 +33,14 @@ public class LocationController {
     public VBox locationList;
     @FXML
     public TextField locationField;
-
+ static String dbType="file";
     private List<String> cityNames = new ArrayList<>();
 
     @FXML
     public void initialize() {
         try {
-            Set<String> cityNames = retrieveDatafromDB("sql");
+            LocationController loc=new LocationController();
+            Set<String> cityNames = loc.retrieveDatafromDB();
             for (String cityName : cityNames) {
                 createListItem(cityName);
             }
@@ -179,10 +179,15 @@ public class LocationController {
     }
 
 
-        public static Set<String> retrieveDatafromDB(String dbType){
+        public  Set<String> retrieveDatafromDB(){
             if (dbType == "sql") {
                 SQL sql = new SQL();
                 Set<String> cityNmaes= sql.getAllCityNames();
+                return cityNmaes;
+            }
+            else if(dbType=="file"){
+                FileHandling file=new FileHandling();
+                Set<String> cityNmaes= file.getAllCityNames();
                 return cityNmaes;
             }
 return null;
