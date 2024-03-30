@@ -38,3 +38,4 @@ build/
 .DS_Store
 .idea/inspectionProfiles/
 src/main/cache/weather_data.txt
+src/main/cache/temp_weather_data.txt

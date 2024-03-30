@@ -34,10 +34,10 @@ public class ForecastWithPollutionManager {
 //            }
             if (checkExistance_inDb(city, IPAddress, "file")) {
                 System.out.println("\nData found in database.");
-                SQL sql = new SQL();
+                FileHandling fileHandling = new FileHandling();
                 // Starting time exists in the database, fetch forecasts from the database
 
-                List<ForecastWithPollution> forecasts2 = sql.getWeatherFromDb(IPAddress, city, getCurrentDate());
+                List<ForecastWithPollution> forecasts2 = fileHandling.getWeatherFromDb(IPAddress, city, getCurrentDate());
                 ForecastWithPollution firstForecast = forecasts2.getFirst();
 
                 if (Objects.equals(firstForecast.time(), current_weather.time()))
@@ -131,6 +131,10 @@ public class ForecastWithPollutionManager {
         if (Objects.equals(dbType, "sql")) {
             SQL sql = new SQL();
             return sql.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+        }
+        else if(Objects.equals(dbType, "file")){
+            FileHandling fileHandling = new FileHandling();
+            return fileHandling.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
         }
         return false;
     }
