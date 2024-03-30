@@ -21,18 +21,18 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Show notification prompt
-new Thread(() -> {
-    boolean enableNotifications = showNotificationPrompt();
+    new Thread(() -> {
+        boolean enableNotifications = showNotificationPrompt();
 
-    // Proceed accordingly based on user's choice
-    if (enableNotifications) {
-        String email = getEmailForNotifications();
-        if (email != null) {
-            AutomaticEmailSender automaticEmailSender = new AutomaticEmailSender();
-            automaticEmailSender.setEmailAddress(email);
+        // Proceed accordingly based on user's choice
+        if (enableNotifications) {
+            String email = getEmailForNotifications();
+            if (email != null) {
+                AutomaticEmailSender automaticEmailSender = new AutomaticEmailSender();
+                automaticEmailSender.setEmailAddress(email);
+            }
         }
-    }
-}).start();
+        }).start();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 980, 600);
         Image icon = new Image("/favicon.png");
