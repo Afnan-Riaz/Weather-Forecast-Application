@@ -27,7 +27,8 @@ public class GeoCoder {
         try {
             JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
             if (!response.isEmpty()) {
-                return response.get(0).get("name").asText() + ", " + response.get(0).get("country").asText();
+                return response.get(0).get("name").asText();
+                //+ ", " + response.get(0).get("country").asText();
             }
             return "";
         } catch (Exception e) {

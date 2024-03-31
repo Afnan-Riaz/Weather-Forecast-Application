@@ -2,9 +2,10 @@ package com.weatherapp.weatherapplication;
 
 import com.weatherapp.Models.Weather;
 import com.weatherapp.Models.ForecastWithPollution;
+import static com.weatherapp.Models.ForecastWithPollutionManager.getCurrentDate;
 import com.weatherapp.Models.WeatherManager;
 import com.weatherapp.Models.GeoCoder;
-
+import com.weatherapp.Models.FileHandling;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -75,52 +76,15 @@ public class ConsoleApp {
         } while (choice != 0);
     }
 
-    private static void displayWeatherByCoordinates(double latitude, double longitude) {
-        // Create a GeoCoder object to fetch the city name from latitude and longitude
-        GeoCoder geoCoder = new GeoCoder("9804f15edc7893ea4947a7526edfc496", latitude, longitude);
-        String city = geoCoder.getCity();
-
-        if (!city.isEmpty()) {
-            // Fetch weather data using the obtained city name
-            WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
-            List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
-
-            // Check if the list of forecasts is not empty
-            if (!forecasts.isEmpty()) {
-                // Get the first forecast, assumed to be the current forecast
-                ForecastWithPollution currentForecast = forecasts.get(0);
-
-                System.out.println("\nCurrent Weather for " + city + ":\n");
-                System.out.println("Day: " + currentForecast.day());
-                System.out.println("Temperature: " + currentForecast.temperature() + "°C");
-                System.out.println("Weather: " + currentForecast.description());
-                System.out.println("Humidity: " + currentForecast.humidity() + "%");
-                System.out.println("Pressure: " + currentForecast.pressure() + " hPa");
-                System.out.println("Max Temperature: " + currentForecast.tempMax() + "°C");
-                System.out.println("Min Temperature: " + currentForecast.tempMin() + "°C");
-                System.out.println("Feels Like: " + currentForecast.feelsLike() + "°C");
-                System.out.println("Wind Speed: " + currentForecast.windSpeed() + " m/s");
-            } else {
-                System.out.println("Failed to fetch forecast data. Please try again later.");
-            }
-        } else {
-            System.out.println("Failed to fetch city data for the provided coordinates. Please try again.");
-        }
-    }
-
-
-    private static void displayWeatherByCity(String city) {
-        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+    private static void displayWeatherInformation() {
+        WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
-
-        // Check if the list of forecasts is not empty
         if (!forecasts.isEmpty()) {
-            // Get the first forecast,
-            // which is assumed to be the current forecast
             ForecastWithPollution currentForecast = forecasts.get(0);
 
-            System.out.println("\nCurrent Weather for " + city + ":\n");
+            System.out.println("\nCurrent Weather for Lahore" + ":\n");
             System.out.println("Day: " + currentForecast.day());
+            System.out.println("Time: " + currentForecast.time());
             System.out.println("Temperature: " + currentForecast.temperature() + "°C");
             System.out.println("Weather: " + currentForecast.description());
             System.out.println("Humidity: " + currentForecast.humidity() + "%");
@@ -129,38 +93,43 @@ public class ConsoleApp {
             System.out.println("Min Temperature: " + currentForecast.tempMin() + "°C");
             System.out.println("Feels Like: " + currentForecast.feelsLike() + "°C");
             System.out.println("Wind Speed: " + currentForecast.windSpeed() + " m/s");
-        }
-        else
-        {
+        } else {
             System.out.println("Failed to fetch forecast data. Please try again later.");
         }
     }
 
-    private static void displayWeatherInformation() {
-        System.out.println("Displaying Weather Information:");
+    private static void displayWeatherByCity(String city) {
 
-        // Fetch weather data for a default location
-        WeatherManager weatherManager = new WeatherManager("Lahore,PK", "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
-        if (weatherManager.current_weather != null) {
-            Weather currentWeather = weatherManager.current_weather;
+        if (!forecasts.isEmpty()) {
+            ForecastWithPollution currentForecast = forecasts.get(0);
 
-            // Display Current Weather
-            System.out.println("\nCurrent Weather:\n");
-            System.out.println("Day: " + currentWeather.day());
-            System.out.println("Time: " + currentWeather.time());
-            System.out.println("Temperature: " + currentWeather.temperature() + "°C");
-            System.out.println("Weather: " + currentWeather.description());
-            System.out.println("Humidity: " + currentWeather.humidity() + "%");
-            System.out.println("Pressure: " + currentWeather.pressure() + " hPa");
-            System.out.println("Max Temperature: " + currentWeather.tempMax() + "°C");
-            System.out.println("Min Temperature: " + currentWeather.tempMin() + "°C");
-            System.out.println("Feels Like: " + currentWeather.feelsLike() + "°C");
-            System.out.println("Wind Speed: " + currentWeather.windSpeed() + " m/s");
+            System.out.println("\nCurrent Weather for " + city + ":\n");
+            System.out.println("Day: " + currentForecast.day());
+            System.out.println("Time: " + currentForecast.time());
+            System.out.println("Temperature: " + currentForecast.temperature() + "°C");
+            System.out.println("Weather: " + currentForecast.description());
+            System.out.println("Humidity: " + currentForecast.humidity() + "%");
+            System.out.println("Pressure: " + currentForecast.pressure() + " hPa");
+            System.out.println("Max Temperature: " + currentForecast.tempMax() + "°C");
+            System.out.println("Min Temperature: " + currentForecast.tempMin() + "°C");
+            System.out.println("Feels Like: " + currentForecast.feelsLike() + "°C");
+            System.out.println("Wind Speed: " + currentForecast.windSpeed() + " m/s");
         } else {
-            System.out.println("Failed to fetch current weather data. Please try again later.");
+                System.out.println("Failed to fetch forecast data. Please try again later.");
+            }
+    }
+
+    private static void displayWeatherByCoordinates(double latitude, double longitude) {
+        // Create a GeoCoder object to fetch the city name from latitude and longitude
+        GeoCoder geoCoder = new GeoCoder("9804f15edc7893ea4947a7526edfc496", latitude, longitude);
+        String city = geoCoder.getCity();
+        if (!city.isEmpty()) {
+        displayWeatherByCity(city);
         }
     }
+
 
 
     private static void displayForecastWithPollution(String city) {

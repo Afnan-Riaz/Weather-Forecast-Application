@@ -162,6 +162,7 @@ public class FileHandling implements CacheManagement {
         return cityNames;
     }
 
+
     @Override
     public void deleteWeatherData(String cityName, String ipAddress) {
         try {
@@ -171,34 +172,36 @@ public class FileHandling implements CacheManagement {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
-            String lineToRemove = cityName + ",";
-            String sec_lineToRemove = ipAddress + ",";
+            String lineToRemove = ipAddress + ";" + cityName;
+
             String currentLine;
-            System.out.println("deleted");
             while ((currentLine = reader.readLine()) != null) {
-                // Remove the line if it contains the cityName
-                if (currentLine.contains(lineToRemove)&&currentLine.contains(sec_lineToRemove)) {
-                    continue;
+                String trimmedLine = currentLine.trim();
+                // Remove the line if it matches the criteria
+                if (!trimmedLine.startsWith(lineToRemove)) {
+                    writer.write(currentLine + System.getProperty("line.separator"));
                 }
-                writer.write(currentLine + System.getProperty("line.separator"));
             }
             writer.close();
             reader.close();
 
-            // Delete the original file
+            // Rename the temporary file to the original one
             if (!inputFile.delete()) {
                 System.out.println("Could not delete file");
-                return;
+               return;
             }
-
-            // Rename the temp file to the original file name
             if (!tempFile.renameTo(inputFile)) {
                 System.out.println("Could not rename file");
+             return;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
     }
+
+
     private static boolean timeMatches(LocalTime startingTime, String time) {
         LocalTime currentTime = LocalTime.parse(time);
         LocalTime twoHoursAhead = currentTime.plusHours(2); // Calculate time 2 hours ahead
@@ -206,23 +209,11 @@ public class FileHandling implements CacheManagement {
         return !startingTime.isAfter(twoHoursAhead);
     }
 
-    /*
+
     public static void main(String[] args) {
         FileHandling fileHandling = new FileHandling();
-        fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "15:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        fileHandling.insertWeatherData("New York", "Monday", "2024-03-24", "18:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        fileHandling.insertWeatherData("Miami", "Monday", "2024-03-24", "21:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        fileHandling.insertWeatherData("Lahore", "Monday", "2024-03-24", "24:00", "11:00", 20, "Sunny", 50, 1013, 25, 18, 22, 5.5, 50, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, "sunny.png");
-        fileHandling.deleteWeatherData("New York");
-        List<WeatherForecast> forecasts = fileHandling.getWeatherFromDb("New York", getCurrentDate());
-
-        Set<String> distinctCityNames = getAllCityNames();
-        System.out.println("Distinct City Names:");
-        for (String cityName : distinctCityNames) {
-            System.out.println(cityName);
-        }
-        System.out.println(fileHandling.CheckExistance("New York",getCurrentDate(),getCurrentTime()));
+        fileHandling.deleteWeatherData("Delhi","39.60.255.84");
     }
-    */
+
 
 }
