@@ -29,18 +29,22 @@ Implements a ".txt" based storage mechanism for storing weather records in a sim
 ### Key Use Cases
 #### Add Locations:
  Users can add multiple locations using either longitude and latitude or city/country names to check weather forecasts.
+ ![Alt Error loading image](Location.pic.png)
 #### Current Weather Conditions: 
 Provides real-time updates on current weather conditions, including temperature, humidity, and wind speed.
 #### Weather Forecast: 
 Offers a detailed 5-day weather forecast with a 3-hour interval, aiding users in planning ahead.
 #### Sunrise and Sunset Time:
  Displays sunrise and sunset times for each location to assist users in scheduling outdoor activities.
+ ![Alt Error loading image](Main.pic.png)
 #### Air Quality Information:
  Retrieves Air Quality Index (AQI) and pollutant data, including carbon monoxide, nitrogen dioxide, and particulate matter.
+ ![Alt Error loading image](pollutants.pic.png)
 #### Cache Management: 
 Implements cache management using a database to store frequently accessed weather data, reducing API calls and improving application performance.
 #### Notifications: 
 Generates notifications emails for poor weather conditions and deteriorating air quality, ensuring users stay informed and prepared.
+![Alt Error loading image](Notification_pic.png)
 
 
 ## Getting Started
