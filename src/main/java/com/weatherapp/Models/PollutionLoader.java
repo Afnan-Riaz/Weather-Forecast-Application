@@ -33,14 +33,6 @@ public class PollutionLoader {
         }
     }
 
-    public void checkAQIAndSendEmail(int aqi) {
-        if (aqi >= 4) {
-            String body = "The Air Quality Index (AQI) is currently " + aqi + ", which means air quality is very poor. Please take necessary precautions.";
-            // System.out.print(aqi);
-            executorService.submit(new EmailTask(body));
-        }
-    }
-
     public List<Pollution> LoadPollutionData() {
         pollution_data = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
@@ -72,9 +64,6 @@ public class PollutionLoader {
             e.printStackTrace();
         }
 
-        int AQI = pollution_data.getFirst().airQualityIndex();
-        checkAQIAndSendEmail(AQI);
-        
         return pollution_data;
     }
 }

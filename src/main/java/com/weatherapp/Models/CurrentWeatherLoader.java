@@ -17,7 +17,6 @@ public class CurrentWeatherLoader {
     public double lat;
     public double lon;
 
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
     public CurrentWeatherLoader(String city, String apiKey) {
         this.City = city;
         this.ApiKey = apiKey;
@@ -29,9 +28,10 @@ public class CurrentWeatherLoader {
             return mapper.readTree(is);
         }
     }
-    public Weather LoadCurrentWeather(){
-        int temp=-1;
-        double windSpeed=-1;
+
+    public Weather LoadCurrentWeather() {
+        int temp = -1;
+        double windSpeed = -1;
         int visibility = -1;
         int rain = -1;
         int snow = -1;
@@ -71,37 +71,11 @@ public class CurrentWeatherLoader {
             String day = df2.format(c.getTime());
 
             weather = new Weather(day, formattedDate, time, temp, desc, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, sunrise, sunset, icon, visibility, rain, snow);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (visibility < 1200) {
-            String message = "There is low visibility in " + City + ". please take necessary precautions.";
-            executorService.submit(new EmailTask(message));
-        }
-        if (windSpeed > 10) {
-            String message = "There is high wind speed in " + City + ". please take necessary precautions.";
-            executorService.submit(new EmailTask(message));
-        }
-        if (rain > 5) {
-            String message = "It is too much rainy in " + City + ". please take necessary precautions.";
-            executorService.submit(new EmailTask(message));
-        }
-        if (snow > 5) {
-            String message = "It is too much snowy in " + City + ". please take necessary precautions.";
-            executorService.submit(new EmailTask(message));
-        }
-        if (temp > 37 || temp < 0) {
-            if (temp > 37) {
-                String message = "It is too much hot in " + City + " as temperature is " + temp + "°C. please take necessary precautions.";
-                executorService.submit(new EmailTask(message));
-            }
-          if (temp < 0){
-              String message="It is too much cold in "+ City +" as temperature is "+temp+"°C. please take necessary precautions.";
-              executorService.submit(new EmailTask(message));
-          }
-        }
+
         return weather;
     }
 }

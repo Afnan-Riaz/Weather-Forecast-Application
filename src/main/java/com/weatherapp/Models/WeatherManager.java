@@ -1,5 +1,7 @@
 package com.weatherapp.Models;
 
+import com.weatherapp.HelpingClasses.EmailSender;
+
 import java.util.*;
 
 public class WeatherManager {
@@ -22,6 +24,7 @@ public class WeatherManager {
 
         current_weather = forecastsManager.current_weather;
 
+        EmailSender.checkAndSendEmail(forecasts.getFirst(), city);
         return forecasts;
     }
 
