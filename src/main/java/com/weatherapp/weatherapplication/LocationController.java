@@ -26,6 +26,8 @@ import org.controlsfx.control.textfield.TextFields;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.weatherapp.weatherapplication.Formatter.formatText;
+
 public class LocationController {
 
     public TextField longitudeField;
@@ -101,16 +103,6 @@ public class LocationController {
         } else {
             showNotification("Location already exists or is invalid.");
         }
-    }
-    private void formatText(TextField textField) {
-        TextFormatter<String> formatter = new TextFormatter<>(change -> {
-            if (!change.getControlNewText().matches("\\d*(\\.\\d*)?")) {
-                return null;
-            } else {
-                return change;
-            }
-        });
-        textField.setTextFormatter(formatter);
     }
     public void searchCoordinates(MouseEvent event) {
         String latitude = latitudeField.getText();

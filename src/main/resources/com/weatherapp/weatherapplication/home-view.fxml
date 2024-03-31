@@ -15,23 +15,23 @@
       <VBox.margin>
          <Insets left="30.0" right="30.0" top="30.0" />
       </VBox.margin>
-      <VBox centerShape="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="244.0" prefWidth="139.0">
+      <VBox centerShape="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="382.0" prefWidth="488.0">
          <HBox prefHeight="149.0" prefWidth="139.0" style="-fx-border-radius: 20px;">
             <effect>
                <ColorAdjust brightness="-0.02" />
             </effect>
-            <VBox prefHeight="150.0" prefWidth="139.0">
-               <ImageView fitHeight="53.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../../../styling/icons/fog.png" />
+            <VBox prefHeight="150.0" prefWidth="312.0">
+               <ImageView fx:id="weatherIcon" fitHeight="53.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+<!--                  <Image url="@../../../styling/icons/fog.png" />-->
                </ImageView>
-               <Text fx:id="description" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Fog" wrappingWidth="-1">
+               <Text fx:id="description" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Fog" wrappingWidth="314.20005452632904">
                   <font>
-                     <Font name="Raleway SemiBold" size="29.0" />
+                     <Font name="Raleway SemiBold" size="32.0" />
                   </font>
                </Text>
-               <Text fx:id="city" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Johar Town" wrappingWidth="93.58399963378906">
+               <Text fx:id="city" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Johar Town" wrappingWidth="295.1840515136719">
                   <VBox.margin>
-                     <Insets top="3.0" />
+                     <Insets bottom="5.0" top="3.0" />
                   </VBox.margin>
                   <font>
                      <Font name="Poppins Medium" size="16.0" />
@@ -59,14 +59,20 @@
                      </HBox.margin>
                   </Text>
                </HBox>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
             </VBox>
          </HBox>
          <HBox prefHeight="34.0" prefWidth="139.0">
             <VBox prefHeight="131.0" prefWidth="139.0">
-               <Text fx:id="temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="105.55703544616699">
+               <Text fx:id="temp" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="28 °C" wrappingWidth="138.35703086853027">
                   <font>
                      <Font name="Poppins Bold" size="36.0" />
                   </font>
+                  <VBox.margin>
+                     <Insets bottom="8.0" />
+                  </VBox.margin>
                </Text>
             </VBox>
          </HBox>
@@ -98,18 +104,21 @@
             <VBox.margin>
                <Insets top="30.0" />
             </VBox.margin>
-            <ImageView fx:id="prevDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+            <ImageView fx:id="prevDay" fitHeight="25.0" fitWidth="20.0" onMouseClicked="#changeDay" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <Image url="@../../../styling/icons/cheveron.png" />
             </ImageView>
-            <Text fx:id="day" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday">
+            <Text fx:id="day" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" textAlignment="CENTER" wrappingWidth="87.65201568603516">
                <font>
                   <Font name="Poppins Medium" size="14.0" />
                </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </Text>
-            <ImageView fx:id="nextDay" onMouseClicked="#changeDay" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="nextDay" fitHeight="25.0" fitWidth="20.0" onMouseClicked="#changeDay" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -118,7 +127,7 @@
          </HBox>
       </VBox>
       <HBox alignment="TOP_RIGHT" prefHeight="382.0" prefWidth="733.0">
-         <VBox prefHeight="382.0" prefWidth="212.0">
+         <VBox prefHeight="382.0" prefWidth="212.0" spacing="13.0">
             <HBox alignment="TOP_RIGHT" prefHeight="56.0" prefWidth="154.0">
                <VBox.margin>
                   <Insets />
@@ -134,7 +143,7 @@
                         <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fx:id="humidity" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="70 %" wrappingWidth="105.55703544616699">
+                  <Text fx:id="humidity" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="70 %" wrappingWidth="144.75699424743652">
                      <font>
                         <Font name="Poppins SemiBold" size="26.0" />
                      </font>
@@ -156,7 +165,7 @@
                         <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fx:id="windspeed" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1.97 m/s" wrappingWidth="117.55703544616699">
+                  <Text fx:id="windspeed" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1.97 m/s" wrappingWidth="147.15701866149902">
                      <font>
                         <Font name="Poppins SemiBold" size="24.0" />
                      </font>
@@ -178,7 +187,7 @@
                         <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fx:id="pressure" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1015 hPa" wrappingWidth="115.95705986022949">
+                  <Text fx:id="pressure" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1015 hPa" wrappingWidth="148.75699424743652">
                      <font>
                         <Font name="Poppins SemiBold" size="26.0" />
                      </font>
@@ -200,7 +209,7 @@
                         <Font name="Poppins Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Text fx:id="quality" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="79 AQI" wrappingWidth="116.75698661804199">
+                  <Text fx:id="quality" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="79 AQI" wrappingWidth="149.55704307556152">
                      <font>
                         <Font name="Poppins SemiBold" size="26.0" />
                      </font>
@@ -230,7 +239,7 @@
                         <Image url="@../../../styling/icons/more.png" />
                      </ImageView>
                   </HBox>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CO, NO2, O3" wrappingWidth="144.756986618042">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CO, NO2, O3" wrappingWidth="156.756986618042">
                      <font>
                         <Font name="Poppins SemiBold" size="21.0" />
                      </font>

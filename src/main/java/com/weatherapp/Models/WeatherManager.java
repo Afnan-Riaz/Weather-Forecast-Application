@@ -5,6 +5,7 @@ import java.util.*;
 public class WeatherManager {
     private final String city;
     private final String apiKey;
+    private final String DbType = "sql";
     public String IPAddress;
     public Weather current_weather;
     public List<ForecastWithPollution> forecasts;
@@ -15,8 +16,10 @@ public class WeatherManager {
 
     public List<ForecastWithPollution> getWeatherForecast() {
         IPAddress = LiveLocationTracker.getIPAddress();
-        ForecastWithPollutionManager forecastsManager = new ForecastWithPollutionManager(city, apiKey, IPAddress);
+
+        ForecastWithPollutionManager forecastsManager = new ForecastWithPollutionManager(city, apiKey, IPAddress, DbType);
         forecasts = forecastsManager.ReturnWeatherForecasts();
+
         current_weather = forecastsManager.current_weather;
 
         return forecasts;
