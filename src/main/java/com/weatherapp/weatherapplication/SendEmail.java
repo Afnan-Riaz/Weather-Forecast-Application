@@ -37,6 +37,6 @@ public class SendEmail {
         message.setText(body);
 
         Transport.send(message);
-        System.out.println("Email sent successfully to " + to);
+        System.out.println("\nEmail sent successfully to " + to + "\n");
     }
 }

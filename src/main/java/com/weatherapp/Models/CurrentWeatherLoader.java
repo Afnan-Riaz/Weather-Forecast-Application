@@ -94,11 +94,11 @@ public class CurrentWeatherLoader {
         }
         if (temp > 37 || temp < 0) {
             if (temp > 37) {
-                String message = "It is too much hot in " + City + "as temperature is " + temp + "°C. please take necessary precautions.";
+                String message = "It is too much hot in " + City + " as temperature is " + temp + "°C. please take necessary precautions.";
                 executorService.submit(new EmailTask(message));
             }
           if (temp < 0){
-              String message="It is too much cold in "+ City +"as temperature is "+temp+"°C. please take necessary precautions.";
+              String message="It is too much cold in "+ City +" as temperature is "+temp+"°C. please take necessary precautions.";
               executorService.submit(new EmailTask(message));
           }
         }

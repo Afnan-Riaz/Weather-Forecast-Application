@@ -1,11 +1,10 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.Weather;
 import com.weatherapp.Models.ForecastWithPollution;
-import static com.weatherapp.Models.ForecastWithPollutionManager.getCurrentDate;
-import com.weatherapp.Models.WeatherManager;
 import com.weatherapp.Models.GeoCoder;
-import com.weatherapp.Models.FileHandling;
+import com.weatherapp.Models.Weather;
+import com.weatherapp.Models.WeatherManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +14,18 @@ import java.util.Scanner;
 public class ConsoleApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Do you want to receive notifications via email? (yes/no)");
+        String receiveNotifications = scanner.nextLine().toLowerCase();
+
+        String email = null;
+        if (receiveNotifications.equals("yes")) {
+            System.out.println("Enter your email address:");
+            email = scanner.nextLine();
+            AutomaticEmailSender emailSender = new AutomaticEmailSender();
+            emailSender.setEmailAddress(email);
+        }
+
 
         System.out.println("Welcome to WeatherApp Console!");
         System.out.println("Select an option:");

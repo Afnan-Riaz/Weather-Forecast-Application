@@ -1,16 +1,6 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.WeatherManager;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.SubScene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
 import javax.mail.MessagingException;
-import java.util.List;
-import java.util.Timer;
 
 
 public class AutomaticEmailSender {
@@ -32,7 +22,7 @@ public class AutomaticEmailSender {
             try {
                 emailSender.sendEmail(to, subject, body);
             } catch (MessagingException e) {
-                System.err.println("Error sending email: " + e.getMessage());
+                System.err.println("\nError sending email: " + e.getMessage());
             }
        }
     }
