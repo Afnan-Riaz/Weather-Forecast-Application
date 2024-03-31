@@ -32,10 +32,10 @@ public class ForecastWithPollutionManager {
         CurrentWeatherLoader currentWeatherLoader = new CurrentWeatherLoader(city, apiKey);
         current_weather = currentWeatherLoader.LoadCurrentWeather();
 
-        if (checkExistance_inDb(city, IPAddress)) {
+        if (checkExistance_inDb(city)) {
             System.out.println("\nData found in database.");
 
-            List<ForecastWithPollution> forecasts2 = cacheManager.getWeatherFromDb(IPAddress, city, getCurrentDate());
+            List<ForecastWithPollution> forecasts2 = cacheManager.getWeatherFromDb(city, getCurrentDate());
             ForecastWithPollution firstForecast = forecasts2.getFirst();
 
             if (Objects.equals(firstForecast.time(), current_weather.time()))
@@ -86,7 +86,7 @@ public class ForecastWithPollutionManager {
                     forecasts.add(new ForecastWithPollution(weather, matchingAirPollutionData));
 
                     // Storing in Database:
-                    Insert_intoDb(IPAddress, city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
+                    Insert_intoDb(city, weather.day(), weather.date(), weather.time(), StartingTime, weather.temperature(), weather.description(), weather.humidity(), weather.pressure(), weather.tempMax(), weather.tempMin(), weather.feelsLike(), weather.windSpeed(),
                             matchingAirPollutionData.airQualityIndex(), matchingAirPollutionData.carbonMonoxide(), matchingAirPollutionData.nitrogenMonoxide(), matchingAirPollutionData.nitrogenDioxide(), matchingAirPollutionData.ozone(), matchingAirPollutionData.sulphurDioxide(), matchingAirPollutionData.ammonia(),
                             matchingAirPollutionData.particulateMatterPM25(), matchingAirPollutionData.particulateMatterPM10(), icon);
                 }
@@ -108,13 +108,13 @@ public class ForecastWithPollutionManager {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return now.format(formatter);
     }
-    public boolean checkExistance_inDb(String cityName, String ipAddress) {
-        return cacheManager.CheckExistance(ipAddress, cityName, getCurrentDate(), getCurrentTime());
+    public boolean checkExistance_inDb(String cityName) {
+        return cacheManager.CheckExistance(cityName, getCurrentDate(), getCurrentTime());
 
     }
 
-    public void Insert_intoDb(String ipAddress, String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
-        cacheManager.insertWeatherData(ipAddress, cityName, day, formattedDate, time, startingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
+    public void Insert_intoDb(String cityName, String day, String formattedDate, String time, String startingTime, int temperature, String description, int humidity, int pressure, int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex, double carbonMonoxide, double nitrogenMonoxide, double nitrogenDioxide, double ozone, double sulphurDioxide, double ammonia, double particulateMatterPM25, double particulateMatterPM10, String icon) {
+        cacheManager.insertWeatherData(cityName, day, formattedDate, time, startingTime, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed,
                 airQualityIndex, carbonMonoxide, nitrogenMonoxide, nitrogenDioxide, ozone, sulphurDioxide, ammonia,
                 particulateMatterPM25, particulateMatterPM10, icon);
 
