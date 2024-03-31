@@ -1,6 +1,9 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.HelpingClasses.ImageHandler;
 import com.weatherapp.Models.*;
+import com.weatherapp.Records.ForecastWithPollution;
+import com.weatherapp.Records.Weather;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.weatherapp.weatherapplication.Formatter.*;
+import static com.weatherapp.HelpingClasses.Formatter.*;
 
 public class WeatherService {
     public static int lock = 0;

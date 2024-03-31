@@ -1,6 +1,6 @@
-package com.weatherapp.Models;
+package com.weatherapp.HelpingClasses;
 
-import com.weatherapp.weatherapplication.AutomaticEmailSender;
+import com.weatherapp.EmailManager.AutomaticEmailSender;
 
 import java.util.concurrent.Callable;
 

@@ -2,7 +2,8 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.concurrent.*;
+import com.weatherapp.Records.Weather;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;

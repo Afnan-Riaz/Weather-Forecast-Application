@@ -1,4 +1,4 @@
-package com.weatherapp.Models;
+package com.weatherapp.HelpingClasses;
 
 public class ImageHandler {
 

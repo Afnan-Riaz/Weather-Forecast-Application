@@ -1,4 +1,4 @@
-package com.weatherapp.weatherapplication;
+package com.weatherapp.EmailManager;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

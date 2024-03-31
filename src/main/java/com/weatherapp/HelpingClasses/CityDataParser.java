@@ -1,4 +1,4 @@
-package com.weatherapp.weatherapplication;
+package com.weatherapp.HelpingClasses;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

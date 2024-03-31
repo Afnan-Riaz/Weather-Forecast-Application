@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.EmailManager.AutomaticEmailSender;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

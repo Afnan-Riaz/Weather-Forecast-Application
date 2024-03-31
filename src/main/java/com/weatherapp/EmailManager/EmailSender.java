@@ -1,7 +1,7 @@
-package com.weatherapp.HelpingClasses;
+package com.weatherapp.EmailManager;
 
-import com.weatherapp.Models.EmailTask;
-import com.weatherapp.Models.ForecastWithPollution;
+import com.weatherapp.HelpingClasses.EmailTask;
+import com.weatherapp.Records.ForecastWithPollution;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

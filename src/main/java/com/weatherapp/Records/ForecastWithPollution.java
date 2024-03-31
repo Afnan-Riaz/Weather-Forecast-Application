@@ -1,4 +1,4 @@
-package com.weatherapp.Models;
+package com.weatherapp.Records;
 
 public record ForecastWithPollution(String day, String time, int temperature, String description, int humidity, int pressure,
                                     int tempMax, int tempMin, int feelsLike, double windSpeed, int airQualityIndex,

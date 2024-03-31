@@ -1,7 +1,7 @@
-package com.weatherapp.HelpingClasses;
+package com.weatherapp.CacheManagement;
 
-import com.weatherapp.Models.ForecastWithPollution;
-import com.weatherapp.Models.Weather;
+import com.weatherapp.Records.ForecastWithPollution;
+
 import java.util.List;
 import java.util.Set;
 

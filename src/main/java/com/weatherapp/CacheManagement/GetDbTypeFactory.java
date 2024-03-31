@@ -1,7 +1,4 @@
-package com.weatherapp.HelpingClasses;
-
-import com.weatherapp.Models.FileHandling;
-import com.weatherapp.Models.SQL;
+package com.weatherapp.CacheManagement;
 
 import java.util.Objects;
 

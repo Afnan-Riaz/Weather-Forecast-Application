@@ -10,4 +10,8 @@ module com.weatherapp.weatherapplication {
     requires java.sql;
     opens com.weatherapp.weatherapplication to javafx.fxml;
     exports com.weatherapp.weatherapplication;
+    exports com.weatherapp.EmailManager;
+    opens com.weatherapp.EmailManager to javafx.fxml;
+    exports com.weatherapp.HelpingClasses;
+    opens com.weatherapp.HelpingClasses to javafx.fxml;
 }

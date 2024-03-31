@@ -1,7 +1,10 @@
 package com.weatherapp.Models;
 
-import com.weatherapp.HelpingClasses.CacheManagement;
-import com.weatherapp.HelpingClasses.GetDbTypeFactory;
+import com.weatherapp.CacheManagement.CacheManagement;
+import com.weatherapp.CacheManagement.GetDbTypeFactory;
+import com.weatherapp.Records.ForecastWithPollution;
+import com.weatherapp.Records.Pollution;
+import com.weatherapp.Records.Weather;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

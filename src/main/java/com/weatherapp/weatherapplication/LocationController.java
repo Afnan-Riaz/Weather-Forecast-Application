@@ -1,14 +1,14 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.FileHandling;
+import com.weatherapp.CacheManagement.FileHandling;
+import com.weatherapp.HelpingClasses.CityDataParser;
 import com.weatherapp.Models.GeoCoder;
-import com.weatherapp.Models.SQL;
+import com.weatherapp.CacheManagement.SQL;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,7 +26,7 @@ import org.controlsfx.control.textfield.TextFields;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.weatherapp.weatherapplication.Formatter.formatText;
+import static com.weatherapp.HelpingClasses.Formatter.formatText;
 
 public class LocationController {
 

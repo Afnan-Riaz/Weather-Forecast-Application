@@ -1,6 +1,8 @@
-package com.weatherapp.Models;
+package com.weatherapp.CacheManagement;
 
-import com.weatherapp.HelpingClasses.CacheManagement;
+import com.weatherapp.Records.ForecastWithPollution;
+import com.weatherapp.Records.Pollution;
+import com.weatherapp.Records.Weather;
 
 import java.time.LocalTime;
 import java.util.List;

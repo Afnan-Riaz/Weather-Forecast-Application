@@ -1,8 +1,9 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.Models.ForecastWithPollution;
+import com.weatherapp.EmailManager.AutomaticEmailSender;
+import com.weatherapp.Records.ForecastWithPollution;
 import com.weatherapp.Models.GeoCoder;
-import com.weatherapp.Models.Weather;
+import com.weatherapp.Records.Weather;
 import com.weatherapp.Models.WeatherManager;
 
 import java.text.SimpleDateFormat;

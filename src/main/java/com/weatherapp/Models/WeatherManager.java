@@ -1,6 +1,8 @@
 package com.weatherapp.Models;
 
-import com.weatherapp.HelpingClasses.EmailSender;
+import com.weatherapp.EmailManager.EmailSender;
+import com.weatherapp.Records.ForecastWithPollution;
+import com.weatherapp.Records.Weather;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.weatherapp.weatherapplication;
+package com.weatherapp.HelpingClasses;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -10,7 +10,7 @@ import java.util.TimeZone;
 public class Formatter {
 
 
-    static String capitalizeFirstLetter(String text) {
+    public static String capitalizeFirstLetter(String text) {
         if (text == null || text.isEmpty()) {
             return text;
         }
@@ -38,7 +38,7 @@ public class Formatter {
 
         return time12Hour;
     }
-    static void formatText(TextField textField) {
+    public static void formatText(TextField textField) {
         TextFormatter<String> formatter = new TextFormatter<>(change -> {
             if (!change.getControlNewText().matches("\\d*(\\.\\d*)?")) {
                 return null;
@@ -49,7 +49,7 @@ public class Formatter {
         textField.setTextFormatter(formatter);
     }
 
-    static String formatTime(long timeInSeconds) {
+    public static String formatTime(long timeInSeconds) {
         Date date = new Date(timeInSeconds);
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karachi"));

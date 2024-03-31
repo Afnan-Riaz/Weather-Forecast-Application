@@ -1,4 +1,4 @@
-package com.weatherapp.Models;
+package com.weatherapp.Records;
 
 public record Pollution(String day, String time,
                         int airQualityIndex,
