@@ -121,19 +121,17 @@ public class FileHandling implements CacheManagement {
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
             System.out.println("\nChecking data in file.");
-            if ((line = reader.readLine()) != null) {
-                System.out.println("\nFile foumd.");
+            while ((line = reader.readLine()) != null) {
+               // System.out.println("\nReading line: " + line);
                 String[] parts = line.split(";");
-                System.out.print(parts[0]+parts[1]+cityName);
                 if (parts.length >= 5 && parts[1].equals(cityName) && parts[0].equals(ipAddress)) {
                     String existingDate = parts[3];
                     String existingTime = parts[4];
-                    System.out.println("\nNow comparing date and time.\nExisting date/time: "+existingDate+date+time+existingTime);
-                    if (!date.equals(existingDate) || !timeMatches(LocalTime.parse(existingTime), time)) {
-                        deleteWeatherData(cityName,ipAddress);
-                        System.out.println("inside conditon");
+                    System.out.println("\nNow comparing date and time.\nExisting date/time: " + existingDate + " " + existingTime);
+                    if (!date.equals(existingDate) || !existingTime.equals(time)) {
+                        deleteWeatherData(cityName, ipAddress);
+                        System.out.println("inside condition");
                         return false;
-
                     }
                     return true;
                 }
@@ -143,6 +141,7 @@ public class FileHandling implements CacheManagement {
         }
         return false;
     }
+
 
     public Set<String> getAllCityNames() {
         Set<String> cityNames = new HashSet<>();
