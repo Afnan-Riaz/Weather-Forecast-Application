@@ -42,7 +42,7 @@ public  class SQL implements CacheManagement  {
             preparedStatement.setDouble(21, particulateMatterPM25);
             preparedStatement.setDouble(22, particulateMatterPM10);
             preparedStatement.setString(23, icon);
-//            preparedStatement.setString(24, ipAddress);
+
             int rowsInserted = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -53,8 +53,8 @@ public  class SQL implements CacheManagement  {
 @Override
     public  List<ForecastWithPollution> getWeatherFromDb(String cityName, String startDate) {
         List<ForecastWithPollution> forecasts = new ArrayList<>();
+        System.out.println("Getting Data from SQL.");
         String connectionUrl = SqlConnection.getConnectionUrl();
-
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             for (int i = 0; i < 5; i++) {
                 String query = "SELECT * FROM Weather WHERE city_name = ? AND date = ?";
@@ -95,7 +95,6 @@ public  class SQL implements CacheManagement  {
                     }
                 }
             }
-                System.out.println("Got data from database.");
         } catch (SQLException e) {
             System.out.println("Failed to fetch forecasts from the database.");
             e.printStackTrace();
@@ -149,9 +148,9 @@ public  class SQL implements CacheManagement  {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setString(1, cityName);
                     int rowsDeleted = preparedStatement.executeUpdate();
-                    if (rowsDeleted > 0) {
-                        System.out.println(rowsDeleted+" rows deleted " );
-                    }
+//                    if (rowsDeleted > 0) {
+//                        System.out.println(rowsDeleted+" rows deleted " );
+//                    }
                 }
 
         } catch (SQLException e) {
@@ -205,19 +204,17 @@ public  class SQL implements CacheManagement  {
         if (!Objects.equals(existingDate, date)){
             LocalDate existingLocalDate = LocalDate.parse(existingDate);
             LocalDate localDate = LocalDate.parse(date);
-            System.out.print(existingLocalDate);
-            System.out.print(localDate);
+//            System.out.print(existingLocalDate);
+//            System.out.print(localDate);
             if (!Objects.equals(localDate.plusDays(1), existingLocalDate)){
                 return false;
             }
         }
-        System.out.println("Date matched.");
+//        System.out.println("Date matched.");
         LocalTime currentTime = LocalTime.parse(time);
-        LocalTime twoHoursAhead = currentTime.plusHours(3); // Calculate time 2 hours ahead
-        System.out.print(currentTime);
-        System.out.print(twoHoursAhead);
+        LocalTime threeHoursAhead = currentTime.plusHours(3);
 
-        return !startingTime.isAfter(twoHoursAhead);
+        return !startingTime.isAfter(threeHoursAhead);
     }
     public static String getCurrentDate() {
         LocalDateTime now = LocalDateTime.now();

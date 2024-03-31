@@ -35,13 +35,13 @@ public class LocationController {
     public VBox locationList;
     @FXML
     public TextField locationField;
- static String dbType="file";
+    static String dbType = "file";
     private List<String> cityNames = new ArrayList<>();
 
     @FXML
     public void initialize() {
         try {
-            LocationController loc=new LocationController();
+            LocationController loc = new LocationController();
             Set<String> cityNames = loc.retrieveDatafromDB();
             for (String cityName : cityNames) {
                 createListItem(cityName);
@@ -54,6 +54,7 @@ public class LocationController {
             e.printStackTrace();
         }
     }
+
     private void addEventFilters() {
         locationField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -70,6 +71,7 @@ public class LocationController {
             }
         });
     }
+
     private void parseCityDataInBackground() {
         Task<List<String>> task = new Task<>() {
             @Override
@@ -104,10 +106,11 @@ public class LocationController {
             showNotification("Location already exists or is invalid.");
         }
     }
+
     public void searchCoordinates(MouseEvent event) {
         String latitude = latitudeField.getText();
         String longitude = longitudeField.getText();
-        if(latitude.isEmpty() || longitude.isEmpty()) {
+        if (latitude.isEmpty() || longitude.isEmpty()) {
             showNotification("Please enter both latitude and longitude.");
             return;
         }
@@ -125,6 +128,7 @@ public class LocationController {
         notificationContent.getChildren().add(new Label(content));
         return notificationContent;
     }
+
     public void showNotification(String content) {
         Notifications.create()
                 .hideAfter(Duration.seconds(3))
@@ -133,6 +137,7 @@ public class LocationController {
                 .graphic(createNotificationContent(content))
                 .show();
     }
+
     private void createListItem(String location) {
         HBox hbox = new HBox();
         hbox.getStyleClass().add("location-item");
@@ -170,21 +175,16 @@ public class LocationController {
                 .collect(Collectors.toList());
     }
 
-
-        public  Set<String> retrieveDatafromDB(){
-            if (dbType == "sql") {
-                SQL sql = new SQL();
-                Set<String> cityNmaes= sql.getAllCityNames();
-                return cityNmaes;
-            }
-            else if(dbType=="file"){
-                FileHandling file=new FileHandling();
-                Set<String> cityNmaes= file.getAllCityNames();
-                return cityNmaes;
-            }
-return null;
+    public Set<String> retrieveDatafromDB() {
+        if (dbType == "sql") {
+            SQL sql = new SQL();
+            Set<String> cityNmaes = sql.getAllCityNames();
+            return cityNmaes;
+        } else if (dbType == "file") {
+            FileHandling file = new FileHandling();
+            Set<String> cityNmaes = file.getAllCityNames();
+            return cityNmaes;
         }
-
-
-
+        return null;
+    }
 }

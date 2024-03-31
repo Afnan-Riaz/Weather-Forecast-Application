@@ -21,7 +21,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 public class AppController {
-    public String current_city="Lahore";
+    public String current_city = "Lahore";
     public Text description;
     public Text city;
     public Text humidity;
@@ -39,6 +39,7 @@ public class AppController {
     public ImageView nextDay;
     public HBox temperatureBoxes;
     WeatherService weatherService;
+
     @FXML
 
     public void initialize() {
@@ -47,41 +48,43 @@ public class AppController {
         weatherService.hydrateUI(current_city);
         moreIcon.setOnMouseClicked(this::showPollutantDialog);
     }
-public void changeDay(MouseEvent mouseEvent) {
-            String current_day = day.getText();
-            Node source = (Node) mouseEvent.getSource();
-            String id = source.getId();
-            weatherService.changeDay(current_day,id);
-        }
+
+    public void changeDay(MouseEvent mouseEvent) {
+        String current_day = day.getText();
+        Node source = (Node) mouseEvent.getSource();
+        String id = source.getId();
+        weatherService.changeDay(current_day, id);
+    }
 
 
     public void openLocationView(MouseEvent event) throws IOException {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
-            Parent root = fxmlLoader.load();
-            LocationController controller = fxmlLoader.getController();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("location-view.fxml"));
+        Parent root = fxmlLoader.load();
+        LocationController controller = fxmlLoader.getController();
 
-            Stage stage = new Stage();
-            Scene scene = new Scene(root, 300, 400);
-            stage.setScene(scene);
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, 300, 400);
+        stage.setScene(scene);
 
-            stage.initStyle(StageStyle.UNDECORATED);
-            scene.setFill(Color.TRANSPARENT);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-            stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue) {
-                    stage.hide();
-                }
-            });
-            stage.show();
-            stage.setOnCloseRequest(new EventHandler< WindowEvent >(){
-                public void handle(WindowEvent event) {
-                    current_city=controller.locationField.getText();
-                    weatherService.hydrateUI(current_city);
-                }
-            });
-        }
+        stage.initStyle(StageStyle.UNDECORATED);
+        scene.setFill(Color.TRANSPARENT);
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                stage.hide();
+            }
+        });
+        stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent event) {
+                current_city = controller.locationField.getText();
+                weatherService.hydrateUI(current_city);
+            }
+        });
+    }
+
     private void showPollutantDialog(MouseEvent event) {
-        Dialog<Void> pollutantInfo= weatherService.createPollutantInfoDialog();
+        Dialog<Void> pollutantInfo = weatherService.createPollutantInfoDialog();
         pollutantInfo.show();
     }
 }

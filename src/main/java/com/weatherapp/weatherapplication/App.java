@@ -21,17 +21,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Show notification prompt
-    new Thread(() -> {
-        boolean enableNotifications = showNotificationPrompt();
+        new Thread(() -> {
+            boolean enableNotifications = showNotificationPrompt();
 
-        // Proceed accordingly based on user's choice
-        if (enableNotifications) {
-            String email = getEmailForNotifications();
-            if (email != null) {
-                AutomaticEmailSender automaticEmailSender = new AutomaticEmailSender();
-                automaticEmailSender.setEmailAddress(email);
+            // Proceed accordingly based on user's choice
+            if (enableNotifications) {
+                String email = getEmailForNotifications();
+                if (email != null) {
+                    AutomaticEmailSender automaticEmailSender = new AutomaticEmailSender();
+                    automaticEmailSender.setEmailAddress(email);
+                }
             }
-        }
         }).start();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 980, 600);
@@ -45,7 +45,7 @@ public class App extends Application {
     }
 
     private boolean showNotificationPrompt() {
-        FutureTask<Boolean> task = new FutureTask<>(()-> {
+        FutureTask<Boolean> task = new FutureTask<>(() -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Notification Preference");
             alert.setHeaderText("Do you want to receive notifications?");

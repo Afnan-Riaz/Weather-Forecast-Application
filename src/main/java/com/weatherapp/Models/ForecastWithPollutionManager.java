@@ -33,8 +33,6 @@ public class ForecastWithPollutionManager {
         current_weather = currentWeatherLoader.LoadCurrentWeather();
 
         if (checkExistance_inDb(city)) {
-            System.out.println("\nData found in database.");
-
             List<ForecastWithPollution> forecasts2 = cacheManager.getWeatherFromDb(city, getCurrentDate());
             ForecastWithPollution firstForecast = forecasts2.getFirst();
 
@@ -45,10 +43,10 @@ public class ForecastWithPollutionManager {
                 forecasts.addAll(forecasts2);
             }
 
-            System.out.println("\nData Loaded: ");
-            System.out.print(forecasts);
+            System.out.println("Data Successfully Loaded from Database.");
 
         } else {
+            cacheManager.deleteWeatherData(city);
             System.out.println("\nGetting data from API.");
 
             String icon = current_weather.icon();

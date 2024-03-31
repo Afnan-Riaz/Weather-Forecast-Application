@@ -62,13 +62,13 @@ public class FileHandling implements CacheManagement {
     @Override
     public List<ForecastWithPollution> getWeatherFromDb(String cityName, String startDate) {
         List<ForecastWithPollution> forecasts = new ArrayList<>();
-
+        System.out.println("Getting Data from File.");
         try (BufferedReader br = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
             while ((line = br.readLine()) != null) {
                 // Split the line into parts
                 String[] parts = line.split(";");
-                if (parts.length >= 24) {
+                if (parts.length >= 23) {
                     String fileCityName = parts[0].trim();
                     if (fileCityName.equals(cityName)) {
                         String day = parts[1].trim();
@@ -107,8 +107,6 @@ public class FileHandling implements CacheManagement {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nForecasts from file: ");
-        System.out.print(forecasts);
         return forecasts;
     }
 
@@ -116,17 +114,16 @@ public class FileHandling implements CacheManagement {
     public boolean CheckExistance(String cityName, String date, String time) {
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
-            System.out.println("\nChecking data in file.");
+//            System.out.println("\nChecking data in file.");
             while ((line = reader.readLine()) != null) {
                // System.out.println("\nReading line: " + line);
                 String[] parts = line.split(";");
-                System.out.print(parts[0]+parts[1]+cityName);
                 if (parts.length >= 4 && parts[0].equals(cityName)) {
                     String existingDate = parts[2];
                     String existingTime = parts[3];
-                    System.out.println("\nNow comparing date and time.\nExisting date/time: "+existingDate+date+time+existingTime);
+//                    System.out.println("\nNow comparing date and time.\nExisting date/time: "+existingDate+date+time+existingTime);
                     if (!dateAndTimeMatches(LocalTime.parse(existingTime), time, existingDate, date)) {
-                        deleteWeatherData(cityName);
+//                        deleteWeatherData(cityName);
                         return false;
                     }
                     return true;
@@ -199,19 +196,17 @@ public class FileHandling implements CacheManagement {
         if (!Objects.equals(existingDate, date)){
             LocalDate existingLocalDate = LocalDate.parse(existingDate);
             LocalDate localDate = LocalDate.parse(date);
-            System.out.print(existingLocalDate);
-            System.out.print(localDate);
+//            System.out.print(existingLocalDate);
+//            System.out.print(localDate);
             if (!Objects.equals(localDate.plusDays(1), existingLocalDate)){
                 return false;
             }
         }
-        System.out.println("Date matched.");
+//        System.out.println("Date matched.");
         LocalTime currentTime = LocalTime.parse(time);
-        LocalTime twoHoursAhead = currentTime.plusHours(3); // Calculate time 2 hours ahead
-        System.out.print(currentTime);
-        System.out.print(twoHoursAhead);
+        LocalTime threeHoursAhead = currentTime.plusHours(3); // Calculate time 2 hours ahead
 
-        return !startingTime.isAfter(twoHoursAhead);
+        return !startingTime.isAfter(threeHoursAhead);
     }
 
     public static void main(String[] args) {
