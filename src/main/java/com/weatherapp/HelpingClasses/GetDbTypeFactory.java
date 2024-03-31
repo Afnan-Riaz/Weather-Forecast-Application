@@ -13,7 +13,8 @@ public class GetDbTypeFactory {
         else if (Objects.equals(type, "file")){
             return new FileHandling();
         }
-        else {
+        else
+        {
             return null;
         }
     }

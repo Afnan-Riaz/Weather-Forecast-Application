@@ -117,8 +117,8 @@ public class FileHandling implements CacheManagement {
         try (BufferedReader reader = new BufferedReader(new FileReader(CACHE_FILE_PATH))) {
             String line;
             System.out.println("\nChecking data in file.");
-            if ((line = reader.readLine()) != null) {
-                System.out.println("\nFile foumd.");
+            while ((line = reader.readLine()) != null) {
+               // System.out.println("\nReading line: " + line);
                 String[] parts = line.split(";");
                 System.out.print(parts[0]+parts[1]+cityName);
                 if (parts.length >= 4 && parts[0].equals(cityName)) {

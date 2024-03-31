@@ -24,7 +24,8 @@ public class GeoCoder {
         }
     }
     public String getCity() {
-        try {
+        try
+        {
             JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
             if (!response.isEmpty()) {
                 return response.get(0).get("name").asText();
