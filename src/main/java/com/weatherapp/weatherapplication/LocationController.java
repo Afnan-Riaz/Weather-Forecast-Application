@@ -1,9 +1,8 @@
 package com.weatherapp.weatherapplication;
 
-import com.weatherapp.CacheManagement.FileHandling;
+import com.weatherapp.CacheManagement.*;
 import com.weatherapp.HelpingClasses.CityDataParser;
 import com.weatherapp.Models.GeoCoder;
-import com.weatherapp.CacheManagement.SQL;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -27,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.weatherapp.HelpingClasses.Formatter.formatText;
-
+import com.weatherapp.weatherapplication.App;
 public class LocationController {
 
     public TextField longitudeField;
@@ -35,7 +34,7 @@ public class LocationController {
     public VBox locationList;
     @FXML
     public TextField locationField;
-    static String dbType = "file";
+    static String dbType = DatabaseType.getDbType();
     private List<String> cityNames = new ArrayList<>();
 
     @FXML
@@ -176,15 +175,8 @@ public class LocationController {
     }
 
     public Set<String> retrieveDatafromDB() {
-        if (dbType == "sql") {
-            SQL sql = new SQL();
-            Set<String> cityNmaes = sql.getAllCityNames();
-            return cityNmaes;
-        } else if (dbType == "file") {
-            FileHandling file = new FileHandling();
-            Set<String> cityNmaes = file.getAllCityNames();
+        CacheManagement cacheManager = GetDbTypeFactory.getDbType(dbType);
+            Set<String> cityNmaes = cacheManager.getAllCityNames();
             return cityNmaes;
         }
-        return null;
     }
-}

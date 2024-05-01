@@ -2,11 +2,13 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.HelpingClasses.JSONReader;
 import com.weatherapp.Records.Weather;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,20 +33,13 @@ public class WeatherLoader {
         this.cityName = cityName != null ? cityName : null;
     }
 
-    public JsonNode readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(is);
-        }
-    }
-
     public List<Weather> LoadWeatherData() {
         forecasts = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
 
         try {
-            JsonNode forecastData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
+            JsonNode forecastData = JSONReader.readJsonFromUrl("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&units=metric");
             JsonNode forecastList = forecastData.get("list");
 
             for (int i = 0; i < forecastList.size(); i++) {
@@ -79,9 +74,15 @@ public class WeatherLoader {
 
                 forecasts.add(new Weather(day, formattedDate, time, temperature, description, humidity, pressure, tempMax, tempMin, feelsLike, windSpeed, current_weather.sunrise(), current_weather.sunset(), icon, visibility, rain, snow));
             }
-        } catch (IOException e) {
+        }
+        catch (UnknownHostException e){
+            System.err.println("Please Check Your Internet Connection and Try Again!");
+            System.exit(504);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
+
 
         return forecasts;
     }

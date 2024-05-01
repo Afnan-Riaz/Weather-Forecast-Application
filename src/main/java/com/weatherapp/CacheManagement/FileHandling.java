@@ -11,7 +11,7 @@ import java.util.*;
 import java.time.LocalDate;
 public class FileHandling implements CacheManagement {
 
-    private static final String CACHE_FILE_PATH = "src/main/cache/weather_data.txt";
+    private static final String CACHE_FILE_PATH = "weather_data.txt";
     @Override
     public void insertWeatherData(String cityName, String day, String formattedDate, String time, String startingTime,
                                   int temperature, String description, int humidity, int pressure, int tempMax, int tempMin,
@@ -160,7 +160,7 @@ public class FileHandling implements CacheManagement {
     public void deleteWeatherData(String cityName) {
         try {
             File inputFile = new File(CACHE_FILE_PATH);
-            File tempFile = new File("src/main/cache/temp_weather_data.txt");
+            File tempFile = new File("temp_weather_data.txt");
 
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));

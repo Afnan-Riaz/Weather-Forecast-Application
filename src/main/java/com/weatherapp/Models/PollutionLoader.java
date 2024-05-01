@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.HelpingClasses.JSONReader;
 import com.weatherapp.Records.Pollution;
 
 import java.io.IOException;
@@ -27,20 +28,13 @@ public class PollutionLoader {
         this.lon = lon;
     }
 
-    public JsonNode readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(is);
-        }
-    }
-
     public List<Pollution> LoadPollutionData() {
         pollution_data = new ArrayList<>();
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
 
         try {
-            JsonNode airPollutionData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey);
+            JsonNode airPollutionData = JSONReader.readJsonFromUrl("https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey);
             JsonNode airPollutionList = airPollutionData.get("list");
 
             for (JsonNode pollution : airPollutionList) {

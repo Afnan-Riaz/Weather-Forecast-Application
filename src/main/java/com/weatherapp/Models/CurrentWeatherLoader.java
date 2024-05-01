@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.HelpingClasses.JSONReader;
 import com.weatherapp.Records.Weather;
 
 import java.io.IOException;
@@ -23,13 +24,6 @@ public class CurrentWeatherLoader {
         this.ApiKey = apiKey;
     }
 
-    public JsonNode readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(is);
-        }
-    }
-
     public Weather LoadCurrentWeather() {
         int temp = -1;
         double windSpeed = -1;
@@ -40,7 +34,7 @@ public class CurrentWeatherLoader {
         SimpleDateFormat df2 = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try {
-            JsonNode currentWeatherData = readJsonFromUrl("https://api.openweathermap.org/data/2.5/weather?q=" + City + "&appid=" + ApiKey + "&units=metric");
+            JsonNode currentWeatherData = JSONReader.readJsonFromUrl("https://api.openweathermap.org/data/2.5/weather?q=" + City + "&appid=" + ApiKey + "&units=metric");
             lat = currentWeatherData.get("coord").get("lat").asDouble();
             lon = currentWeatherData.get("coord").get("lon").asDouble();
 

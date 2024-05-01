@@ -10,36 +10,34 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.HelpingClasses.JSONReader;
+
 public class LiveLocationTracker {
     public static String City;
     public static String Country;
     public static String CountryCode;
-    public static JsonNode readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(is);
-        }
-    }
+
     public static String getLiveLocation() {
         String ipAddress = getIPAddress();
 
         if (Objects.equals(ipAddress, "Connection Error")){
-            return "Connection Error";
+            return "Lahore, PK";
         }
 
         String apiUrl = "http://ip-api.com/json/" + ipAddress;
 
         try {
-            JsonNode jsonResponse = readJsonFromUrl(apiUrl);
+            JsonNode jsonResponse = JSONReader.readJsonFromUrl(apiUrl);
             City = jsonResponse.get("city").asText();
             Country = jsonResponse.get("country").asText();
             CountryCode = jsonResponse.get("countryCode").asText();
             return City + ", " + CountryCode;
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Connection Error";
+            System.err.println("Please Check your Internet Connection and Try Again.");
+//            System.exit(404);
         }
+        return "Lahore, PK";
 
 
     }
@@ -55,8 +53,9 @@ public class LiveLocationTracker {
             return ipAddress;
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Connection Error";
+            System.err.println("Please Check your Internet Connection and Try Again.");
+//            System.exit(404);
         }
+        return "Connection Error";
     }
 }

@@ -30,7 +30,7 @@ public class WeatherService {
     }
     public void hydrateUI(String current_city) {
         this.current_city = current_city;
-        this.weatherManager = new WeatherManager(current_city, apiKey);
+        this.weatherManager = new WeatherManager(current_city, apiKey, appController.dbType);
         this.forecasts = weatherManager.getWeatherForecast();
         Weather current_weather = weatherManager.current_weather;
 

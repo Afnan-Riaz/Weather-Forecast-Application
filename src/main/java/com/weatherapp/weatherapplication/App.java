@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.CacheManagement.DatabaseType;
 import com.weatherapp.EmailManager.AutomaticEmailSender;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class App extends Application {
+    public static String dbType;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -88,7 +90,14 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        try {
+            dbType = args[0];
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            dbType = "file";    //Default is file
+        }
+//        DatabaseType.getInstance(dbType);
+        DatabaseType.setDbType(dbType);
         launch();
-
     }
 }

@@ -9,13 +9,14 @@ import java.util.*;
 public class WeatherManager {
     private final String city;
     private final String apiKey;
-    private final String DbType = "file";
+    private String DbType;
     public String IPAddress;
     public Weather current_weather;
     public List<ForecastWithPollution> forecasts;
-    public WeatherManager(String city, String apiKey) {
+    public WeatherManager(String city, String apiKey, String db) {
         this.city = city;
         this.apiKey = apiKey;
+        DbType = db;
     }
 
     public List<ForecastWithPollution> getWeatherForecast() {

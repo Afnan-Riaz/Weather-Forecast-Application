@@ -2,6 +2,7 @@ package com.weatherapp.Models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherapp.HelpingClasses.JSONReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,16 +18,10 @@ public class GeoCoder {
         this.lat = lat;
         this.lon = lon;
     }
-    public JsonNode readJsonFromUrl(String url) throws IOException {
-        try (InputStream is = new URL(url).openStream()) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(is);
-        }
-    }
     public String getCity() {
         try
         {
-            JsonNode response = readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
+            JsonNode response = JSONReader.readJsonFromUrl("https://api.openweathermap.org/geo/1.0/reverse?lat="+lat+"&lon="+lon+"&limit=1&appid="+ApiKey);
             if (!response.isEmpty()) {
                 return response.get(0).get("name").asText();
                 //+ ", " + response.get(0).get("country").asText();

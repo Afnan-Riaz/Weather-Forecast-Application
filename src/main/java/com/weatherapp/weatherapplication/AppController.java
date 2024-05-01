@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.CacheManagement.DatabaseType;
 import com.weatherapp.Models.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-
 import java.io.IOException;
 
 public class AppController {
@@ -39,6 +39,7 @@ public class AppController {
     public ImageView nextDay;
     public HBox temperatureBoxes;
     WeatherService weatherService;
+    public static String dbType = DatabaseType.getDbType();
 
     @FXML
 

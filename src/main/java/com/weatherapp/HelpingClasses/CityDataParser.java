@@ -12,7 +12,7 @@ public class CityDataParser {
     public List<String> parseCityData() throws Exception {
         List<String> cityNames = new ArrayList<>();
         JSONParser parser = new JSONParser();
-        JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("src/main/resources/utils/city.list.json"));
+        JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("city.list.json"));
 
         for (Object obj : jsonArray) {
             JSONObject jsonObject = (JSONObject) obj;

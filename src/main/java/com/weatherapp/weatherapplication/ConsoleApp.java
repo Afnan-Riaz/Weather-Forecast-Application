@@ -1,5 +1,6 @@
 package com.weatherapp.weatherapplication;
 
+import com.weatherapp.CacheManagement.DatabaseType;
 import com.weatherapp.EmailManager.AutomaticEmailSender;
 import com.weatherapp.Records.ForecastWithPollution;
 import com.weatherapp.Models.GeoCoder;
@@ -13,7 +14,16 @@ import java.util.Scanner;
 
 
 public class ConsoleApp {
+    public static String dbType;
     public static void main(String[] args) {
+        try {
+            dbType = args[0];
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            dbType = "file";
+        }
+        DatabaseType.setDbType(dbType);
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Do you want to receive notifications via email? (yes/no)");
@@ -89,7 +99,7 @@ public class ConsoleApp {
     }
 
     private static void displayWeatherInformation() {
-        WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager("Lahore", "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         if (!forecasts.isEmpty()) {
             ForecastWithPollution currentForecast = forecasts.get(0);
@@ -112,7 +122,7 @@ public class ConsoleApp {
 
     private static void displayWeatherByCity(String city) {
 
-        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         if (!forecasts.isEmpty()) {
             ForecastWithPollution currentForecast = forecasts.get(0);
@@ -145,7 +155,7 @@ public class ConsoleApp {
 
 
     private static void displayForecastWithPollution(String city) {
-        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         System.out.println("\nWeather Forecast for " + city + ":\n");
         for (ForecastWithPollution forecast : forecasts) {
@@ -165,7 +175,7 @@ public class ConsoleApp {
     }
 
     private static void displaySunriseSunsetTime() {
-        WeatherManager weatherManager = new WeatherManager("Lahore,PK", "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager("Lahore,PK", "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         Weather currentWeather = weatherManager.current_weather;
 
@@ -176,7 +186,7 @@ public class ConsoleApp {
     }
 
     private static void displayAirPollutionData(String city) {
-        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
         // Check if the list of forecasts is not empty
@@ -198,7 +208,7 @@ public class ConsoleApp {
     }
 
     private static void displayPollutingGasesData(String city) {
-        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496");
+        WeatherManager weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
 
         // Check if the list of forecasts is not empty
