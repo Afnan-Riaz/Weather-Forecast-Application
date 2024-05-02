@@ -5,11 +5,11 @@ import com.weatherapp.Models.GeoCoder;
 import com.weatherapp.Models.WeatherManager;
 import com.weatherapp.Records.ForecastWithPollution;
 import com.weatherapp.Records.Weather;
-
+import com.weatherapp.CacheManagement.FileHandling;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.*;
 public class ConsoleUtils {
     public static String dbType;
     public static String city;
@@ -18,6 +18,7 @@ public class ConsoleUtils {
     public static void printOptions(){
         System.out.println("Welcome to WeatherApp Console!");
         System.out.println("Select an option:");
+
         System.out.println("1. Add Location to check weather with Longitude and Latitude.");
         System.out.println("2. Add Location to check weather with City/Country Name.");
         System.out.println("3. Show Current Weather Conditions.");
@@ -25,7 +26,8 @@ public class ConsoleUtils {
         System.out.println("5. Show Sunrise and sunset Time.");
         System.out.println("6. Show Air Pollution Data.");
         System.out.println("7. Show Data about Polluting Gases.");
-        System.out.println("0. Exit");  
+        System.out.println("8. Check Weather of Already Searched City.");
+        System.out.println("0. Exit");
         
     }
     public static AutomaticEmailSender handleEmail(){
@@ -46,7 +48,7 @@ public class ConsoleUtils {
     public static void ConsoleWeatherManager(int choice,String dbtype){
         Scanner scanner = new Scanner(System.in);
         dbType=dbtype;
-            if (choice!=1){
+            if (choice!=1 && choice!=8 && choice!=0){
                 System.out.print("Enter the city name: ");
                 city = scanner.nextLine();
          weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
@@ -80,6 +82,9 @@ public class ConsoleUtils {
             case 7:
                 displayPollutingGasesData();
                 break;
+            case 8:
+                displayExistingCityNames();
+                break;
             case 0:
                 System.out.println("Exiting WeatherApp Console. Goodbye!");
                 break;
@@ -94,10 +99,7 @@ public class ConsoleUtils {
         if (!forecasts.isEmpty()) {
             ForecastWithPollution currentForecast = forecasts.getFirst();
 
-            System.out.println("""
 
-                    Current Weather for Lahore:
-                    """);
             System.out.println(STR."Day: \{currentForecast.day()}");
             System.out.println(STR."Time: \{currentForecast.time()}");
             System.out.println(STR."Temperature: \{currentForecast.temperature()}°C");
@@ -111,6 +113,27 @@ public class ConsoleUtils {
             System.out.println(STR."Wind Speed: \{currentForecast.windSpeed()} m/s");
         } else {
             System.out.println("Failed to fetch forecast data. Please try again later.");
+        }
+    }
+    private static final FileHandling fileHandling = new FileHandling();
+    private static void displayExistingCityNames() {
+        Set<String> existingCityNames = fileHandling.getAllCityNames();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Existing Cities:");
+        for (String cityName : existingCityNames) {
+            System.out.println(cityName);
+        }
+
+        System.out.print("Enter the city name you want to search: ");
+        String city = scanner.nextLine();
+
+        if (existingCityNames.contains(city)) {
+            weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
+            displayWeatherByCity();
+        } else {
+            // City doesn't exist in the database
+            System.out.println("Error: The entered city name does not exist in the database.");
         }
     }
 
