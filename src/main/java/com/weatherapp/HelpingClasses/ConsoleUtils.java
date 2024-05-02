@@ -46,7 +46,7 @@ public class ConsoleUtils {
     public static void ConsoleWeatherManager(int choice,String dbtype){
         Scanner scanner = new Scanner(System.in);
         dbType=dbtype;
-            if (choice!=1){
+            if (choice!=1 && choice!=0){
                 System.out.print("Enter the city name: ");
                 city = scanner.nextLine();
          weatherManager = new WeatherManager(city, "9804f15edc7893ea4947a7526edfc496", dbType);
@@ -115,8 +115,6 @@ public class ConsoleUtils {
     }
 
     private static void displayWeatherByCity() {
-        System.out.println(weatherManager);
-        System.out.println(city+dbType);
         List<ForecastWithPollution> forecasts = weatherManager.getWeatherForecast();
         System.out.println(weatherManager);
         if (!forecasts.isEmpty()) {

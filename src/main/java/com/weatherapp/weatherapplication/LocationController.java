@@ -35,6 +35,7 @@ public class LocationController {
     @FXML
     public TextField locationField;
     static String dbType = DatabaseType.getDbType();
+    public CacheManagement cacheManager = GetDbTypeFactory.getDbType(dbType);
     private List<String> cityNames = new ArrayList<>();
 
     @FXML
@@ -155,6 +156,7 @@ public class LocationController {
         imageView.setFitWidth(28);
         imageView.setPickOnBounds(true);
         imageView.setOnMouseClicked(event -> {
+            cacheManager.deleteWeatherData(location);
             locationList.getChildren().remove(hbox);
             event.consume();
         });

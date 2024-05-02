@@ -5,7 +5,6 @@ import javafx.scene.chart.PieChart;
 import java.sql.DatabaseMetaData;
 
 
-// Uses Singleton Design Pattern:
 public class DatabaseType {
 //    public static DatabaseType instance;
     private static String dbType;

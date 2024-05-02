@@ -94,7 +94,7 @@ public class App extends Application {
             dbType = args[0];
         }
         catch (ArrayIndexOutOfBoundsException e){
-            dbType = "file";    //Default is file
+            dbType = "sql";    //Default is file
         }
 //        DatabaseType.getInstance(dbType);
         DatabaseType.setDbType(dbType);

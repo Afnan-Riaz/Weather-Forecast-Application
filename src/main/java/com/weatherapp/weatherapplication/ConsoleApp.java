@@ -15,7 +15,7 @@ public class ConsoleApp {
             dbType = args[0];
         }
         catch (ArrayIndexOutOfBoundsException e){
-            dbType = "file";
+            dbType = "sql";
         }
         DatabaseType.setDbType(dbType);
 

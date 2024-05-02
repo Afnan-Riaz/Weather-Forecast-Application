@@ -3,7 +3,7 @@ package com.weatherapp.HelpingClasses;
 
 public class SqlConnection {
 
-    private final static String HostName = "DESKTOP-MCD4BLG";
+    private final static String HostName = "Maaz-Laptop";
 
     public static String getConnectionUrl() {
         // Register the JDBC driver
