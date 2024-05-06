@@ -5,26 +5,26 @@
       <element id="archive" name="Weather-Application.jar">
         <element id="module-output" name="Weather-Application" />
       </element>
-      <element id="library" level="project" name="Maven: junit:junit:4.10" />
-      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.16.1" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:21" />
-      <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-base:21" />
-      <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
-      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.16.1" />
-      <element id="library" level="project" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" />
-      <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.1" />
-      <element id="library" level="project" name="simple-java-mail-8.1.3" />
-      <element id="library" level="project" name="mssql-jdbc-12.6.1.jre11" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:21" />
-      <element id="library" level="project" name="Maven: org.controlsfx:controlsfx:11.1.2" />
-      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.16.1" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:21" />
-      <element id="library" level="project" name="controlsfx-11.2.1" />
-      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:21" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:21" />
+      <element id="library" level="project" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:21" />
+      <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.1" />
+      <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+      <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+      <element id="library" level="project" name="simple-java-mail-8.1.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.16.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:21" />
+      <element id="library" level="project" name="Maven: org.controlsfx:controlsfx:11.1.2" />
+      <element id="library" level="project" name="mssql-jdbc-12.6.1.jre11" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.16.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:21" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:21" />
+      <element id="library" level="project" name="Maven: junit:junit:4.10" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.16.1" />
       <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:21" />
+      <element id="library" level="project" name="controlsfx-11.2.1" />
     </root>
   </artifact>
 </component>

@@ -12,7 +12,7 @@ public class ConsoleApp {
 
     public static void main(String[] args) {
         try {
-            dbType = args[0];
+            dbType = args[1];
         }
         catch (ArrayIndexOutOfBoundsException e){
             dbType = "sql";

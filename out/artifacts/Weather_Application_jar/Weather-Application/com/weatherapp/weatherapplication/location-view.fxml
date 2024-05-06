@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="300.0" stylesheets="@../../../styling/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.weatherapp.weatherapplication.LocationController">
+   <VBox prefHeight="460.0" prefWidth="300.0">
+      <HBox prefHeight="28.0" prefWidth="300.0">
+         <VBox.margin>
+            <Insets left="19.0" right="19.0" top="16.0" />
+         </VBox.margin>
+         <TextField fx:id="locationField" prefHeight="26.0" prefWidth="234.0" promptText="Enter Location">
+            <cursor>
+               <Cursor fx:constant="TEXT" />
+            </cursor>
+         </TextField>
+         <ImageView id="searchCityBtn" fitHeight="27.0" fitWidth="30.0" onMouseClicked="#searchCity" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <Image url="@../../../styling/icons/search-arrow.png" />
+         </ImageView>
+      </HBox>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="OR" textAlignment="CENTER" wrappingWidth="300.0">
+         <font>
+            <Font name="Raleway SemiBold" size="22.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="3.0" top="6.0" />
+         </VBox.margin>
+      </Text>
+      <HBox layoutX="29.0" layoutY="26.0" prefHeight="28.0" prefWidth="300.0">
+         <VBox.margin>
+            <Insets bottom="16.0" left="19.0" right="19.0" />
+         </VBox.margin>
+         <TextField fx:id="latitudeField" prefHeight="26.0" prefWidth="109.0" promptText="Enter Latitude">
+            <cursor>
+               <Cursor fx:constant="TEXT" />
+            </cursor>
+            <HBox.margin>
+               <Insets right="15.0" />
+            </HBox.margin>
+         </TextField>
+         <TextField fx:id="longitudeField" layoutX="10.0" layoutY="10.0" prefHeight="26.0" prefWidth="105.0" promptText="Enter Longitude">
+            <cursor>
+               <Cursor fx:constant="TEXT" />
+            </cursor>
+            <HBox.margin>
+               <Insets right="5.0" />
+            </HBox.margin>
+         </TextField>
+         <ImageView id="searchCoordinatesBtn" fitHeight="27.0" fitWidth="30.0" onMouseClicked="#searchCoordinates" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <Image url="@../../../styling/icons/search-arrow.png" />
+         </ImageView>
+      </HBox>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="311.0" prefWidth="262.0" styleClass="scrollpane">
+         <VBox.margin>
+            <Insets bottom="16.0" left="19.0" right="19.0" top="10.0" />
+         </VBox.margin>
+         <VBox fx:id="locationList" prefHeight="308.0" prefWidth="262.0" spacing="4.0" />
+      </ScrollPane>
+   </VBox>
+</AnchorPane>
